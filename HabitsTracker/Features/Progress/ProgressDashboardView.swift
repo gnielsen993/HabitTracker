@@ -55,6 +55,7 @@ struct ProgressDashboardView: View {
                     }
                 }
                 .padding(theme.spacing.l)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .background(theme.colors.background.ignoresSafeArea())
             .navigationTitle("Progress")
