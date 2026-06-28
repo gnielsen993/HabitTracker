@@ -12,10 +12,10 @@ final class ThemeManager: ObservableObject {
         didSet { designKitManager.preset = preset }
     }
 
-    private let designKitManager: DesignKit.ThemeManager
+    private let designKitManager: DKThemeManager
 
     init() {
-        let manager = DesignKit.ThemeManager()
+        let manager = DKThemeManager()
         self.designKitManager = manager
         self.mode = manager.mode
         self.preset = manager.preset
