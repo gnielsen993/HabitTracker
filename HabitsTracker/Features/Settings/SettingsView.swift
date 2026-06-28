@@ -8,7 +8,7 @@ struct SettingsView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
-    @Query(sort: \Category.sortIndex) private var categories: [Category]
+    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
     @Query(sort: \Habit.name) private var habits: [Habit]
     @Query(sort: \DailyEntry.dateKey, order: .reverse) private var entries: [DailyEntry]
 
@@ -80,7 +80,7 @@ struct SettingsView: View {
                 isPresented: $showingExporter,
                 document: exportDocument,
                 contentType: .json,
-                defaultFilename: "habittracker-backup-v1"
+                defaultFilename: "habittracker-backup-v2"
             ) { result in
                 if case .failure(let error) = result {
                     message = "Save failed: \(error.localizedDescription)"

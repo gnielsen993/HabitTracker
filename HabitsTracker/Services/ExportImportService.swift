@@ -4,12 +4,12 @@ import SwiftData
 struct HabitExportBundle: Codable {
     let schemaVersion: Int
     let exportedAt: Date
-    let categories: [CategoryDTO]
+    let categories: [DomainDTO]
     let habits: [HabitDTO]
     let dailyEntries: [DailyEntryDTO]
 }
 
-struct CategoryDTO: Codable {
+struct DomainDTO: Codable {
     let id: UUID
     let name: String
     let iconName: String
@@ -17,6 +17,7 @@ struct CategoryDTO: Codable {
     let sortIndex: Int
     let isSeeded: Bool
     let seedVersion: Int
+    let isFocused: Bool
 }
 
 struct HabitDTO: Codable {
@@ -50,7 +51,7 @@ struct HabitStateDTO: Codable {
 }
 
 final class ExportImportService {
-    private let schemaVersion = 1
+    private let schemaVersion = 2
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -66,19 +67,20 @@ final class ExportImportService {
         self.decoder = decoder
     }
 
-    func exportData(categories: [Category], habits: [Habit], entries: [DailyEntry]) throws -> Data {
+    func exportData(categories: [Domain], habits: [Habit], entries: [DailyEntry]) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: schemaVersion,
             exportedAt: .now,
             categories: categories.map {
-                CategoryDTO(
+                DomainDTO(
                     id: $0.id,
                     name: $0.name,
                     iconName: $0.iconName,
                     colorToken: $0.colorToken,
                     sortIndex: $0.sortIndex,
                     isSeeded: $0.isSeeded,
-                    seedVersion: $0.seedVersion
+                    seedVersion: $0.seedVersion,
+                    isFocused: $0.isFocused
                 )
             },
             habits: habits.map {
@@ -127,16 +129,17 @@ final class ExportImportService {
 
         try deleteAll(context: context)
 
-        var categoryIndex: [UUID: Category] = [:]
+        var categoryIndex: [UUID: Domain] = [:]
         for dto in bundle.categories {
-            let category = Category(
+            let category = Domain(
                 id: dto.id,
                 name: dto.name,
                 iconName: dto.iconName,
                 colorToken: dto.colorToken,
                 sortIndex: dto.sortIndex,
                 isSeeded: dto.isSeeded,
-                seedVersion: dto.seedVersion
+                seedVersion: dto.seedVersion,
+                isFocused: dto.isFocused
             )
             context.insert(category)
             categoryIndex[dto.id] = category
@@ -193,7 +196,7 @@ final class ExportImportService {
         try context.delete(model: HabitState.self)
         try context.delete(model: DailyEntry.self)
         try context.delete(model: Habit.self)
-        try context.delete(model: Category.self)
+        try context.delete(model: Domain.self)
         try context.save()
     }
 }

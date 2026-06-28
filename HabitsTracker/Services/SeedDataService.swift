@@ -5,7 +5,7 @@ final class SeedDataService {
     private let seedVersion = 1
 
     func seedIfNeeded(context: ModelContext) throws {
-        let existingCategories = try context.fetch(FetchDescriptor<Category>())
+        let existingCategories = try context.fetch(FetchDescriptor<Domain>())
         guard existingCategories.isEmpty else { return }
 
         let categories = defaultCategories()
@@ -20,7 +20,7 @@ final class SeedDataService {
     }
 
     func restoreMissingDefaults(context: ModelContext) throws {
-        let existingCategories = try context.fetch(FetchDescriptor<Category>())
+        let existingCategories = try context.fetch(FetchDescriptor<Domain>())
         let byName = Dictionary(uniqueKeysWithValues: existingCategories.map { ($0.name, $0) })
 
         var resolved = byName
@@ -42,25 +42,25 @@ final class SeedDataService {
         try context.save()
     }
 
-    private func defaultCategories() -> [Category] {
+    private func defaultCategories() -> [Domain] {
         [
-            Category(name: "Productivity", iconName: "checklist", colorToken: "forest", sortIndex: 0, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 1, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Lifestyle", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Health", iconName: "heart", colorToken: "forest", sortIndex: 3, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Fitness", iconName: "figure.run", colorToken: "navy", sortIndex: 4, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Social", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Mindfulness", iconName: "brain", colorToken: "walnut", sortIndex: 6, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "House / Chores", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Finance", iconName: "dollarsign.circle", colorToken: "stone", sortIndex: 8, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Creativity", iconName: "paintbrush", colorToken: "maroon", sortIndex: 9, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Career", iconName: "briefcase", colorToken: "navy", sortIndex: 10, isSeeded: true, seedVersion: seedVersion),
-            Category(name: "Admin / Life Ops", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion)
+            Domain(name: "Productivity", iconName: "checklist", colorToken: "forest", sortIndex: 0, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 1, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Lifestyle", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Health", iconName: "heart", colorToken: "forest", sortIndex: 3, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Fitness", iconName: "figure.run", colorToken: "navy", sortIndex: 4, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Social", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Mindfulness", iconName: "brain", colorToken: "walnut", sortIndex: 6, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "House / Chores", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Finance", iconName: "dollarsign.circle", colorToken: "stone", sortIndex: 8, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Creativity", iconName: "paintbrush", colorToken: "maroon", sortIndex: 9, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Career", iconName: "briefcase", colorToken: "navy", sortIndex: 10, isSeeded: true, seedVersion: seedVersion),
+            Domain(name: "Admin / Life Ops", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion)
         ]
     }
 
-    private func defaultHabits(categoryByName: [String: Category]) -> [Habit] {
-        func c(_ name: String) -> Category? { categoryByName[name] }
+    private func defaultHabits(categoryByName: [String: Domain]) -> [Habit] {
+        func c(_ name: String) -> Domain? { categoryByName[name] }
 
         return [
             Habit(name: "Deep Work", category: c("Productivity"), scheduleType: .customDays, scheduledDays: [.monday, .tuesday, .wednesday, .thursday, .friday], mode: .required, isSeeded: true, seedVersion: seedVersion),

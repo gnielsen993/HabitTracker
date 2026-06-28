@@ -8,7 +8,7 @@ struct HabitManagerView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(sort: \Habit.name) private var habits: [Habit]
-    @Query(sort: \Category.sortIndex) private var categories: [Category]
+    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
 
     @State private var searchText = ""
     @State private var filterMode: HabitMode?

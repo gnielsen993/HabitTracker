@@ -7,7 +7,7 @@ struct TodayView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
-    @Query(sort: \Category.sortIndex) private var categories: [Category]
+    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
     @Query(sort: \Habit.name) private var habits: [Habit]
     @Query(sort: \DailyEntry.dateKey, order: .reverse) private var entries: [DailyEntry]
 
@@ -113,7 +113,7 @@ struct TodayView: View {
         entries.first(where: { Calendar.current.isDateInToday($0.dateKey) })
     }
 
-    private func grouped(required: [Habit]) -> [(category: Category, habits: [Habit])] {
+    private func grouped(required: [Habit]) -> [(category: Domain, habits: [Habit])] {
         categories.compactMap { category in
             let matching = required.filter { $0.category?.id == category.id }
             return matching.isEmpty ? nil : (category, matching)

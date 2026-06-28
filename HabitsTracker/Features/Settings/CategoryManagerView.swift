@@ -7,7 +7,7 @@ struct CategoryManagerView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
-    @Query(sort: \Category.sortIndex) private var categories: [Category]
+    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
 
     @State private var newName = ""
 
@@ -19,7 +19,7 @@ struct CategoryManagerView: View {
                 TextField("Name", text: $newName)
                 Button("Add") {
                     guard !newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                    let category = Category(
+                    let category = Domain(
                         name: newName,
                         iconName: "square.grid.2x2",
                         colorToken: "forest",

@@ -8,7 +8,7 @@ struct HabitEditorView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
-    @Query(sort: \Category.sortIndex) private var categories: [Category]
+    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
 
     let habit: Habit
 
