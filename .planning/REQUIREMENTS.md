@@ -12,7 +12,7 @@
 ### Domain (Phase A — foundation)
 
 - [ ] **DOM-01**: `Category` is generalized to `Domain` via the chosen plan-less migration path (relabel-only or `@Attribute(originalName:)`); upgrade leaves all existing habits/categories intact.
-- [ ] **DOM-02**: Each Domain carries `isFocused: Bool` (additive, defaulted) plus existing `name`, `iconName`, `colorToken`, `sortIndex`, `isSeeded`, `seedVersion`.
+- [x] **DOM-02**: Each Domain carries `isFocused: Bool` (additive, defaulted) plus existing `name`, `iconName`, `colorToken`, `sortIndex`, `isSeeded`, `seedVersion`.
 - [ ] **DOM-03**: A Hub tab shows focused domains as an icon+color grid; tapping a tile opens DomainDetailView showing only non-empty sections.
 - [ ] **DOM-04**: A focus picker lets the user focus/unfocus domains; focusing adds a Hub tile, unfocusing hides the tile but never deletes content.
 - [ ] **DOM-05**: User can create a custom domain (name + SF Symbol icon + color *token*) that persists and appears in the catalog.
@@ -88,7 +88,7 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DOM-01 | Phase A | Pending |
-| DOM-02 | Phase A | Pending |
+| DOM-02 | Phase A | Complete |
 | DOM-03 | Phase A | Pending |
 | DOM-04 | Phase A | Pending |
 | DOM-05 | Phase A | Pending |

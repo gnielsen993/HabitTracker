@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 UI-SPEC approved
-last_updated: "2026-06-28T18:31:47.633Z"
+stopped_at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
+last_updated: "2026-06-28T18:43:36.629Z"
 last_activity: 2026-06-28 -- Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 6
-  completed_plans: 1
-  percent: 17
+  completed_plans: 2
+  percent: 0
 ---
 
 # Project State
@@ -30,7 +30,7 @@ Plan: 2 of 6
 Status: Executing Phase 1
 Last activity: 2026-06-28 -- Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 
-Progress: [██░░░░░░░░] 17%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [██░░░░░░░░] 17%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 1 P02 | 11min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Most relevant to current work (Phase 1):
 - DEC-additive-migration-only: plan-less inferred migration; renames only via `@Attribute(originalName:)`; NEVER add `migrationPlan:`.
 - DEC-four-tabs: keep 4 tabs (Today, Hub, Progress, Settings); Hub is the offshoot home.
 - DEC-today-is-hero: Today stays pure and visually unchanged; offshoots live under Hub.
+- [Phase ?]: 01-02: Category @Model renamed to Domain plan-less via @Attribute(originalName:) + additive isFocused: Bool = false; Habit.category retyped to Domain? (property name kept); app target builds clean on iPhone 17.
+- [Phase ?]: 01-02: ExportImportService bumped to schemaVersion 2 with DomainDTO + isFocused; bundle key 'categories' kept to match the 01-01 test contract.
 
 ### Pending Todos
 
@@ -79,6 +82,8 @@ Open questions to resolve before/within their phase (from PROJECT.md Open Questi
 
 Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight verification is required on the user's side. Plan status: SPEC is "planning only — not approved to build."
 
+- DOM-01 manual upgrade test (01-02 Task 3) BLOCKING checkpoint PENDING owner verification
+
 ## Deferred Items
 
 | Category | Item | Status | Deferred At |
@@ -87,6 +92,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-06-28T18:11:10.688Z
+Last session: 2026-06-28T18:42:58.569Z
 Stopped at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
-Resume file: .planning/phases/01-domain-generalization-a/01-02-PLAN.md
+Resume file: None
