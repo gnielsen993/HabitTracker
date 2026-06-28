@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: planning
+stopped_at: Phase 1 context gathered
+last_updated: "2026-06-28T17:56:14.602Z"
+last_activity: 2026-06-28 — Lifestyle Hub roadmap bootstrapped from ingest (PROJECT/REQUIREMENTS/ROADMAP/STATE written)
+progress:
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -19,6 +35,7 @@ Progress: [░░░░░░░░░░] 0%
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0
 - Average duration: — min
 - Total execution time: 0.0 hours
@@ -30,6 +47,7 @@ Progress: [░░░░░░░░░░] 0%
 | - | - | - | - |
 
 **Recent Trend:**
+
 - Last 5 plans: —
 - Trend: —
 
@@ -54,6 +72,7 @@ None yet.
 ### Blockers/Concerns
 
 Open questions to resolve before/within their phase (from PROJECT.md Open Questions):
+
 - Q2 (before Phase 1): Category→Domain — relabel-only vs `@Attribute(originalName:)`. Migration-plan path is struck.
 - Q3 (before Phase 1): Seed reconciliation for existing users (auto-focus existing categories? push new seed into populated installs vs fresh-install-only? re-seed policy vs seedVersion).
 - Q1 (before Phase 4): Clip previews vs offline-only (default: fully offline).
@@ -68,6 +87,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-06-28 13:35
-Stopped at: Wrote PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md from ingest synthesis.
-Resume file: None
+Last session: 2026-06-28T17:56:14.594Z
+Stopped at: Phase 1 context gathered
+Resume file: .planning/phases/01-domain-generalization-a/01-CONTEXT.md
