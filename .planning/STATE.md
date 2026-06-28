@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-06-28T17:56:14.602Z"
+stopped_at: Phase 1 UI-SPEC approved
+last_updated: "2026-06-28T18:11:10.697Z"
 last_activity: 2026-06-28 — Lifestyle Hub roadmap bootstrapped from ingest (PROJECT/REQUIREMENTS/ROADMAP/STATE written)
 progress:
   total_phases: 6
@@ -87,6 +87,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-06-28T17:56:14.594Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-domain-generalization-a/01-CONTEXT.md
+Last session: 2026-06-28T18:11:10.688Z
+Stopped at: Phase 1 UI-SPEC approved
+Resume file: .planning/phases/01-domain-generalization-a/01-UI-SPEC.md
