@@ -1,6 +1,6 @@
 # Lifestyle Hub — Concept & Build Plan
 
-_Status: planning only (not approved to build). Drafted 2026-06-21._
+_Status: **Phase 1 (Domain Generalization) approved to build** 2026-06-28. Later phases remain planning-only until approved. Drafted 2026-06-21._
 
 Evolution of HabitTracker from a pure habit app into a **local-first lifestyle hub**:
 habits stay the daily driver, with low-friction offshoots into rules, lists, links, and
