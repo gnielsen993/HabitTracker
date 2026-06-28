@@ -12,7 +12,7 @@ struct HabitsTrackerApp: App {
                 .preferredColorScheme(themeManager.preferredColorScheme)
         }
         .modelContainer(for: [
-            Category.self,
+            Domain.self,
             Habit.self,
             DailyEntry.self,
             HabitState.self

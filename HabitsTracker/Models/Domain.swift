@@ -2,14 +2,15 @@ import Foundation
 import SwiftData
 
 @Model
-final class Category {
+final class Domain {
     @Attribute(.unique) var id: UUID
-    var name: String
-    var iconName: String
-    var colorToken: String
-    var sortIndex: Int
-    var isSeeded: Bool
-    var seedVersion: Int
+    @Attribute(originalName: "name") var name: String
+    @Attribute(originalName: "iconName") var iconName: String
+    @Attribute(originalName: "colorToken") var colorToken: String
+    @Attribute(originalName: "sortIndex") var sortIndex: Int
+    @Attribute(originalName: "isSeeded") var isSeeded: Bool
+    @Attribute(originalName: "seedVersion") var seedVersion: Int
+    var isFocused: Bool = false
 
     @Relationship(deleteRule: .nullify, inverse: \Habit.category)
     var habits: [Habit]
@@ -22,6 +23,7 @@ final class Category {
         sortIndex: Int,
         isSeeded: Bool = false,
         seedVersion: Int = 0,
+        isFocused: Bool = false,
         habits: [Habit] = []
     ) {
         self.id = id
@@ -31,6 +33,7 @@ final class Category {
         self.sortIndex = sortIndex
         self.isSeeded = isSeeded
         self.seedVersion = seedVersion
+        self.isFocused = isFocused
         self.habits = habits
     }
 }

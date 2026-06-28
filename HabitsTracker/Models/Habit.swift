@@ -16,7 +16,7 @@ final class Habit {
     var createdAt: Date
 
     @Relationship
-    var category: Category?
+    var category: Domain?
 
     @Relationship(deleteRule: .cascade, inverse: \HabitState.habit)
     var states: [HabitState]
@@ -39,7 +39,7 @@ final class Habit {
     init(
         id: UUID = UUID(),
         name: String,
-        category: Category? = nil,
+        category: Domain? = nil,
         scheduleType: HabitScheduleType,
         scheduledDays: [Weekday] = [],
         mode: HabitMode,
