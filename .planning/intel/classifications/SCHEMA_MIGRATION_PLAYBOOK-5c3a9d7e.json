@@ -1,0 +1,28 @@
+{
+  "source_path": "/Users/gabrielnielsen/Desktop/HabitsTracker/Docs/SCHEMA_MIGRATION_PLAYBOOK.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": true,
+  "title": "Schema Migration Playbook (HabitsTracker)",
+  "summary": "A playbook for safely changing SwiftData @Model types in HabitsTracker without crashing existing users, encoding hard migration constraints.",
+  "scope": [
+    "SwiftData migration",
+    "ModelContainer",
+    "@Model types (Category, Habit, DailyEntry, HabitState)",
+    "inferred lightweight migration",
+    "@Attribute(originalName:)",
+    "ExportImportService",
+    "upgrade test"
+  ],
+  "cross_refs": [
+    "Docs/LIFESTYLE_HUB_PLAN.md",
+    "FitnessTracker/Docs/SCHEMA_MIGRATION_PLAYBOOK.md",
+    "HabitsTracker/HabitsTrackerApp.swift",
+    "Services/ExportImportService.swift",
+    "CLAUDE.md",
+    "HabitsTracker/Models/"
+  ],
+  "locked": false,
+  "precedence": 3,
+  "notes": "MANIFEST_TYPE=DOC applied as authoritative. Content also carries strong constraint signals (plan-less ModelContainer, optional/defaulted fields, @Attribute(originalName:) renames, mandatory upgrade test, never mutate frozen schema) that the synthesizer should extract as technical constraints despite the DOC classification."
+}

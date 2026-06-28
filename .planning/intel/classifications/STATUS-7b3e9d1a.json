@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/gabrielnielsen/Desktop/HabitsTracker/Docs/STATUS.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": true,
+  "title": "HabitTracker Status",
+  "summary": "Current-state status note for HabitTracker v1.0 listing applied startup/layout work, the local verification blocker, and the next three planned tasks.",
+  "scope": ["HabitTracker", "startup hardening", "layout width pass", "Today screen", "Progress screen", "accessibility", "empty states", "Settings schema visibility"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": 4,
+  "notes": ""
+}

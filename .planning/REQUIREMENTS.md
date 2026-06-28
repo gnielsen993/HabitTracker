@@ -1,0 +1,129 @@
+# Requirements: HabitsTracker — Lifestyle Hub
+
+**Defined:** 2026-06-28
+**Core Value:** The daily habit loop keeps you opening the app, and every part of your lifestyle gets the right kind of structure (check / status / position / stem / promote) filed in one opinionated place.
+
+> Scope note: HabitsTracker v1.0 (habit core) is already shipped and validated. The requirements below are the **Lifestyle Hub milestone** only. The habit engines, models, seeding, and export/import carry over unchanged.
+>
+> **Baseline DoD (every requirement inherits this):** compiles; behavior verified with what-was-run stated; DesignKit token + app-structure rules held; **upgrade test green** (existing habit user updates over their store, app launches, all prior data visible — per `Docs/SCHEMA_MIGRATION_PLAYBOOK.md`); export/import round-trip green for any type touched; no new drift.
+
+## v1 Requirements
+
+### Domain (Phase A — foundation)
+
+- [ ] **DOM-01**: `Category` is generalized to `Domain` via the chosen plan-less migration path (relabel-only or `@Attribute(originalName:)`); upgrade leaves all existing habits/categories intact.
+- [ ] **DOM-02**: Each Domain carries `isFocused: Bool` (additive, defaulted) plus existing `name`, `iconName`, `colorToken`, `sortIndex`, `isSeeded`, `seedVersion`.
+- [ ] **DOM-03**: A Hub tab shows focused domains as an icon+color grid; tapping a tile opens DomainDetailView showing only non-empty sections.
+- [ ] **DOM-04**: A focus picker lets the user focus/unfocus domains; focusing adds a Hub tile, unfocusing hides the tile but never deletes content.
+- [ ] **DOM-05**: User can create a custom domain (name + SF Symbol icon + color *token*) that persists and appears in the catalog.
+- [ ] **DOM-06**: Today remains visually unchanged; the 4-tab structure (Today, Hub, Progress, Settings) holds with no tab-bar growth.
+
+### Rules (Phase B)
+
+- [ ] **RULE-01**: User can create / edit / archive a Rule (`title`, `body`, optional `sourceURL`, `createdAt`), filed under a domain.
+- [ ] **RULE-02**: A shared habit-create-from-source sheet is shipped (prefilled title + domain, both editable; user sets schedule + required/optional). This is the reused code path for Phase E promote-to-habit.
+- [ ] **RULE-03**: "Stem habit" from a rule = copy: creates a new Habit, leaves the rule untouched, opens the prefilled sheet; the new habit appears on Today.
+- [ ] **RULE-04**: The link is bidirectional: the rule shows "Stemmed: N habits" (tap jumps to a habit) and the habit shows a "from rule" backref (tap jumps to the rule); one rule can stem ≥2 habits (`originRuleID`).
+- [ ] **RULE-05**: Deleting a rule with stemmed habits soft-confirms; habits survive and `originRuleID` is nulled (nullify delete rule, never cascade).
+
+### Collections (Phase C)
+
+- [ ] **COLL-01**: A `StatusSet` model exists (ordered states with a terminal "done"); a Collection references one `statusSetID`; built-in labels are not user-editable.
+- [ ] **COLL-02**: The generic preset (`to-collect → collected`) exists and is the default StatusSet for user-created collections (prerequisite for saving any user-created collection).
+- [ ] **COLL-03**: CollectionItems render a tap-to-advance status chip that cycles through the StatusSet states including the terminal state.
+- [ ] **COLL-04**: The `seasonEpisode` progress template works: +episode increments, +season resets episode→1, finished sets the terminal status; item shows "S2 E4".
+- [ ] **COLL-05**: The `counter` progress template works: +1 increments its label. (`progressTemplate` stays the fixed set `none`/`counter`/`seasonEpisode`.)
+- [ ] **COLL-06**: `showsAggregate` rolls up "X/Y" for completionist lists; tracker lists show no progress ring; money-flavored lists roll up a cost SUM (never a ring on spend); presets set a sensible default, user can flip the flag.
+- [ ] **COLL-07**: Curated built-in collection presets from SPEC §5 ship as seed content (Shows, Movies, Albums, Concerts, Books, Clothes to buy, Want to spend on, Planes/places) with their StatusSets, progress templates, and aggregate defaults.
+
+### Clips (Phase D)
+
+- [ ] **CLIP-01**: The Phase D offline-preview open question (Q1) is resolved and recorded before building (default: store URL + manual title/note, fully offline).
+- [ ] **CLIP-02**: User can save a Clip/Link (`title`, `url`, `note`, `tag`, `status`) fully offline, with no network fetch.
+- [ ] **CLIP-03**: A Clip is filed by domain and found in that domain's Clips section in DomainDetailView.
+- [ ] **CLIP-04**: A Clip's status toggles saved → acted.
+
+### Ideas & Promotion (Phase E)
+
+- [ ] **IDEA-01**: An `Idea` model exists (freeform capture, title-only minimum, domain optional).
+- [ ] **IDEA-02**: A global quick-add (capture-first) is reachable without leaving Today and without adding a row to Today's list; it defaults to Idea and lands in the Hub inbox.
+- [ ] **IDEA-03**: The Hub inbox surfaces unfiled ideas with two one-tap graduations: **File** (stays an Idea, gains a domain) and **Promote** (becomes another type).
+- [ ] **IDEA-04**: Promote converts an idea to a Rule, Habit, or Collection item per the asymmetry rule: the idea is archived with a forward-link and leaves the active list; the result carries the right fields and no backref. Promote-to-habit reuses Phase B's shared habit sheet.
+- [ ] **IDEA-05**: Promote prompts for missing context: an unfiled idea prompts for a domain; promote-to-collection prompts for the target list.
+
+### Polish (Phase F)
+
+- [ ] **POL-01**: Cross-domain search returns items across all types and navigates to a tapped result.
+- [ ] **POL-02**: Every section, the inbox, and the Hub have a designed empty state.
+- [ ] **POL-03**: Full export/import round-trips ALL types (Domain, Habit, Rule, Collection, CollectionItem, Idea, Clip, StatusSet) under the bumped `schemaVersion`.
+- [ ] **POL-04**: Accessibility pass: Dynamic Type, VoiceOver labels on chips/buttons/Hub grid, tokens-only colors; absorbs the pending "Next 3" (accessibility, empty states, schema/version visibility in Settings).
+
+## v2 Requirements
+
+Deferred to a future milestone. Tracked but not in the current roadmap.
+
+### Widgets
+
+- **WDGT-01**: WidgetKit widgets (from the original v1 spec), sequenced after the hub stabilizes (post-Phase F).
+
+## Out of Scope
+
+Explicitly excluded for this milestone. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Clip rich previews / link thumbnails | Network fetch conflicts with offline-only v1; opt-in fetch deferred past Phase D (Q1) |
+| Cross-domain free tags | Strict domain filing only in v1; revisit after Phase F (Q4) |
+| Rule active-resurfacing / daily nagging | v1 is opt-in stem only (locked: rules are reference-first) |
+| User-definable progress templates | Fixed `none`/`counter`/`seasonEpisode` set is the scope guard against a spreadsheet builder |
+| User-editable built-in StatusSet labels | Preserves the opinionated feel; use the generic preset for custom words |
+| Completion ring on spend | Money lists roll up a cost sum, never a progress ring (locked) |
+| Cloud / backend / sync | Offline-only in v1 (constitution) |
+| Bundle ID / App Group changes | `gn.HabitsTracker` frozen even on product rename |
+| DesignKit extraction of new components | Only once proven in 2+ apps (constitution §4) |
+| Notifications / reminders | None planned in v1; revisit with widget work |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| DOM-01 | Phase A | Pending |
+| DOM-02 | Phase A | Pending |
+| DOM-03 | Phase A | Pending |
+| DOM-04 | Phase A | Pending |
+| DOM-05 | Phase A | Pending |
+| DOM-06 | Phase A | Pending |
+| RULE-01 | Phase B | Pending |
+| RULE-02 | Phase B | Pending |
+| RULE-03 | Phase B | Pending |
+| RULE-04 | Phase B | Pending |
+| RULE-05 | Phase B | Pending |
+| COLL-01 | Phase C | Pending |
+| COLL-02 | Phase C | Pending |
+| COLL-03 | Phase C | Pending |
+| COLL-04 | Phase C | Pending |
+| COLL-05 | Phase C | Pending |
+| COLL-06 | Phase C | Pending |
+| COLL-07 | Phase C | Pending |
+| CLIP-01 | Phase D | Pending |
+| CLIP-02 | Phase D | Pending |
+| CLIP-03 | Phase D | Pending |
+| CLIP-04 | Phase D | Pending |
+| IDEA-01 | Phase E | Pending |
+| IDEA-02 | Phase E | Pending |
+| IDEA-03 | Phase E | Pending |
+| IDEA-04 | Phase E | Pending |
+| IDEA-05 | Phase E | Pending |
+| POL-01 | Phase F | Pending |
+| POL-02 | Phase F | Pending |
+| POL-03 | Phase F | Pending |
+| POL-04 | Phase F | Pending |
+
+**Coverage:**
+- v1 requirements: 31 total
+- Mapped to phases: 31
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-06-28*
+*Last updated: 2026-06-28 after Lifestyle Hub roadmap bootstrap (ingest)*

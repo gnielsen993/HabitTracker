@@ -1,0 +1,33 @@
+{
+  "source_path": "/Users/gabrielnielsen/Desktop/HabitsTracker/Docs/LIFESTYLE_HUB_PLAN.md",
+  "type": "SPEC",
+  "confidence": "high",
+  "manifest_override": true,
+  "title": "Lifestyle Hub — Concept & Build Plan",
+  "summary": "Build plan generalizing HabitTracker into a local-first lifestyle hub with typed domain items (habits, rules, collections, ideas, clips), phased delivery, and migration constraints.",
+  "scope": [
+    "Domain model (generalizes Category)",
+    "Habit",
+    "Rule",
+    "Collection",
+    "CollectionItem",
+    "StatusSet",
+    "progressTemplate (none/counter/seasonEpisode)",
+    "Idea",
+    "Clip/Link",
+    "Stem (Rule to Habit)",
+    "Promote (Idea to anything)",
+    "Hub tab and inbox",
+    "Navigation/screens (Today, Hub, Progress, Settings)",
+    "Seed strategy and curated collection presets",
+    "SwiftData migration / schemaVersion",
+    "Phases A-F plus deferred Widgets",
+    "Export/import"
+  ],
+  "cross_refs": [
+    "Docs/SCHEMA_MIGRATION_PLAYBOOK.md"
+  ],
+  "locked": false,
+  "precedence": 0,
+  "notes": "Type SPEC set by MANIFEST_TYPE (authoritative). Document is a phased build plan with locked decisions (section 1, treat as locked per prompt), per-phase acceptance criteria (section 6), a success bar (section 10), open questions (section 8), and deferred items (section 11). Self-status reads 'planning only (not approved to build)' and locked decisions are product/design decisions rather than Accepted ADR entries, so locked=false per schema rule (only Accepted ADRs are locked). Cross-references Docs/SCHEMA_MIGRATION_PLAYBOOK.md for migration constraints."
+}
