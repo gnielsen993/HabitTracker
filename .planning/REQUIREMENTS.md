@@ -87,7 +87,7 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DOM-01 | Phase A | Pending |
+| DOM-01 | Phase A | Complete |
 | DOM-02 | Phase A | Complete |
 | DOM-03 | Phase A | Pending |
 | DOM-04 | Phase A | Pending |

@@ -127,3 +127,15 @@ If rows do **NOT** survive the rename:
   rename recipe, and the Forbidden moves this runbook enforces.
 - `.planning/phases/01-domain-generalization-a/01-VALIDATION.md` — the DOM-01 manual-only
   verification entry this runbook satisfies.
+
+---
+
+## DOM-01 Result — PASSED 2026-06-29
+
+Verified loss-free via direct store inspection after installing the NEW (Domain) build over
+the OLD (`Category`-schema, commit `8503db9`) store on the iPhone 17 simulator:
+- Table renamed `ZCATEGORY` → `ZDOMAIN` via `@Attribute(originalName:)` — no data drop.
+- Survived: 12 domains, 20 habits, 2 daily entries. App launched (PID > 0), no migration crash.
+- `isFocused` defaulted to false on all migrated rows (correct; backfill is plan 01-03).
+
+Decision: stay on D-01 (real rename). Relabel-only fallback NOT triggered.
