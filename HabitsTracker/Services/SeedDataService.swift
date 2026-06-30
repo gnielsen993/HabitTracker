@@ -2,13 +2,13 @@ import Foundation
 import SwiftData
 
 final class SeedDataService {
-    private let seedVersion = 1
+    private let seedVersion = 2
 
     func seedIfNeeded(context: ModelContext) throws {
         let existingCategories = try context.fetch(FetchDescriptor<Domain>())
         guard existingCategories.isEmpty else { return }
 
-        let categories = defaultCategories()
+        let categories = defaultDomains()
         categories.forEach { context.insert($0) }
 
         let categoryByName = Dictionary(uniqueKeysWithValues: categories.map { ($0.name, $0) })
@@ -24,7 +24,10 @@ final class SeedDataService {
         let byName = Dictionary(uniqueKeysWithValues: existingCategories.map { ($0.name, $0) })
 
         var resolved = byName
-        for template in defaultCategories() where resolved[template.name] == nil {
+        for template in defaultDomains() where resolved[template.name] == nil {
+            // Merge-add (D-08): newly introduced defaults arrive unfocused so an
+            // upgrader's Hub is not flooded — the user opts in via the focus picker.
+            template.isFocused = false
             context.insert(template)
             resolved[template.name] = template
         }
@@ -42,20 +45,28 @@ final class SeedDataService {
         try context.save()
     }
 
-    private func defaultCategories() -> [Domain] {
+    private func defaultDomains() -> [Domain] {
         [
-            Domain(name: "Productivity", iconName: "checklist", colorToken: "forest", sortIndex: 0, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 1, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Lifestyle", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Health", iconName: "heart", colorToken: "forest", sortIndex: 3, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Fitness", iconName: "figure.run", colorToken: "navy", sortIndex: 4, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Social", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Mindfulness", iconName: "brain", colorToken: "walnut", sortIndex: 6, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "House / Chores", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Finance", iconName: "dollarsign.circle", colorToken: "stone", sortIndex: 8, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Creativity", iconName: "paintbrush", colorToken: "maroon", sortIndex: 9, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Career", iconName: "briefcase", colorToken: "navy", sortIndex: 10, isSeeded: true, seedVersion: seedVersion),
-            Domain(name: "Admin / Life Ops", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion)
+            // Opinionated subset (D-09): the carried-over v1 defaults seed PRE-FOCUSED
+            // on a fresh install — they are the curated Hub the user opens to.
+            Domain(name: "Productivity", iconName: "checklist", colorToken: "forest", sortIndex: 0, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 1, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Lifestyle", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Health", iconName: "heart", colorToken: "forest", sortIndex: 3, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Fitness", iconName: "figure.run", colorToken: "navy", sortIndex: 4, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Social", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Mindfulness", iconName: "brain", colorToken: "walnut", sortIndex: 6, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "House / Chores", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Finance", iconName: "dollarsign.circle", colorToken: "stone", sortIndex: 8, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Creativity", iconName: "paintbrush", colorToken: "maroon", sortIndex: 9, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Career", iconName: "briefcase", colorToken: "navy", sortIndex: 10, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Admin / Life Ops", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            // New hub seed domains (D-08): seed UNFOCUSED so a fresh curated install is
+            // not flooded (Pitfall 3). On an upgrade they merge-add unfocused too.
+            Domain(name: "Style", iconName: "tshirt", colorToken: "maroon", sortIndex: 12, isSeeded: true, seedVersion: seedVersion, isFocused: false),
+            Domain(name: "Diet", iconName: "fork.knife", colorToken: "forest", sortIndex: 13, isSeeded: true, seedVersion: seedVersion, isFocused: false),
+            Domain(name: "Money", iconName: "banknote", colorToken: "walnut", sortIndex: 14, isSeeded: true, seedVersion: seedVersion, isFocused: false),
+            Domain(name: "Media", iconName: "play.rectangle", colorToken: "navy", sortIndex: 15, isSeeded: true, seedVersion: seedVersion, isFocused: false)
         ]
     }
 
