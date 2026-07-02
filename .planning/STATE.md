@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
-last_updated: "2026-07-02T01:11:23.841Z"
+last_updated: "2026-07-02T22:49:04.905Z"
 last_activity: 2026-07-02
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 6
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 1 (Domain Generalization (A)) — EXECUTING
-Plan: 3 of 6
+Plan: 4 of 6
 Status: Ready to execute
 Last activity: 2026-07-02
 
-Progress: [█████░░░░░] 50%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [█████░░░░░] 50%
 *Updated after each plan completion*
 | Phase 1 P02 | 11min | 2 tasks | 11 files |
 | Phase 1 P03 | 130min | 2 tasks | 3 files |
+| Phase 1 P04 | 2 min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,7 @@ Most relevant to current work (Phase 1):
 - [Phase ?]: 01-02: Category @Model renamed to Domain plan-less via @Attribute(originalName:) + additive isFocused: Bool = false; Habit.category retyped to Domain? (property name kept); app target builds clean on iPhone 17.
 - [Phase ?]: 01-02: ExportImportService bumped to schemaVersion 2 with DomainDTO + isFocused; bundle key 'categories' kept to match the 01-01 test contract.
 - [Phase ?]: 01-03: Persisted lastSeededVersion marker + version-gated once-only seed reconciliation; focus backfill flips only pre-reconciliation row IDs so merge-added hub domains stay unfocused; new hub domains Style/Diet/Money/Media merge-added unfocused; accentColor(forToken:scheme:) app-level resolver over the 5 accents.
+- [Phase ?]: 01-04: Calendar top-level tab removed; CalendarMonthHeatmapView folded into Progress behind a Charts⇄Calendar segmented Picker (system tint). The calendar view's own NavigationStack/navigationTitle stripped so Progress owns the single stack and the day-detail sheet re-anchors under it (D-13/D-14). Tab bar temporarily 3 tabs; Hub restores the 4th in 01-05.
 
 ### Pending Todos
 
@@ -85,6 +87,7 @@ Open questions to resolve before/within their phase (from PROJECT.md Open Questi
 Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight verification is required on the user's side. Plan status: SPEC is "planning only — not approved to build."
 
 - DOM-01 manual upgrade test (01-02 Task 3) BLOCKING checkpoint PENDING owner verification
+- DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 
 ## Deferred Items
 
@@ -94,6 +97,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-02T01:09:45.627Z
+Last session: 2026-07-02T22:48:38.254Z
 Stopped at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 Resume file: None
