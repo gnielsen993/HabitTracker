@@ -58,3 +58,28 @@
   the owner's own environment). This is the same class as the pre-existing STATE.md owner-side blocker
   ("local Xcode/TestFlight verification is required on the user's side") and CLAUDE.md §9.7
   (stale-store / NSStagedMigrationManager test-runner crashes → uninstall + retry on the owner box).
+
+---
+
+## OWNER-SIDE BLOCKER — automated unit-suite run (CoreSimulator defect) — 2026-07-02
+
+The HabitsTrackerTests suite **compiles** (`TEST BUILD SUCCEEDED`) but the test **run**
+cannot execute on this machine: `xcodebuild test` fails to launch the XCTest host with
+`FBSOpenApplicationServiceErrorDomain Code=1 … RequestDenied by SBMainWorkspace / launch-failed (Code 64)`.
+Zero tests run (0 passed / 0 failed) — the host never starts.
+
+Confirmed to be an ENVIRONMENT defect, not the code:
+- The same app builds clean and LAUNCHES successfully via `xcrun simctl launch` (DOM-01 upgrade
+  test ran the real app, PID 68787).
+- Reproduced across: post-erase, post-full-`bootstatus`, default DerivedData, and `/tmp` DerivedData;
+  plus the executor's erase / fresh-device / CoreSimulator-service-restart attempts.
+- Matches CLAUDE.md §9.7 (simulator test-host launch defects are not code bugs).
+
+**Owner action to clear:** reboot the machine (or reset Xcode/CoreSimulator), then run:
+`xcodebuild -scheme HabitsTracker -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:HabitsTrackerTests test`
+Expected: Wave-0 tests (DomainMigration, BootstrapBackfill idempotency/previous>0/merge-add,
+DomainCreate, ExportImport v2 round-trip) go green. Assertions are statically traced against the
+committed code in the 01-03 SUMMARY.
+
+Until then: automated DOM-04 sign-off remains owner-pending (does not block writing 01-04/05/06,
+which build clean).
