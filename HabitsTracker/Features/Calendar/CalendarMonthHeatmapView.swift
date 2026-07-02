@@ -16,47 +16,47 @@ struct CalendarMonthHeatmapView: View {
         let theme = themeManager.theme(for: colorScheme)
         let days = MonthGridBuilder.days(for: monthAnchor)
 
-        NavigationStack {
-            VStack(spacing: theme.spacing.m) {
-                HStack {
-                    Button {
-                        monthAnchor = Calendar.current.date(byAdding: .month, value: -1, to: monthAnchor) ?? monthAnchor
-                    } label: {
-                        Image(systemName: "chevron.left")
-                    }
-                    .foregroundStyle(theme.colors.accentPrimary)
-
-                    Spacer()
-                    Text(monthAnchor.formatted(.dateTime.month(.wide).year()))
-                        .font(theme.typography.title)
-                        .foregroundStyle(theme.colors.textPrimary)
-                    Spacer()
-
-                    Button {
-                        monthAnchor = Calendar.current.date(byAdding: .month, value: 1, to: monthAnchor) ?? monthAnchor
-                    } label: {
-                        Image(systemName: "chevron.right")
-                    }
-                    .foregroundStyle(theme.colors.accentPrimary)
+        // Folded into ProgressDashboardView behind a Charts ⇄ Calendar segmented
+        // control (D-13/D-14). No inner NavigationStack / navigationTitle here —
+        // Progress owns the single stack; this view nests under it.
+        VStack(spacing: theme.spacing.m) {
+            HStack {
+                Button {
+                    monthAnchor = Calendar.current.date(byAdding: .month, value: -1, to: monthAnchor) ?? monthAnchor
+                } label: {
+                    Image(systemName: "chevron.left")
                 }
-                .padding(.horizontal, theme.spacing.l)
-
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: theme.spacing.xs), count: 7), spacing: theme.spacing.xs) {
-                    ForEach(days, id: \.self) { day in
-                        let completion = StatsEngine.dayCompletion(date: day, habits: habits, entries: entries)
-                        DayCell(day: day, completion: completion, monthAnchor: monthAnchor, theme: theme)
-                            .onTapGesture { selectedDay = day }
-                    }
-                }
-                .padding(.horizontal, theme.spacing.l)
+                .foregroundStyle(theme.colors.accentPrimary)
 
                 Spacer()
+                Text(monthAnchor.formatted(.dateTime.month(.wide).year()))
+                    .font(theme.typography.title)
+                    .foregroundStyle(theme.colors.textPrimary)
+                Spacer()
+
+                Button {
+                    monthAnchor = Calendar.current.date(byAdding: .month, value: 1, to: monthAnchor) ?? monthAnchor
+                } label: {
+                    Image(systemName: "chevron.right")
+                }
+                .foregroundStyle(theme.colors.accentPrimary)
             }
-            .background(theme.colors.background.ignoresSafeArea())
-            .navigationTitle("Calendar")
-            .sheet(item: $selectedDay) { day in
-                DayDetailSheet(date: day)
+            .padding(.horizontal, theme.spacing.l)
+
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: theme.spacing.xs), count: 7), spacing: theme.spacing.xs) {
+                ForEach(days, id: \.self) { day in
+                    let completion = StatsEngine.dayCompletion(date: day, habits: habits, entries: entries)
+                    DayCell(day: day, completion: completion, monthAnchor: monthAnchor, theme: theme)
+                        .onTapGesture { selectedDay = day }
+                }
             }
+            .padding(.horizontal, theme.spacing.l)
+
+            Spacer()
+        }
+        .background(theme.colors.background.ignoresSafeArea())
+        .sheet(item: $selectedDay) { day in
+            DayDetailSheet(date: day)
         }
     }
 }
