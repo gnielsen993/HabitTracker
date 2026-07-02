@@ -72,10 +72,8 @@ struct HubView: View {
                 .foregroundStyle(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
 
-            // TODO(01-06): route to DomainFocusPicker once it lands. Until then the
-            // button navigates to a placeholder so the empty state keeps its CTA.
             NavigationLink {
-                focusPickerPlaceholder(theme: theme)
+                DomainFocusPicker()
             } label: {
                 Text("Choose Domains")
                     .font(theme.typography.headline)
@@ -87,17 +85,5 @@ struct HubView: View {
             }
         }
         .padding(theme.spacing.xl)
-    }
-
-    // TODO(01-06): remove when DomainFocusPicker (Features/Settings/DomainFocusPicker.swift)
-    // exists; the empty-state "Choose Domains" button should then push it directly.
-    private func focusPickerPlaceholder(theme: Theme) -> some View {
-        Text("Focus picker arrives in 01-06.")
-            .font(theme.typography.body)
-            .foregroundStyle(theme.colors.textSecondary)
-            .padding(theme.spacing.xl)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(theme.colors.background.ignoresSafeArea())
-            .navigationTitle("Choose Domains")
     }
 }

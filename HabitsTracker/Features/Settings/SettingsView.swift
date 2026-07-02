@@ -40,8 +40,8 @@ struct SettingsView: View {
                 }
 
                 Section("Management") {
-                    NavigationLink("Manage Categories") {
-                        CategoryManagerView()
+                    NavigationLink("Manage Domains") {
+                        DomainFocusPicker()
                     }
                     NavigationLink("Manage Habits") {
                         HabitManagerView()
