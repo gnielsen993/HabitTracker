@@ -30,7 +30,7 @@ struct DomainColorSwatchRow: View {
 
     private func swatch(for token: String) -> some View {
         let isSelected = token == selection
-        let fill = accentColor(forToken: token, scheme: scheme)
+        let fill = HabitsTracker.accentColor(forToken: token, scheme: scheme)
 
         return Button {
             selection = token
