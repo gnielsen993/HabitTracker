@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
-last_updated: "2026-06-28T18:43:36.629Z"
-last_activity: 2026-06-28 -- Completed 01-01-PLAN.md (Wave-0 validation scaffold)
+last_updated: "2026-07-02T01:11:23.841Z"
+last_activity: 2026-07-02
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 6
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 1 (Domain Generalization (A)) — EXECUTING
-Plan: 2 of 6
-Status: Executing Phase 1
-Last activity: 2026-06-28 -- Completed 01-01-PLAN.md (Wave-0 validation scaffold)
+Plan: 3 of 6
+Status: Ready to execute
+Last activity: 2026-07-02
 
-Progress: [███░░░░░░░] 33%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [███░░░░░░░] 33%
 
 *Updated after each plan completion*
 | Phase 1 P02 | 11min | 2 tasks | 11 files |
+| Phase 1 P03 | 130min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,7 @@ Most relevant to current work (Phase 1):
 - DEC-today-is-hero: Today stays pure and visually unchanged; offshoots live under Hub.
 - [Phase ?]: 01-02: Category @Model renamed to Domain plan-less via @Attribute(originalName:) + additive isFocused: Bool = false; Habit.category retyped to Domain? (property name kept); app target builds clean on iPhone 17.
 - [Phase ?]: 01-02: ExportImportService bumped to schemaVersion 2 with DomainDTO + isFocused; bundle key 'categories' kept to match the 01-01 test contract.
+- [Phase ?]: 01-03: Persisted lastSeededVersion marker + version-gated once-only seed reconciliation; focus backfill flips only pre-reconciliation row IDs so merge-added hub domains stay unfocused; new hub domains Style/Diet/Money/Media merge-added unfocused; accentColor(forToken:scheme:) app-level resolver over the 5 accents.
 
 ### Pending Todos
 
@@ -92,6 +94,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-06-28T18:42:58.569Z
+Last session: 2026-07-02T01:09:45.627Z
 Stopped at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 Resume file: None

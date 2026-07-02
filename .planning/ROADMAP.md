@@ -32,7 +32,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 **Plans**: 6 plans
 - [x] 01-01-PLAN.md — Wave-0 validation scaffold (failing tests + DOM-01 upgrade runbook)
 - [x] 01-02-PLAN.md — Category→Domain rename + isFocused + schemaVersion-2 Export/Import + upgrade-test gate
-- [ ] 01-03-PLAN.md — Seed reconciliation: lastSeededVersion marker, gated focus backfill, merge-add, accentColor resolver
+- [x] 01-03-PLAN.md — Seed reconciliation: lastSeededVersion marker, gated focus backfill, merge-add, accentColor resolver
 - [ ] 01-04-PLAN.md — Tab recomposition: remove Calendar tab, fold into Progress (Charts⇄Calendar)
 - [ ] 01-05-PLAN.md — Hub UI: HubView grid + DomainTile + DomainDetailView + Hub tab (4-tab IA)
 - [ ] 01-06-PLAN.md — Focus picker + custom-domain creation (curated icon grid + 5-token swatch row)
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Domain Generalization (A) | 2/6 | In Progress|  |
+| 1. Domain Generalization (A) | 3/6 | In Progress|  |
 | 2. Rules (B) | 0/TBD | Not started | - |
 | 3. Collections (C) | 0/TBD | Not started | - |
 | 4. Clips (D) | 0/TBD | Not started | - |
