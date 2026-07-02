@@ -15,7 +15,7 @@
 - [x] **DOM-02**: Each Domain carries `isFocused: Bool` (additive, defaulted) plus existing `name`, `iconName`, `colorToken`, `sortIndex`, `isSeeded`, `seedVersion`.
 - [x] **DOM-03**: A Hub tab shows focused domains as an icon+color grid; tapping a tile opens DomainDetailView showing only non-empty sections.
 - [x] **DOM-04**: A focus picker lets the user focus/unfocus domains; focusing adds a Hub tile, unfocusing hides the tile but never deletes content.
-- [ ] **DOM-05**: User can create a custom domain (name + SF Symbol icon + color *token*) that persists and appears in the catalog.
+- [x] **DOM-05**: User can create a custom domain (name + SF Symbol icon + color *token*) that persists and appears in the catalog.
 - [x] **DOM-06**: Today remains visually unchanged; the 4-tab structure (Today, Hub, Progress, Settings) holds with no tab-bar growth.
 
 ### Rules (Phase B)
@@ -91,7 +91,7 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | DOM-02 | Phase A | Complete |
 | DOM-03 | Phase A | Complete |
 | DOM-04 | Phase A | Complete |
-| DOM-05 | Phase A | Pending |
+| DOM-05 | Phase A | Complete |
 | DOM-06 | Phase A | Complete |
 | RULE-01 | Phase B | Pending |
 | RULE-02 | Phase B | Pending |

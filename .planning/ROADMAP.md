@@ -10,7 +10,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - Integer phases (1, 2, 3): Planned milestone work. Phases 1–6 correspond to the SPEC's Phases A–F.
 - Decimal phases (2.1, 2.2): Urgent insertions (marked INSERTED).
 
-- [ ] **Phase 1: Domain Generalization (A)** - Generalize Category→Domain, add the Hub tab, focus picker, and custom domains.
+- [x] **Phase 1: Domain Generalization (A)** - Generalize Category→Domain, add the Hub tab, focus picker, and custom domains. (completed 2026-07-02)
 - [ ] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet.
 - [ ] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets.
 - [ ] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain.
@@ -35,7 +35,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 01-03-PLAN.md — Seed reconciliation: lastSeededVersion marker, gated focus backfill, merge-add, accentColor resolver
 - [x] 01-04-PLAN.md — Tab recomposition: remove Calendar tab, fold into Progress (Charts⇄Calendar)
 - [x] 01-05-PLAN.md — Hub UI: HubView grid + DomainTile + DomainDetailView + Hub tab (4-tab IA)
-- [ ] 01-06-PLAN.md — Focus picker + custom-domain creation (curated icon grid + 5-token swatch row)
+- [x] 01-06-PLAN.md — Focus picker + custom-domain creation (curated icon grid + 5-token swatch row)
 **UI hint**: yes
 
 ### Phase 2: Rules (B)
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Domain Generalization (A) | 5/6 | In Progress|  |
+| 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 0/TBD | Not started | - |
 | 3. Collections (C) | 0/TBD | Not started | - |
 | 4. Clips (D) | 0/TBD | Not started | - |

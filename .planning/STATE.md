@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
-last_updated: "2026-07-02T22:57:18.102Z"
+last_updated: "2026-07-02T23:04:47.951Z"
 last_activity: 2026-07-02
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 6
-  completed_plans: 5
-  percent: 0
+  completed_plans: 6
+  percent: 17
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 
 ## Current Position
 
-Phase: 1 (Domain Generalization (A)) — EXECUTING
-Plan: 5 of 6
-Status: Ready to execute
+Phase: 1 (Domain Generalization (A)) — ALL PLANS EXECUTED (device checkpoints pending owner verification)
+Plan: 6 of 6
+Status: Phase 1 plans complete (01-06 done); awaiting owner on-device verification of blocking checkpoints
 Last activity: 2026-07-02
 
-Progress: [████████░░] 83%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [████████░░] 83%
 | Phase 1 P03 | 130min | 2 tasks | 3 files |
 | Phase 1 P04 | 2 min | 2 tasks | 3 files |
 | Phase 1 P5 | 3 min | 2 tasks | 4 files |
+| Phase 1 P06 | 8 min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Most relevant to current work (Phase 1):
 - [Phase ?]: 01-03: Persisted lastSeededVersion marker + version-gated once-only seed reconciliation; focus backfill flips only pre-reconciliation row IDs so merge-added hub domains stay unfocused; new hub domains Style/Diet/Money/Media merge-added unfocused; accentColor(forToken:scheme:) app-level resolver over the 5 accents.
 - [Phase ?]: 01-04: Calendar top-level tab removed; CalendarMonthHeatmapView folded into Progress behind a Charts⇄Calendar segmented Picker (system tint). The calendar view's own NavigationStack/navigationTitle stripped so Progress owns the single stack and the day-detail sheet re-anchors under it (D-13/D-14). Tab bar temporarily 3 tabs; Hub restores the 4th in 01-05.
 - [Phase ?]: 01-05: Hub tab built as an adaptive grid of focused domains (accent-tinted data-driven DomainTiles); DomainDetailView is a real non-empty-sections loop yielding zero sections in Phase 1 (not a literal empty view) so Phases B-E append item-type sections without restructuring; 4-tab IA Today/Hub/Progress/Settings restored; accentColor call qualified as HabitsTracker.accentColor to avoid SwiftUI View.accentColor shadowing.
+- [Phase ?]: 01-06: DomainFocusPicker per-row isFocused Toggle flips+saves and never deletes (unfocus hides the Hub tile, DOM-04); merge-added seed domains (seedVersion==2, unfocused) get an inline DKBadge New + one caption hint (D-10); custom (non-seeded) domains alone are swipe-deletable behind a .nullify habit-preserving confirmation.
+- [Phase ?]: 01-06: Custom-domain creation (DOM-05) is valid-by-construction — a curated 31-symbol SF grid (D-16) + a closed 5-accent-token swatch row (D-17), no system browser/wheel/hex; new domains persist isFocused:true, isSeeded:false, sortIndex max+1, Add Domain gated on a trimmed non-empty name; accentColor qualified as HabitsTracker.accentColor to dodge View.accentColor shadowing.
 
 ### Pending Todos
 
@@ -100,6 +103,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-02T22:57:13.179Z
+Last session: 2026-07-02T23:04:38.558Z
 Stopped at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 Resume file: None
