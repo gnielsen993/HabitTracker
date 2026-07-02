@@ -16,10 +16,10 @@ struct RootTabView: View {
                     Label("Today", systemImage: "sun.max")
                 }
 
-            // Hub tab slot is inserted here by plan 01-05 (depends on HubView),
-            // reaching the final 4-tab IA Today / Hub / Progress / Settings.
-            // The former Calendar tab now lives inside Progress behind a
-            // Charts ⇄ Calendar segmented control (D-12/D-13).
+            HubView()
+                .tabItem {
+                    Label("Hub", systemImage: "square.grid.2x2")
+                }
 
             ProgressDashboardView()
                 .tabItem {
