@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
-last_updated: "2026-07-02T22:49:04.905Z"
+last_updated: "2026-07-02T22:57:18.102Z"
 last_activity: 2026-07-02
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 1 (Domain Generalization (A)) — EXECUTING
-Plan: 4 of 6
+Plan: 5 of 6
 Status: Ready to execute
 Last activity: 2026-07-02
 
-Progress: [███████░░░] 67%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [███████░░░] 67%
 | Phase 1 P02 | 11min | 2 tasks | 11 files |
 | Phase 1 P03 | 130min | 2 tasks | 3 files |
 | Phase 1 P04 | 2 min | 2 tasks | 3 files |
+| Phase 1 P5 | 3 min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,7 @@ Most relevant to current work (Phase 1):
 - [Phase ?]: 01-02: ExportImportService bumped to schemaVersion 2 with DomainDTO + isFocused; bundle key 'categories' kept to match the 01-01 test contract.
 - [Phase ?]: 01-03: Persisted lastSeededVersion marker + version-gated once-only seed reconciliation; focus backfill flips only pre-reconciliation row IDs so merge-added hub domains stay unfocused; new hub domains Style/Diet/Money/Media merge-added unfocused; accentColor(forToken:scheme:) app-level resolver over the 5 accents.
 - [Phase ?]: 01-04: Calendar top-level tab removed; CalendarMonthHeatmapView folded into Progress behind a Charts⇄Calendar segmented Picker (system tint). The calendar view's own NavigationStack/navigationTitle stripped so Progress owns the single stack and the day-detail sheet re-anchors under it (D-13/D-14). Tab bar temporarily 3 tabs; Hub restores the 4th in 01-05.
+- [Phase ?]: 01-05: Hub tab built as an adaptive grid of focused domains (accent-tinted data-driven DomainTiles); DomainDetailView is a real non-empty-sections loop yielding zero sections in Phase 1 (not a literal empty view) so Phases B-E append item-type sections without restructuring; 4-tab IA Today/Hub/Progress/Settings restored; accentColor call qualified as HabitsTracker.accentColor to avoid SwiftUI View.accentColor shadowing.
 
 ### Pending Todos
 
@@ -88,6 +90,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 - DOM-01 manual upgrade test (01-02 Task 3) BLOCKING checkpoint PENDING owner verification
 - DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
+- DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when none focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 
 ## Deferred Items
 
@@ -97,6 +100,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-02T22:48:38.254Z
+Last session: 2026-07-02T22:57:13.179Z
 Stopped at: Completed 01-01-PLAN.md (Wave-0 validation scaffold)
 Resume file: None
