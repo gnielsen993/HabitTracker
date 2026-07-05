@@ -15,7 +15,8 @@ struct HabitsTrackerApp: App {
             Domain.self,
             Habit.self,
             DailyEntry.self,
-            HabitState.self
+            HabitState.self,
+            Rule.self
         ])
     }
 }

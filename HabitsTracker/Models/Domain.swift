@@ -15,6 +15,9 @@ final class Domain {
     @Relationship(deleteRule: .nullify, inverse: \Habit.category)
     var habits: [Habit]
 
+    @Relationship(deleteRule: .nullify, inverse: \Rule.domain)
+    var rules: [Rule] = []
+
     init(
         id: UUID = UUID(),
         name: String,
@@ -24,7 +27,8 @@ final class Domain {
         isSeeded: Bool = false,
         seedVersion: Int = 0,
         isFocused: Bool = false,
-        habits: [Habit] = []
+        habits: [Habit] = [],
+        rules: [Rule] = []
     ) {
         self.id = id
         self.name = name
@@ -35,5 +39,6 @@ final class Domain {
         self.seedVersion = seedVersion
         self.isFocused = isFocused
         self.habits = habits
+        self.rules = rules
     }
 }

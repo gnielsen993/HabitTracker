@@ -18,6 +18,9 @@ final class Habit {
     @Relationship
     var category: Domain?
 
+    @Relationship
+    var originRule: Rule?
+
     @Relationship(deleteRule: .cascade, inverse: \HabitState.habit)
     var states: [HabitState]
 
@@ -49,6 +52,7 @@ final class Habit {
         isSeeded: Bool = false,
         seedVersion: Int = 0,
         createdAt: Date = .now,
+        originRule: Rule? = nil,
         states: [HabitState] = []
     ) {
         self.id = id
@@ -63,6 +67,7 @@ final class Habit {
         self.isSeeded = isSeeded
         self.seedVersion = seedVersion
         self.createdAt = createdAt
+        self.originRule = originRule
         self.states = states
     }
 }
