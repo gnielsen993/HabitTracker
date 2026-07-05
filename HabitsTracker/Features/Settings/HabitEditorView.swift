@@ -79,6 +79,31 @@ struct HabitEditorView: View {
                     }
                 }
 
+                // RULE-04: read-only "Stemmed from" backref — shown only when originRule is set.
+                // Guarded via `if let` to avoid force-unwrap TOCTOU crash if SwiftData faults
+                // the optional to nil after a delete. The bound constant `originRule` drives both
+                // the label and the NavigationLink destination — no force-unwrap of originRule.
+                if let originRule = habit.originRule {
+                    Section {
+                        NavigationLink {
+                            RuleDetailView(rule: originRule)
+                        } label: {
+                            VStack(alignment: .leading, spacing: theme.spacing.xs) {
+                                Text("Stemmed from")
+                                    .font(theme.typography.caption)
+                                    .foregroundStyle(theme.colors.textSecondary)
+                                Text(originRule.title)
+                                    .font(theme.typography.headline)
+                                    .foregroundStyle(theme.colors.textPrimary)
+                            }
+                            .frame(minHeight: 44, alignment: .leading)
+                            .padding(.vertical, theme.spacing.xs)
+                        }
+                        .accessibilityLabel("Stemmed from \(originRule.title), opens rule")
+                        // Read-only backref: no write path from HabitEditorView to habit.originRule (T-0203-03)
+                    }
+                }
+
                 Section("Flags") {
                     Toggle("Pinned", isOn: Binding(get: { habit.isPinned }, set: { habit.isPinned = $0 }))
                     Toggle("Archived", isOn: Binding(get: { habit.isArchived }, set: { habit.isArchived = $0 }))
