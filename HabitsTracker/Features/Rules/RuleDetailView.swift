@@ -11,7 +11,7 @@ import DesignKit
 ///   1. Header — domain glyph (accent-tinted) + rule title + optional "Archived" badge
 ///   2. Body  — rule body text (omitted when empty)
 ///   3. Source — bordered URL affordance (omitted when sourceURL is nil)
-///   4. Stem  — "Stem habit" primary CTA (disabled until 02-03 wires HabitCreateSheet)
+///   4. Stem  — "Stem habit" primary CTA (presents HabitCreateSheet — RULE-03)
 ///   5. Stemmed — "Stemmed habits" section (omitted when no stemmed habits)
 struct RuleDetailView: View {
     @EnvironmentObject private var themeManager: ThemeManager
@@ -59,6 +59,9 @@ struct RuleDetailView: View {
         }
         .sheet(isPresented: $editingRule) {
             RuleEditorView(rule: rule)
+        }
+        .sheet(isPresented: $stemming) {
+            HabitCreateSheet(source: .rule(rule))
         }
         .sheet(item: $editingHabit) { habit in
             HabitEditorView(habit: habit)
@@ -154,7 +157,6 @@ struct RuleDetailView: View {
 
     private func stemButton(theme: Theme) -> some View {
         Button {
-            // TODO(02-03): present HabitCreateSheet(source: .rule(rule))
             stemming = true
         } label: {
             Text("Stem habit")
@@ -164,12 +166,7 @@ struct RuleDetailView: View {
                 .background(theme.colors.accentPrimary)
                 .cornerRadius(theme.radii.button)
         }
-        // CRITICAL: disabled until 02-03 wires HabitCreateSheet — prevents a silently
-        // broken tap in the intermediate (post-02-02, pre-02-03) build.
-        .disabled(true)
-        .opacity(0.5)
         .accessibilityLabel("Stem habit from this rule")
-        .accessibilityHint("Available after setup is complete")
     }
 
     // MARK: - Block 5: Stemmed habits (conditional)

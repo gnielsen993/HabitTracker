@@ -3,16 +3,15 @@ import SwiftData
 import DesignKit
 
 struct HabitManagerView: View {
-    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(sort: \Habit.name) private var habits: [Habit]
-    @Query(sort: \Domain.sortIndex) private var categories: [Domain]
 
     @State private var searchText = ""
     @State private var filterMode: HabitMode?
     @State private var editingHabit: Habit?
+    @State private var creatingHabit = false
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -47,10 +46,7 @@ struct HabitManagerView: View {
 
             Section {
                 Button("Add Habit") {
-                    let habit = Habit(name: "New Habit", category: categories.first, scheduleType: .daily, mode: .required)
-                    modelContext.insert(habit)
-                    try? modelContext.save()
-                    editingHabit = habit
+                    creatingHabit = true
                 }
             }
         }
@@ -59,6 +55,9 @@ struct HabitManagerView: View {
         .navigationTitle("Habits")
         .sheet(item: $editingHabit) { habit in
             HabitEditorView(habit: habit)
+        }
+        .sheet(isPresented: $creatingHabit) {
+            HabitCreateSheet(source: .manual)
         }
     }
 
