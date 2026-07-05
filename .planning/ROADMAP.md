@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
-| 2. Rules (B) | 0/TBD | Not started | - |
+| 2. Rules (B) | 1/3 | In Progress|  |
 | 3. Collections (C) | 0/TBD | Not started | - |
 | 4. Clips (D) | 0/TBD | Not started | - |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
