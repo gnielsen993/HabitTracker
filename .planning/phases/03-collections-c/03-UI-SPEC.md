@@ -48,6 +48,37 @@ created: 2026-07-05
 
 ---
 
+## Design System Exceptions
+
+This section documents deliberate deviations from generic checker heuristics. These are not violations — they are the correct application of the established native design system to a SwiftUI app that already ships Phases 1 and 2 on DesignKit.
+
+### Typography: 6 roles / 3 weights
+
+**Exception:** The generic checker ceiling of "≤4 roles / ≤2 weights" is a heuristic aimed at ad-hoc CSS type scales where unconstrained growth is the risk. It does not govern an established, centralized native design system.
+
+**Rationale:** `DesignKit/Typography/TypographyTokens.swift` defines exactly **6 semantic roles** (`titleLarge`, `title`, `headline`, `body`, `caption`, `monoNumber`) with their associated weights (bold, semibold, regular, and monospaced-regular). These are the app-wide vocabulary already shipped and approved in Phases 1 and 2. This phase introduces **zero new sizes and zero new weights** — all tokens are consumed verbatim from the existing DesignKit ramp, enforcing cross-phase consistency per CLAUDE.md §1 and §9.4 (single source of truth, verify tokens exist before using).
+
+**Phase-3 surface usage (constrained subsection):** The new Phase-3 surfaces lean on 4 of the 6 roles for their own content. `titleLarge` and `monoNumber` appear only where consistency with already-built surfaces requires it.
+
+| Surface | `titleLarge` | `title` | `headline` | `body` | `caption` | `monoNumber` |
+|---------|:---:|:---:|:---:|:---:|:---:|:---:|
+| S1 — CollectionRow | — | — | row title | — | StatusSet sub-label; rollup "X/Y" | — |
+| S2 — PresetPickerSheet | — | sheet heading; "Choose a type" | preset name | preset description | state-flow sub-label | — |
+| S3 — CollectionDetailView | empty-state heading | collection name | — | description; empty-state body; rollup text | StatusSet sub-label | rollup cost "$NNN"; rollup "X/Y" numerals standalone |
+| S4 — CollectionItemRow | — | — | item title | — | position label; "X/Y" rollup | — |
+| S5 — CollectionItemDetailView | — | position read-only display; item title | block labels ("Status") | note content | cost/url labels; note label | cost amount "$NNN" |
+| S6 — CollectionItemEditorSheet | — | — | field labels | field values | — | — |
+
+`titleLarge` is reserved for the empty-state heading in S3 (matches the Phase 1/2 empty-state idiom). `monoNumber` appears only for numeric cost and standalone rollup numerals. All other phase-3 content uses `title` / `headline` / `body` / `caption`.
+
+### Spacing: `theme.spacing.m = 12`
+
+**Exception:** The checker flagged `m = 12` as not in the "standard 4-8-16-24-32-48-64" set. This is correct only for web/CSS spacing scales.
+
+**Rationale:** `DesignKit/Layout/SpacingTokens.swift` defines `m = 12` as a first-class semantic token (verified: `xs=4, s=8, m=12, l=16, xl=24, xxl=32`). 12pt is on the 4pt grid (12 = 3×4; no misalignment). This token is used app-wide in Phases 1 and 2. Phase 3 uses `theme.spacing.m` where the gap between related elements calls for something tighter than `l=16` but looser than `s=8` — specifically between position control buttons and between CollectionItem rows. No ad-hoc spacing values are introduced; every gap in this phase maps to a named DesignKit token.
+
+---
+
 ## Spacing Scale
 
 Source of truth: `DesignKit/Layout/SpacingTokens.swift` (verified: `xs=4, s=8, m=12, l=16, xl=24, xxl=32`). **Do not invent values — use these tokens by name.**
@@ -76,7 +107,7 @@ Radii — source `DesignKit/Layout/RadiusTokens.swift` (verified: `card=16, butt
 
 ## Typography
 
-Source of truth: `DesignKit/Typography/TypographyTokens.swift` (verified — 6 token roles). Do not introduce new `.font(.system(size:))` calls.
+Source of truth: `DesignKit/Typography/TypographyTokens.swift` (verified — 6 token roles). Do not introduce new `.font(.system(size:))` calls. See "Design System Exceptions" above for checker rationale.
 
 | Role | Token | Underlying | Usage in this phase |
 |------|-------|-----------|---------------------|
@@ -163,6 +194,8 @@ The full set of built-in StatusSets (code-only, COLL-01, D-01). These are the ex
 
 ### S3 — `CollectionDetailView` (COLL-01, COLL-03, COLL-06)
 
+**Primary focal element:** The collection name in `theme.typography.title` (textPrimary), anchored by the domain-glyph accent tint immediately to its left. The rollup (ring or cost sum) is the secondary anchor directly beneath the name.
+
 - Data-driven: takes a `Collection` value; declares **no `NavigationStack`** (nests under the Hub stack). Vertical `ScrollView` with `VStack(alignment:.leading, spacing: theme.spacing.xl)`.
 - **Header block (always shown):**
   - Row 1: owning-domain glyph (`Image(systemName: domain.iconName)`, accent-tinted via `accentColor(forToken:)`, size 28) + collection **name** in `theme.typography.title` (textPrimary). The domain glyph reinforces which domain this list belongs to.
@@ -198,6 +231,8 @@ The full set of built-in StatusSets (code-only, COLL-01, D-01). These are the ex
 - Full row is a `NavigationLink` → `CollectionItemDetailView(item:)` (≥44pt total row height via `.frame(minHeight:44)` applied to the card content).
 
 ### S5 — `CollectionItemDetailView` (COLL-03, COLL-04, COLL-05)
+
+**Primary focal element:** When `progressTemplate != .none`, the position display in `theme.typography.title` (Block 2) is the primary focal element — it communicates progress at a glance. When `progressTemplate == .none`, the status chip (Block 1) is the primary focal element.
 
 - Data-driven: takes a `CollectionItem` value; declares **no `NavigationStack`**. Vertical `ScrollView` of blocks separated by `theme.spacing.xl`.
 - **Block 1 — Status (always):** large chip group. Label: `"Status"` in `theme.typography.headline` (textSecondary). Below: the current `DKBadge` status chip (same visual as S4). Tap-to-advance and contextMenu Reset work identically to S4 (D-06, D-07, D-08).
