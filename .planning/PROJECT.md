@@ -20,13 +20,13 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 - ✓ Today screen (hero), Progress charts + calendar heatmap, Settings management dashboard — v1.0
 - ✓ Export/Import JSON (`Services/ExportImportService.swift`, `schemaVersion = 1`) — v1.0
 - ✓ Plan-less SwiftData container, Balanced Luxury DesignKit theming — v1.0
+- ✓ Rules as reference-first items + Stem-a-habit flow with shared `HabitCreateSheet` (`Rule` @Model, `.nullify` stem link, schemaVersion 3) — Validated in Phase B (2026-07-05)
 
 ### Active
 
 <!-- Lifestyle Hub milestone scope (Phases A–F). -->
 
 - [ ] Domains generalize Categories: `isFocused`, Hub tab, focus picker, custom domains (Phase A)
-- [ ] Rules as reference-first items + Stem-a-habit flow with shared habit-create-from-source sheet (Phase B)
 - [ ] Collections: StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets (Phase C)
 - [ ] Clips: offline-only saved links with tag + saved/acted status (Phase D)
 - [ ] Ideas: global capture-first quick-add, Hub inbox, File vs Promote graduations (Phase E)
@@ -99,4 +99,4 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 | Q5 | Product naming/identity: keep "HabitTracker" or rename for the hub (bundle ID frozen regardless) | Any time; non-blocking |
 
 ---
-*Last updated: 2026-06-28 after Lifestyle Hub roadmap bootstrap (ingest)*
+*Last updated: 2026-07-05 after Phase B (Rules) completion*
