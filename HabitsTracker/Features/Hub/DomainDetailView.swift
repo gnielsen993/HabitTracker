@@ -25,6 +25,8 @@ struct DomainDetailView: View {
 
     let domain: Domain
 
+    @State private var creatingRule = false
+
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
         let sections = nonEmptySections(theme: theme)
@@ -38,7 +40,6 @@ struct DomainDetailView: View {
                 } else {
                     ForEach(sections) { section in
                         VStack(alignment: .leading, spacing: theme.spacing.m) {
-                            DKSectionHeader(section.title, theme: theme)
                             section.content
                         }
                     }
@@ -50,17 +51,82 @@ struct DomainDetailView: View {
         .background(theme.colors.background.ignoresSafeArea())
         .navigationTitle(domain.name)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $creatingRule) {
+            RuleEditorView(domain: domain)
+        }
     }
 
+    // MARK: - Sections
+
     /// Builds the domain's offshoot sections, keeping ONLY the non-empty ones (DOM-03).
-    /// Phase 1 has no offshoot item types yet, so this returns an empty array today;
-    /// Phases B–E append Rules / Collections / Clips / Ideas sections (each filtered to
-    /// non-empty) here. Structured as a collection so the body renders a real loop.
+    /// Phase 1 had no offshoot item types; Phase B appends the Rules section here.
+    /// Phases C–E will append Collections / Clips / Ideas sections in the same pattern.
     private func nonEmptySections(theme: Theme) -> [DomainSection] {
         var sections: [DomainSection] = []
-        // Phase B–E append their non-empty item-type sections to `sections` here.
-        return sections.filter { _ in true }
+
+        // Phase B: Rules section (RULE-01) — only when the domain has non-archived rules.
+        if let rulesSection = buildRulesSection(theme: theme) {
+            sections.append(rulesSection)
+        }
+
+        // Phase C–E: append Collections / Clips / Ideas sections here.
+        return sections
     }
+
+    /// Builds the Rules section for this domain, or returns nil when there are no
+    /// non-archived rules (preserving the DOM-03 "only non-empty sections" contract).
+    private func buildRulesSection(theme: Theme) -> DomainSection? {
+        let activeRules = domain.rules
+            .filter { !$0.isArchived }
+            .sorted { $0.createdAt > $1.createdAt }
+
+        guard !activeRules.isEmpty else { return nil }
+
+        let content = AnyView(rulesSectionContent(rules: activeRules, theme: theme))
+        return DomainSection(id: "rules", title: "Rules", content: content)
+    }
+
+    // MARK: - Rules section content
+
+    @ViewBuilder
+    private func rulesSectionContent(rules: [Rule], theme: Theme) -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.m) {
+            rulesSectionHeader(theme: theme)
+
+            ForEach(rules, id: \.id) { rule in
+                NavigationLink {
+                    RuleDetailView(rule: rule)
+                } label: {
+                    RuleRow(rule: rule)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    /// A section header row: "Rules" title on the left + "+" add button on the right.
+    private func rulesSectionHeader(theme: Theme) -> some View {
+        HStack(alignment: .center) {
+            Text("Rules")
+                .font(theme.typography.title)
+                .foregroundStyle(theme.colors.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            Spacer()
+
+            Button {
+                creatingRule = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(theme.colors.accentPrimary)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .accessibilityLabel("Add rule to \(domain.name)")
+        }
+    }
+
+    // MARK: - Header + empty state
 
     private func header(theme: Theme) -> some View {
         HStack(spacing: theme.spacing.m) {
