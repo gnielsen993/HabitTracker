@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 UI-SPEC approved
-last_updated: "2026-07-05T04:10:50.280Z"
-last_activity: 2026-07-05 -- Phase 2 planning complete
+stopped_at: Phase 02 Plan 01 Task 3 checkpoint - manual upgrade test pending
+last_updated: "2026-07-05T04:17:00Z"
+last_activity: 2026-07-05 -- Phase 02 Plan 01 Tasks 1+2 complete; awaiting upgrade test
 progress:
   total_phases: 6
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-28)
 
 **Core value:** The daily habit loop keeps you opening the app, and every part of your lifestyle gets the right kind of structure (check/status/position/stem/promote) filed in one opinionated place.
-**Current focus:** Phase 1 — Domain Generalization (A)
+**Current focus:** Phase 02 — rules-b
 
 ## Current Position
 
-Phase: 1 (Domain Generalization (A)) — ALL PLANS EXECUTED (device checkpoints pending owner verification)
-Plan: 6 of 6
-Status: Ready to execute
-Last activity: 2026-07-05 -- Phase 2 planning complete
+Phase: 02 (rules-b) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 02
+Last activity: 2026-07-05 -- Phase 02 execution started
 
 Progress: [██████████] 100%
 
@@ -92,6 +92,7 @@ Open questions to resolve before/within their phase (from PROJECT.md Open Questi
 Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight verification is required on the user's side. Plan status: SPEC is "planning only — not approved to build."
 
 - DOM-01 manual upgrade test (01-02 Task 3) BLOCKING checkpoint PENDING owner verification
+- RULE-01 manual upgrade test (02-01 Task 3) BLOCKING checkpoint PENDING owner verification — Rule @Model + Habit.originRule schema-expansion must be verified against a Phase-1 store
 - DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when none focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 
@@ -103,6 +104,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-04T23:02:14.845Z
-Stopped at: Phase 2 UI-SPEC approved
-Resume file: .planning/phases/02-rules-b/02-UI-SPEC.md
+Last session: 2026-07-05T04:17:00Z
+Stopped at: Phase 02 Plan 01 Task 3 - checkpoint:human-verify (upgrade test gate)
+Resume file: .planning/phases/02-rules-b/02-01-PLAN.md
