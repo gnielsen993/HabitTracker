@@ -11,7 +11,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - Decimal phases (2.1, 2.2): Urgent insertions (marked INSERTED).
 
 - [x] **Phase 1: Domain Generalization (A)** - Generalize Category→Domain, add the Hub tab, focus picker, and custom domains. (completed 2026-07-02)
-- [ ] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet.
+- [x] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet. (completed 2026-07-05)
 - [ ] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets.
 - [ ] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain.
 - [ ] **Phase 5: Ideas + Promotion (E)** - Global capture-first quick-add, Hub inbox, File vs Promote graduations.
@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
-| 2. Rules (B) | 2/3 | In Progress|  |
+| 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 0/TBD | Not started | - |
 | 4. Clips (D) | 0/TBD | Not started | - |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |

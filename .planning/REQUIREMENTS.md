@@ -21,8 +21,8 @@
 ### Rules (Phase B)
 
 - [x] **RULE-01**: User can create / edit / archive a Rule (`title`, `body`, optional `sourceURL`, `createdAt`), filed under a domain.
-- [ ] **RULE-02**: A shared habit-create-from-source sheet is shipped (prefilled title + domain, both editable; user sets schedule + required/optional). This is the reused code path for Phase E promote-to-habit.
-- [ ] **RULE-03**: "Stem habit" from a rule = copy: creates a new Habit, leaves the rule untouched, opens the prefilled sheet; the new habit appears on Today.
+- [x] **RULE-02**: A shared habit-create-from-source sheet is shipped (prefilled title + domain, both editable; user sets schedule + required/optional). This is the reused code path for Phase E promote-to-habit.
+- [x] **RULE-03**: "Stem habit" from a rule = copy: creates a new Habit, leaves the rule untouched, opens the prefilled sheet; the new habit appears on Today.
 - [x] **RULE-04**: The link is bidirectional: the rule shows "Stemmed: N habits" (tap jumps to a habit) and the habit shows a "from rule" backref (tap jumps to the rule); one rule can stem ≥2 habits (`originRuleID`).
 - [x] **RULE-05**: Deleting a rule with stemmed habits soft-confirms; habits survive and `originRuleID` is nulled (nullify delete rule, never cascade).
 
@@ -94,8 +94,8 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | DOM-05 | Phase A | Complete |
 | DOM-06 | Phase A | Complete |
 | RULE-01 | Phase B | Complete |
-| RULE-02 | Phase B | Pending |
-| RULE-03 | Phase B | Pending |
+| RULE-02 | Phase B | Complete |
+| RULE-03 | Phase B | Complete |
 | RULE-04 | Phase B | Complete |
 | RULE-05 | Phase B | Complete |
 | COLL-01 | Phase C | Pending |
