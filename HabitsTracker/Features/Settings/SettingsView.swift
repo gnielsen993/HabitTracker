@@ -11,6 +11,7 @@ struct SettingsView: View {
     @Query(sort: \Domain.sortIndex) private var categories: [Domain]
     @Query(sort: \Habit.name) private var habits: [Habit]
     @Query(sort: \DailyEntry.dateKey, order: .reverse) private var entries: [DailyEntry]
+    @Query(sort: \Rule.createdAt) private var rules: [Rule]
 
     @State private var showingExporter = false
     @State private var showingImporter = false
@@ -51,7 +52,7 @@ struct SettingsView: View {
                 Section("Backup") {
                     Button("Export JSON") {
                         do {
-                            let data = try exportImportService.exportData(categories: categories, habits: habits, entries: entries)
+                            let data = try exportImportService.exportData(categories: categories, habits: habits, entries: entries, rules: rules)
                             exportDocument = BackupJSONDocument(data: data)
                             showingExporter = true
                         } catch {
@@ -80,7 +81,7 @@ struct SettingsView: View {
                 isPresented: $showingExporter,
                 document: exportDocument,
                 contentType: .json,
-                defaultFilename: "habittracker-backup-v2"
+                defaultFilename: "habittracker-backup-v3"
             ) { result in
                 if case .failure(let error) = result {
                     message = "Save failed: \(error.localizedDescription)"

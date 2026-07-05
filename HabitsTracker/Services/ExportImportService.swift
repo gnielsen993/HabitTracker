@@ -7,6 +7,7 @@ struct HabitExportBundle: Codable {
     let categories: [DomainDTO]
     let habits: [HabitDTO]
     let dailyEntries: [DailyEntryDTO]
+    let rules: [RuleDTO]
 }
 
 struct DomainDTO: Codable {
@@ -18,6 +19,16 @@ struct DomainDTO: Codable {
     let isSeeded: Bool
     let seedVersion: Int
     let isFocused: Bool
+}
+
+struct RuleDTO: Codable {
+    let id: UUID
+    let title: String
+    let body: String
+    let sourceURL: String?
+    let isArchived: Bool
+    let createdAt: Date
+    let domainID: UUID?
 }
 
 struct HabitDTO: Codable {
@@ -33,6 +44,7 @@ struct HabitDTO: Codable {
     let isSeeded: Bool
     let seedVersion: Int
     let createdAt: Date
+    let originRuleID: UUID?
 }
 
 struct DailyEntryDTO: Codable {
@@ -51,7 +63,7 @@ struct HabitStateDTO: Codable {
 }
 
 final class ExportImportService {
-    private let schemaVersion = 2
+    private let schemaVersion = 3
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -67,7 +79,7 @@ final class ExportImportService {
         self.decoder = decoder
     }
 
-    func exportData(categories: [Domain], habits: [Habit], entries: [DailyEntry]) throws -> Data {
+    func exportData(categories: [Domain], habits: [Habit], entries: [DailyEntry], rules: [Rule]) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: schemaVersion,
             exportedAt: .now,
@@ -96,7 +108,8 @@ final class ExportImportService {
                     isArchived: $0.isArchived,
                     isSeeded: $0.isSeeded,
                     seedVersion: $0.seedVersion,
-                    createdAt: $0.createdAt
+                    createdAt: $0.createdAt,
+                    originRuleID: $0.originRule?.id
                 )
             },
             dailyEntries: entries.map { entry in
@@ -115,6 +128,17 @@ final class ExportImportService {
                         )
                     }
                 )
+            },
+            rules: rules.map {
+                RuleDTO(
+                    id: $0.id,
+                    title: $0.title,
+                    body: $0.body,
+                    sourceURL: $0.sourceURL,
+                    isArchived: $0.isArchived,
+                    createdAt: $0.createdAt,
+                    domainID: $0.domain?.id
+                )
             }
         )
 
@@ -129,6 +153,7 @@ final class ExportImportService {
 
         try deleteAll(context: context)
 
+        // 1. Create Domains (build id->Domain map)
         var categoryIndex: [UUID: Domain] = [:]
         for dto in bundle.categories {
             let category = Domain(
@@ -145,6 +170,23 @@ final class ExportImportService {
             categoryIndex[dto.id] = category
         }
 
+        // 2. Create Rules (build id->Rule map, wire rule.domain)
+        var ruleIndex: [UUID: Rule] = [:]
+        for dto in bundle.rules {
+            let rule = Rule(
+                id: dto.id,
+                title: dto.title,
+                body: dto.body,
+                sourceURL: dto.sourceURL,
+                domain: dto.domainID.flatMap { categoryIndex[$0] },
+                isArchived: dto.isArchived,
+                createdAt: dto.createdAt
+            )
+            context.insert(rule)
+            ruleIndex[dto.id] = rule
+        }
+
+        // 3. Create Habits (wire category + originRule)
         var habitIndex: [UUID: Habit] = [:]
         for dto in bundle.habits {
             let habit = Habit(
@@ -159,12 +201,14 @@ final class ExportImportService {
                 isArchived: dto.isArchived,
                 isSeeded: dto.isSeeded,
                 seedVersion: dto.seedVersion,
-                createdAt: dto.createdAt
+                createdAt: dto.createdAt,
+                originRule: dto.originRuleID.flatMap { ruleIndex[$0] }
             )
             context.insert(habit)
             habitIndex[dto.id] = habit
         }
 
+        // 4. Create DailyEntries + HabitStates
         for dto in bundle.dailyEntries {
             let entry = DailyEntry(
                 id: dto.id,
@@ -196,6 +240,7 @@ final class ExportImportService {
         try context.delete(model: HabitState.self)
         try context.delete(model: DailyEntry.self)
         try context.delete(model: Habit.self)
+        try context.delete(model: Rule.self)
         try context.delete(model: Domain.self)
         try context.save()
     }
