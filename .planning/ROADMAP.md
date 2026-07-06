@@ -12,7 +12,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 
 - [x] **Phase 1: Domain Generalization (A)** - Generalize Category→Domain, add the Hub tab, focus picker, and custom domains. (completed 2026-07-02)
 - [x] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet. (completed 2026-07-05)
-- [ ] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets.
+- [x] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets. (completed 2026-07-06)
 - [ ] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain.
 - [ ] **Phase 5: Ideas + Promotion (E)** - Global capture-first quick-add, Hub inbox, File vs Promote graduations.
 - [ ] **Phase 6: Polish (F)** - Cross-domain search, empty states, full multi-type export/import, accessibility pass.
@@ -65,7 +65,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 03-01-PLAN.md — Schema foundation: Collection + CollectionItem @Models + Domain.collections inverse + container registration + upgrade-test gate
 - [x] 03-02-PLAN.md — Code catalogs (StatusSet + Preset) + CollectionRollupEngine with unit tests
 - [x] 03-03-PLAN.md — Collections section + preset picker + CollectionRow + CollectionDetailView (rollups)
-- [ ] 03-04-PLAN.md — Item surfaces: tap-to-advance chip + seasonEpisode/counter controls + item editor
+- [x] 03-04-PLAN.md — Item surfaces: tap-to-advance chip + seasonEpisode/counter controls + item editor
 - [x] 03-05-PLAN.md — Seed one generic starter + Export/Import schemaVersion 4 round-trip
 **UI hint**: yes
 
@@ -119,7 +119,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 |-------|----------------|--------|-----------|
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
-| 3. Collections (C) | 4/5 | In Progress|  |
+| 3. Collections (C) | 5/5 | Complete   | 2026-07-06 |
 | 4. Clips (D) | 0/TBD | Not started | - |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
 | 6. Polish (F) | 0/TBD | Not started | - |
