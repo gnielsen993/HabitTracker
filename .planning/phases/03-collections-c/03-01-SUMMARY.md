@@ -118,6 +118,8 @@ The upgrade test (SCHEMA_MIGRATION_PLAYBOOK Step 4) is a blocking merge gate for
 
 **Resume signal:** Type "approved" once the upgrade launches clean with all prior data intact.
 
+**Checkpoint resolution (2026-07-05):** Gabe approved clearing the Task 3 upgrade-test gate on the additive-migration reasoning rather than running the manual over-install. Justification: the change is purely additive — two brand-new `@Model` tables (`Collection`, `CollectionItem`) plus a new optional `Domain.collections` inverse, every field optional/defaulted. This is the schema shape inferred lightweight migration is guaranteed to handle; the playbook's documented failure mode (required-no-default fields) does not apply here. The automated leg could not run regardless due to the machine-wide Xcode 26.3 / iOS 26 CoreSimulator test-runner crash. Gate marked satisfied; phase execution proceeded to 03-02.
+
 ## Self-Check: PASSED
 
 | Check | Result |
