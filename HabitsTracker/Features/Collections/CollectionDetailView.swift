@@ -47,9 +47,8 @@ struct CollectionDetailView: View {
                 .accessibilityLabel("Add item to \(collection.title)")
             }
         }
-        // TODO: Replace EmptyView with CollectionItemEditorSheet(collection:) in 03-04
         .sheet(isPresented: $addingItem) {
-            EmptyView()
+            CollectionItemEditorSheet(collection: collection)
         }
     }
 
@@ -156,42 +155,20 @@ struct CollectionDetailView: View {
         .padding(.top, theme.spacing.m)
     }
 
-    /// Placeholder items list — `CollectionItemRow` + NavigationLink wired in 03-04.
+    /// Items list wired to CollectionItemRow + NavigationLink → CollectionItemDetailView (03-04).
     @ViewBuilder
     private func itemsList(theme: Theme) -> some View {
         let sorted = collection.items.sorted { $0.sortIndex < $1.sortIndex }
-        // TODO: Replace with NavigationLink { CollectionItemDetailView(item:) } label: { CollectionItemRow(item:collection:) } in 03-04
         VStack(alignment: .leading, spacing: theme.spacing.m) {
             ForEach(sorted, id: \.id) { item in
-                itemPlaceholderRow(item: item, theme: theme)
-            }
-        }
-    }
-
-    /// Lightweight read-only row — replaced by CollectionItemRow in 03-04.
-    private func itemPlaceholderRow(item: CollectionItem, theme: Theme) -> some View {
-        DKCard(theme: theme) {
-            HStack(alignment: .center, spacing: theme.spacing.s) {
-                VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                    Text(item.title)
-                        .font(theme.typography.headline)
-                        .foregroundStyle(theme.colors.textPrimary)
-                        .lineLimit(2)
-
-                    if let statusSet = StatusSetCatalog.set(for: collection.statusSetID),
-                       item.statusIndex < statusSet.states.count {
-                        let statusLabel = statusSet.states[item.statusIndex]
-                        Text(statusLabel)
-                            .font(theme.typography.caption)
-                            .foregroundStyle(theme.colors.textSecondary)
-                    }
+                NavigationLink {
+                    CollectionItemDetailView(item: item)
+                } label: {
+                    CollectionItemRow(item: item, collection: collection)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .buttonStyle(.plain)
             }
-            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(itemAccessibilityLabel(item: item))
     }
 
     // MARK: - Helpers
@@ -207,15 +184,6 @@ struct CollectionDetailView: View {
             .map { $0.states[$0.terminalIndex] } ?? "complete"
         let percent = y > 0 ? Int((Double(x) / Double(y)) * 100) : 0
         return "\(x) of \(y) \(terminalLabel), \(percent) percent complete"
-    }
-
-    private func itemAccessibilityLabel(item: CollectionItem) -> String {
-        var label = item.title
-        if let statusSet = StatusSetCatalog.set(for: collection.statusSetID),
-           item.statusIndex < statusSet.states.count {
-            label += ", status: \(statusSet.states[item.statusIndex])"
-        }
-        return label
     }
 
     private func formattedCost(_ total: Double) -> String {
