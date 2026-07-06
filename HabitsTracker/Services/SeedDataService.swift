@@ -16,6 +16,11 @@ final class SeedDataService {
             context.insert(habit)
         }
 
+        // Seed ONE generic starter collection (D-14).
+        for collection in defaultCollections(domainByName: categoryByName) {
+            context.insert(collection)
+        }
+
         try context.save()
     }
 
@@ -39,6 +44,17 @@ final class SeedDataService {
             let key = "\((habit.category?.name ?? "None"))::\(habit.name)"
             if !habitKey.contains(key) {
                 context.insert(habit)
+            }
+        }
+
+        // Merge-add the generic starter collection (D-14): insert only if missing.
+        let existingCollections = try context.fetch(FetchDescriptor<Collection>())
+        let collectionKey = Set(existingCollections.map { "\($0.domain?.name ?? "None")::\($0.title)" })
+
+        for collection in defaultCollections(domainByName: resolved) {
+            let key = "\(collection.domain?.name ?? "None")::\(collection.title)"
+            if !collectionKey.contains(key) {
+                context.insert(collection)
             }
         }
 
@@ -67,6 +83,26 @@ final class SeedDataService {
             Domain(name: "Diet", iconName: "fork.knife", colorToken: "forest", sortIndex: 13, isSeeded: true, seedVersion: seedVersion, isFocused: false),
             Domain(name: "Money", iconName: "banknote", colorToken: "walnut", sortIndex: 14, isSeeded: true, seedVersion: seedVersion, isFocused: false),
             Domain(name: "Media", iconName: "play.rectangle", colorToken: "navy", sortIndex: 15, isSeeded: true, seedVersion: seedVersion, isFocused: false)
+        ]
+    }
+
+    /// Returns exactly ONE generic starter collection seeded under the "Media" domain (D-14).
+    /// Claude's Discretion: name "My List", domain "Media" — an existing seed domain.
+    /// Returns an empty array if the Media domain is absent so the insert path is always
+    /// safe (the upgrader path guards on the dedup key anyway).
+    private func defaultCollections(domainByName: [String: Domain]) -> [Collection] {
+        guard let mediaDomain = domainByName["Media"] else { return [] }
+        return [
+            Collection(
+                title: "My List",
+                statusSetID: "generic",
+                progressTemplate: "none",
+                showsAggregate: true,
+                sortIndex: 0,
+                isSeeded: true,
+                seedVersion: seedVersion,
+                domain: mediaDomain
+            )
         ]
     }
 
