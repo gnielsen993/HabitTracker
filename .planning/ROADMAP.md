@@ -66,7 +66,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 03-02-PLAN.md — Code catalogs (StatusSet + Preset) + CollectionRollupEngine with unit tests
 - [x] 03-03-PLAN.md — Collections section + preset picker + CollectionRow + CollectionDetailView (rollups)
 - [ ] 03-04-PLAN.md — Item surfaces: tap-to-advance chip + seasonEpisode/counter controls + item editor
-- [ ] 03-05-PLAN.md — Seed one generic starter + Export/Import schemaVersion 4 round-trip
+- [x] 03-05-PLAN.md — Seed one generic starter + Export/Import schemaVersion 4 round-trip
 **UI hint**: yes
 
 ### Phase 4: Clips (D)
@@ -119,7 +119,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 |-------|----------------|--------|-----------|
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
-| 3. Collections (C) | 3/5 | In Progress|  |
+| 3. Collections (C) | 4/5 | In Progress|  |
 | 4. Clips (D) | 0/TBD | Not started | - |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
 | 6. Polish (F) | 0/TBD | Not started | - |
