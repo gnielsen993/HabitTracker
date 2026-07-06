@@ -34,7 +34,7 @@
 - [x] **COLL-04**: The `seasonEpisode` progress template works: +episode increments, +season resets episode→1, finished sets the terminal status; item shows "S2 E4".
 - [x] **COLL-05**: The `counter` progress template works: +1 increments its label. (`progressTemplate` stays the fixed set `none`/`counter`/`seasonEpisode`.)
 - [x] **COLL-06**: `showsAggregate` rolls up "X/Y" for completionist lists; tracker lists show no progress ring; money-flavored lists roll up a cost SUM (never a ring on spend); presets set a sensible default, user can flip the flag.
-- [ ] **COLL-07**: Curated built-in collection presets from SPEC §5 ship as seed content (Shows, Movies, Albums, Concerts, Books, Clothes to buy, Want to spend on, Planes/places) with their StatusSets, progress templates, and aggregate defaults.
+- [x] **COLL-07**: Curated built-in collection presets from SPEC §5 ship as seed content (Shows, Movies, Albums, Concerts, Books, Clothes to buy, Want to spend on, Planes/places) with their StatusSets, progress templates, and aggregate defaults.
 
 ### Clips (Phase D)
 
@@ -104,7 +104,7 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | COLL-04 | Phase C | Complete |
 | COLL-05 | Phase C | Complete |
 | COLL-06 | Phase C | Complete |
-| COLL-07 | Phase C | Pending |
+| COLL-07 | Phase C | Complete |
 | CLIP-01 | Phase D | Pending |
 | CLIP-02 | Phase D | Pending |
 | CLIP-03 | Phase D | Pending |
