@@ -4,23 +4,24 @@ import SwiftData
 
 /// Round-trip tests for Export/Import.
 ///
-/// testExportImportRoundTripV2: legacy schemaVersion-2 test (DOM-01/02).
-/// testExportImportRoundTripV3: schemaVersion-3 test (RULE-01, RULE-04, RULE-05) — RED by design
-///   until plan 02-01 bumps schemaVersion to 3, adds RuleDTO, adds originRuleID to HabitDTO,
-///   and updates SettingsView call site. Do NOT weaken the schema-version guard or stub types.
+/// testExportImportRoundTripV3: schemaVersion-3 test (RULE-01, RULE-04, RULE-05).
+///   Updated call site to pass the new v4 collections:/collectionItems: arguments.
+/// testExportImportRoundTripV4: schemaVersion-4 test (COLL-02, COLL-07) covering
+///   Collection + CollectionItem scalar fields and index wiring (D-05, D-23).
 final class ExportImportTests: XCTestCase {
 
     @MainActor
     private func makeInMemoryContext() throws -> ModelContext {
-        let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Rule.self])
+        let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Rule.self,
+                             Collection.self, CollectionItem.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
         return container.mainContext
     }
 
-    /// Legacy round-trip at schemaVersion 2 (kept as regression guard until schema bumped).
-    /// NOTE: This test will fail when schemaVersion is bumped to 3 — at that point it should be
-    /// updated to use the v3 export path (rules: []).
+    /// Round-trip at schemaVersion 3 fields — verifies domains, habits, entries, rules, and
+    /// originRule stem link survive. Updated to pass empty collections/collectionItems to the
+    /// v4 exportData signature.
     @MainActor
     func testExportImportRoundTripV3() throws {
         let service = ExportImportService()
@@ -31,7 +32,14 @@ final class ExportImportTests: XCTestCase {
         let entry = DailyEntry(dateKey: DateUtilities.startOfDay(.now), note: "Good day")
         entry.habitStates = [HabitState(isCompleted: true, completedAt: .now, dailyEntry: entry, habit: habit)]
 
-        let data = try service.exportData(categories: [domain], habits: [habit], entries: [entry], rules: [rule])
+        let data = try service.exportData(
+            categories: [domain],
+            habits: [habit],
+            entries: [entry],
+            rules: [rule],
+            collections: [],
+            collectionItems: []
+        )
 
         let context = try makeInMemoryContext()
         try service.importReplace(data: data, context: context)
@@ -58,5 +66,76 @@ final class ExportImportTests: XCTestCase {
         let fetchedRule = rules.first
         XCTAssertNotNil(fetchedHabit?.originRule, "originRule must be re-linked after import")
         XCTAssertEqual(fetchedHabit?.originRule?.id, fetchedRule?.id, "stem link (originRule.id) must survive round-trip")
+    }
+
+    /// schemaVersion-4 round-trip: Collection + CollectionItem survive with
+    /// status/position/cost/wiring intact (D-05, D-23).
+    @MainActor
+    func testExportImportRoundTripV4() throws {
+        let service = ExportImportService()
+
+        let domain = Domain(name: "Entertainment", iconName: "play.rectangle", colorToken: "navy", sortIndex: 0, isFocused: true)
+
+        let collection = Collection(
+            title: "My Shows",
+            statusSetID: "shows",
+            progressTemplate: "seasonEpisode",
+            showsAggregate: true,
+            sortIndex: 0,
+            isSeeded: false,
+            seedVersion: 0,
+            domain: domain
+        )
+
+        let item = CollectionItem(
+            title: "Severance",
+            statusIndex: 2,
+            sortIndex: 0,
+            note: "Great show",
+            sourceURL: "https://tv.apple.com/show/severance",
+            cost: 12.99,
+            season: 2,
+            episode: 4,
+            counterValue: 0,
+            counterLabel: nil,
+            isSeeded: false,
+            seedVersion: 0,
+            collection: collection
+        )
+        collection.items = [item]
+
+        let data = try service.exportData(
+            categories: [domain],
+            habits: [],
+            entries: [],
+            rules: [],
+            collections: [collection],
+            collectionItems: [item]
+        )
+
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: data, context: context)
+
+        let collections = try context.fetch(FetchDescriptor<Collection>())
+        let items = try context.fetch(FetchDescriptor<CollectionItem>())
+
+        XCTAssertEqual(collections.count, 1, "Collection must survive round-trip")
+        XCTAssertEqual(items.count, 1, "CollectionItem must survive round-trip")
+
+        let fetchedItem = try XCTUnwrap(items.first)
+        let fetchedCollection = try XCTUnwrap(collections.first)
+
+        // Scalar field preservation (D-05).
+        XCTAssertEqual(fetchedItem.statusIndex, 2, "statusIndex must survive")
+        XCTAssertEqual(fetchedItem.season, 2, "season must survive")
+        XCTAssertEqual(fetchedItem.episode, 4, "episode must survive")
+        XCTAssertEqual(fetchedItem.cost, 12.99, accuracy: 0.001, "cost must survive")
+        XCTAssertEqual(fetchedCollection.statusSetID, "shows", "statusSetID must survive")
+        XCTAssertEqual(fetchedCollection.progressTemplate, "seasonEpisode", "progressTemplate must survive")
+        XCTAssertEqual(fetchedCollection.showsAggregate, true, "showsAggregate must survive")
+
+        // Index wiring survived (D-23): item is linked to the imported collection.
+        XCTAssertNotNil(fetchedItem.collection, "CollectionItem.collection must be re-linked after import")
+        XCTAssertEqual(fetchedItem.collection?.id, fetchedCollection.id, "collectionID wiring (index) must survive round-trip")
     }
 }
