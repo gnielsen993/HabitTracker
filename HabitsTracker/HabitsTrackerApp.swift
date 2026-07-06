@@ -16,7 +16,9 @@ struct HabitsTrackerApp: App {
             Habit.self,
             DailyEntry.self,
             HabitState.self,
-            Rule.self
+            Rule.self,
+            Collection.self,
+            CollectionItem.self
         ])
     }
 }
