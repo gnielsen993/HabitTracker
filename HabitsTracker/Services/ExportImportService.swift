@@ -8,6 +8,8 @@ struct HabitExportBundle: Codable {
     let habits: [HabitDTO]
     let dailyEntries: [DailyEntryDTO]
     let rules: [RuleDTO]
+    let collections: [CollectionDTO]
+    let collectionItems: [CollectionItemDTO]
 }
 
 struct DomainDTO: Codable {
@@ -29,6 +31,36 @@ struct RuleDTO: Codable {
     let isArchived: Bool
     let createdAt: Date
     let domainID: UUID?
+}
+
+struct CollectionDTO: Codable {
+    let id: UUID
+    let title: String
+    let statusSetID: String
+    let progressTemplate: String
+    let showsAggregate: Bool
+    let sortIndex: Int
+    let note: String?
+    let isSeeded: Bool
+    let seedVersion: Int
+    let domainID: UUID?
+}
+
+struct CollectionItemDTO: Codable {
+    let id: UUID
+    let title: String
+    let statusIndex: Int
+    let sortIndex: Int
+    let note: String?
+    let sourceURL: String?
+    let cost: Double?
+    let season: Int
+    let episode: Int
+    let counterValue: Int
+    let counterLabel: String?
+    let isSeeded: Bool
+    let seedVersion: Int
+    let collectionID: UUID?
 }
 
 struct HabitDTO: Codable {
@@ -63,7 +95,7 @@ struct HabitStateDTO: Codable {
 }
 
 final class ExportImportService {
-    private let schemaVersion = 3
+    private let schemaVersion = 4
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -79,7 +111,14 @@ final class ExportImportService {
         self.decoder = decoder
     }
 
-    func exportData(categories: [Domain], habits: [Habit], entries: [DailyEntry], rules: [Rule]) throws -> Data {
+    func exportData(
+        categories: [Domain],
+        habits: [Habit],
+        entries: [DailyEntry],
+        rules: [Rule],
+        collections: [Collection],
+        collectionItems: [CollectionItem]
+    ) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: schemaVersion,
             exportedAt: .now,
@@ -138,6 +177,38 @@ final class ExportImportService {
                     isArchived: $0.isArchived,
                     createdAt: $0.createdAt,
                     domainID: $0.domain?.id
+                )
+            },
+            collections: collections.map {
+                CollectionDTO(
+                    id: $0.id,
+                    title: $0.title,
+                    statusSetID: $0.statusSetID,
+                    progressTemplate: $0.progressTemplate,
+                    showsAggregate: $0.showsAggregate,
+                    sortIndex: $0.sortIndex,
+                    note: $0.note,
+                    isSeeded: $0.isSeeded,
+                    seedVersion: $0.seedVersion,
+                    domainID: $0.domain?.id
+                )
+            },
+            collectionItems: collectionItems.map {
+                CollectionItemDTO(
+                    id: $0.id,
+                    title: $0.title,
+                    statusIndex: $0.statusIndex,
+                    sortIndex: $0.sortIndex,
+                    note: $0.note,
+                    sourceURL: $0.sourceURL,
+                    cost: $0.cost,
+                    season: $0.season,
+                    episode: $0.episode,
+                    counterValue: $0.counterValue,
+                    counterLabel: $0.counterLabel,
+                    isSeeded: $0.isSeeded,
+                    seedVersion: $0.seedVersion,
+                    collectionID: $0.collection?.id
                 )
             }
         )
@@ -208,7 +279,47 @@ final class ExportImportService {
             habitIndex[dto.id] = habit
         }
 
-        // 4. Create DailyEntries + HabitStates
+        // 4. Create Collections (build id->Collection index, wire to domain)
+        var collectionIndex: [UUID: Collection] = [:]
+        for dto in bundle.collections {
+            let collection = Collection(
+                id: dto.id,
+                title: dto.title,
+                statusSetID: dto.statusSetID,
+                progressTemplate: dto.progressTemplate,
+                showsAggregate: dto.showsAggregate,
+                sortIndex: dto.sortIndex,
+                note: dto.note,
+                isSeeded: dto.isSeeded,
+                seedVersion: dto.seedVersion,
+                domain: dto.domainID.flatMap { categoryIndex[$0] }
+            )
+            context.insert(collection)
+            collectionIndex[dto.id] = collection
+        }
+
+        // 5. Create CollectionItems (wire to collection via index)
+        for dto in bundle.collectionItems {
+            let item = CollectionItem(
+                id: dto.id,
+                title: dto.title,
+                statusIndex: dto.statusIndex,
+                sortIndex: dto.sortIndex,
+                note: dto.note,
+                sourceURL: dto.sourceURL,
+                cost: dto.cost,
+                season: dto.season,
+                episode: dto.episode,
+                counterValue: dto.counterValue,
+                counterLabel: dto.counterLabel,
+                isSeeded: dto.isSeeded,
+                seedVersion: dto.seedVersion,
+                collection: dto.collectionID.flatMap { collectionIndex[$0] }
+            )
+            context.insert(item)
+        }
+
+        // 6. Create DailyEntries + HabitStates
         for dto in bundle.dailyEntries {
             let entry = DailyEntry(
                 id: dto.id,
@@ -241,6 +352,9 @@ final class ExportImportService {
         try context.delete(model: DailyEntry.self)
         try context.delete(model: Habit.self)
         try context.delete(model: Rule.self)
+        // Items before collections before domain (ownership order — T-03-10).
+        try context.delete(model: CollectionItem.self)
+        try context.delete(model: Collection.self)
         try context.delete(model: Domain.self)
         try context.save()
     }

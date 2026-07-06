@@ -129,7 +129,7 @@ final class ExportImportTests: XCTestCase {
         XCTAssertEqual(fetchedItem.statusIndex, 2, "statusIndex must survive")
         XCTAssertEqual(fetchedItem.season, 2, "season must survive")
         XCTAssertEqual(fetchedItem.episode, 4, "episode must survive")
-        XCTAssertEqual(fetchedItem.cost, 12.99, accuracy: 0.001, "cost must survive")
+        XCTAssertEqual(try XCTUnwrap(fetchedItem.cost), 12.99, accuracy: 0.001, "cost must survive")
         XCTAssertEqual(fetchedCollection.statusSetID, "shows", "statusSetID must survive")
         XCTAssertEqual(fetchedCollection.progressTemplate, "seasonEpisode", "progressTemplate must survive")
         XCTAssertEqual(fetchedCollection.showsAggregate, true, "showsAggregate must survive")
