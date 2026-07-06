@@ -26,6 +26,7 @@ struct DomainDetailView: View {
     let domain: Domain
 
     @State private var creatingRule = false
+    @State private var creatingCollection = false
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -54,6 +55,9 @@ struct DomainDetailView: View {
         .sheet(isPresented: $creatingRule) {
             RuleEditorView(domain: domain)
         }
+        .sheet(isPresented: $creatingCollection) {
+            CollectionPresetPickerSheet(domain: domain)
+        }
     }
 
     // MARK: - Sections
@@ -69,7 +73,12 @@ struct DomainDetailView: View {
             sections.append(rulesSection)
         }
 
-        // Phase C–E: append Collections / Clips / Ideas sections here.
+        // Phase C: Collections section (COLL-01, D-15)
+        if let collectionsSection = buildCollectionsSection(theme: theme) {
+            sections.append(collectionsSection)
+        }
+
+        // Phase D–E: append Clips / Ideas sections here.
         return sections
     }
 
@@ -123,6 +132,56 @@ struct DomainDetailView: View {
                     .frame(minWidth: 44, minHeight: 44)
             }
             .accessibilityLabel("Add rule to \(domain.name)")
+        }
+    }
+
+    // MARK: - Collections section content
+
+    /// Builds the Collections section for this domain, or returns nil when there are no
+    /// collections (preserving the DOM-03 "only non-empty sections" contract, D-15).
+    private func buildCollectionsSection(theme: Theme) -> DomainSection? {
+        let sorted = domain.collections.sorted { $0.sortIndex < $1.sortIndex }
+        guard !domain.collections.isEmpty else { return nil }
+
+        let content = AnyView(collectionsSectionContent(collections: sorted, theme: theme))
+        return DomainSection(id: "collections", title: "Collections", content: content)
+    }
+
+    @ViewBuilder
+    private func collectionsSectionContent(collections: [Collection], theme: Theme) -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.m) {
+            collectionsSectionHeader(theme: theme)
+
+            ForEach(collections, id: \.id) { collection in
+                NavigationLink {
+                    CollectionDetailView(collection: collection)
+                } label: {
+                    CollectionRow(collection: collection)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    /// A section header row: "Collections" title on the left + "+" add button on the right.
+    private func collectionsSectionHeader(theme: Theme) -> some View {
+        HStack(alignment: .center) {
+            Text("Collections")
+                .font(theme.typography.title)
+                .foregroundStyle(theme.colors.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            Spacer()
+
+            Button {
+                creatingCollection = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(theme.colors.accentPrimary)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .accessibilityLabel("Add collection to \(domain.name)")
         }
     }
 
