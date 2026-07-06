@@ -28,11 +28,11 @@
 
 ### Collections (Phase C)
 
-- [ ] **COLL-01**: A `StatusSet` model exists (ordered states with a terminal "done"); a Collection references one `statusSetID`; built-in labels are not user-editable.
+- [x] **COLL-01**: A `StatusSet` model exists (ordered states with a terminal "done"); a Collection references one `statusSetID`; built-in labels are not user-editable.
 - [ ] **COLL-02**: The generic preset (`to-collect → collected`) exists and is the default StatusSet for user-created collections (prerequisite for saving any user-created collection).
 - [ ] **COLL-03**: CollectionItems render a tap-to-advance status chip that cycles through the StatusSet states including the terminal state.
-- [ ] **COLL-04**: The `seasonEpisode` progress template works: +episode increments, +season resets episode→1, finished sets the terminal status; item shows "S2 E4".
-- [ ] **COLL-05**: The `counter` progress template works: +1 increments its label. (`progressTemplate` stays the fixed set `none`/`counter`/`seasonEpisode`.)
+- [x] **COLL-04**: The `seasonEpisode` progress template works: +episode increments, +season resets episode→1, finished sets the terminal status; item shows "S2 E4".
+- [x] **COLL-05**: The `counter` progress template works: +1 increments its label. (`progressTemplate` stays the fixed set `none`/`counter`/`seasonEpisode`.)
 - [ ] **COLL-06**: `showsAggregate` rolls up "X/Y" for completionist lists; tracker lists show no progress ring; money-flavored lists roll up a cost SUM (never a ring on spend); presets set a sensible default, user can flip the flag.
 - [ ] **COLL-07**: Curated built-in collection presets from SPEC §5 ship as seed content (Shows, Movies, Albums, Concerts, Books, Clothes to buy, Want to spend on, Planes/places) with their StatusSets, progress templates, and aggregate defaults.
 
@@ -98,11 +98,11 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | RULE-03 | Phase B | Complete |
 | RULE-04 | Phase B | Complete |
 | RULE-05 | Phase B | Complete |
-| COLL-01 | Phase C | Pending |
+| COLL-01 | Phase C | Complete |
 | COLL-02 | Phase C | Pending |
 | COLL-03 | Phase C | Pending |
-| COLL-04 | Phase C | Pending |
-| COLL-05 | Phase C | Pending |
+| COLL-04 | Phase C | Complete |
+| COLL-05 | Phase C | Complete |
 | COLL-06 | Phase C | Pending |
 | COLL-07 | Phase C | Pending |
 | CLIP-01 | Phase D | Pending |
