@@ -119,7 +119,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 |-------|----------------|--------|-----------|
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
-| 3. Collections (C) | 5/5 | Complete   | 2026-07-06 |
+| 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 0/TBD | Not started | - |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
 | 6. Polish (F) | 0/TBD | Not started | - |
