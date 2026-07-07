@@ -35,7 +35,7 @@ Projects:
 ### Data safety
 - Implement Export/Import JSON in every app (schemaVersion + replace import at minimum). HabitsTracker has this in `Services/ExportImportService.swift` (currently `schemaVersion = 1`) — extend it, don't replace it.
 - Never break existing local data without a migration path or export/import workaround.
-- Avoid bundle ID / App Group ID changes. (HabitsTracker bundle id: `gn.HabitsTracker`.)
+- HabitsTracker bundle id: `lauterstar.HabitsTracker` (shipped under Gabe's company account, team `JCWX4BK8GW`; migrated from the original `gn.HabitsTracker` on 2026-07-06 — this rename is intentional and approved). Avoid *further* bundle ID / App Group ID changes from here — a change relocates the on-disk SwiftData store and looks like data loss on existing installs.
 
 ### Design
 - No hard-coded colors in UI.
@@ -145,7 +145,7 @@ A task is done when:
 ## 8) Commands (HabitsTracker)
 - **Build:** `xcodebuild -scheme HabitsTracker -destination 'platform=iOS Simulator,name=iPhone 17' -quiet build`
 - **Test:** same as above with `test` instead of `build`.
-- **Bundle id:** `gn.HabitsTracker` (used for `xcrun simctl uninstall` — see §9.7 and the schema playbook).
+- **Bundle id:** `lauterstar.HabitsTracker` (used for `xcrun simctl uninstall` — see §9.7 and the schema playbook).
 - **Marketing version:** `1.0` (in `HabitsTracker.xcodeproj/project.pbxproj`).
 - Prefer `-quiet`; drop it only when diagnosing a failure. Don’t claim “verified” without stating which of {build, test, simulator run} you actually ran (see §9.18).
 
@@ -176,7 +176,7 @@ At minimum cover: happy path, empty input, and one edge case (tie-break / varian
 This Xcode project (`objectVersion = 77`) uses `PBXFileSystemSynchronizedRootGroup` — every `.swift` in the folder is compiled. Byte-identical `X 2.swift` dupes cause "invalid redeclaration" and block the whole target. If one appears in `git status` as `??`, confirm with `diff` then delete before doing anything else.
 
 ### 9.7 Test runner crashes in `NSStagedMigrationManager` → uninstall, don't debug
-If `xcodebuild test` aborts during host-app launch with `_findCurrentMigrationStageFromModelChecksum:` in the crash report, the simulator has a stale SwiftData store from a prior schema version. Fix: `xcrun simctl uninstall <device-id> gn.HabitsTracker`, then retry. Not a code bug — don't chase it through a migration plan.
+If `xcodebuild test` aborts during host-app launch with `_findCurrentMigrationStageFromModelChecksum:` in the crash report, the simulator has a stale SwiftData store from a prior schema version. Fix: `xcrun simctl uninstall <device-id> lauterstar.HabitsTracker`, then retry. Not a code bug — don't chase it through a migration plan.
 
 ### 9.8 New `.swift` files in existing folders auto-register
 Do not hand-patch `project.pbxproj` to add a file. Dropping the file into `Features/<area>/`, `Services/`, or `Models/` is enough — the synchronized root group picks it up on next build. Only edit `project.pbxproj` when adding a new top-level folder or changing target membership.
