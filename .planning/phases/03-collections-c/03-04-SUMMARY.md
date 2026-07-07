@@ -102,7 +102,11 @@ None. All TODOs from 03-03 in CollectionDetailView have been replaced:
 - `CollectionItemEditorSheet(collection:)` is wired (was `EmptyView()`)
 - `CollectionItemRow` + `NavigationLink` → `CollectionItemDetailView` is wired (was `itemPlaceholderRow`)
 
-## Checkpoint Gate (Task 3 — Pending)
+## Checkpoint Gate (Task 3 — APPROVED 2026-07-06)
+
+Gabe ran the 7-step on-device pass on iPhone 17 and confirmed the interactive behavior holds (chip stop-at-terminal + haptic, seasonEpisode/counter controls, Dynamic Type, VoiceOver "Reset status"). Gate cleared; plan 03-04 complete.
+
+
 
 Task 3 is a `type="checkpoint:human-verify" gate="blocking"` that requires on-device visual verification. All code tasks are complete and build-verified. The checkpoint cannot be auto-approved because it requires:
 
