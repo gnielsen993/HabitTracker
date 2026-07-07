@@ -11,7 +11,7 @@ import DesignKit
 ///   2. Position controls (when progressTemplate != "none") — read-only display + buttons (D-09/D-10)
 ///   3. Metadata (each omitted when nil/empty) — note, URL, cost
 struct CollectionItemDetailView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
 

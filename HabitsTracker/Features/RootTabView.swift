@@ -2,7 +2,7 @@ import SwiftUI
 import DesignKit
 
 struct RootTabView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     private var theme: Theme {

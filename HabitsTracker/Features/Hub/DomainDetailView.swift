@@ -20,7 +20,7 @@ private struct DomainSection: Identifiable {
 /// so the empty state (§9.3, UI-SPEC copy) shows only when the loop produces nothing.
 /// This is deliberately a section-loop-with-empty-fallback, not a hardcoded empty view.
 struct DomainDetailView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     let domain: Domain

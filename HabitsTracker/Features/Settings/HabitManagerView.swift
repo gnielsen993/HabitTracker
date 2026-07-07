@@ -3,7 +3,7 @@ import SwiftData
 import DesignKit
 
 struct HabitManagerView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(sort: \Habit.name) private var habits: [Habit]

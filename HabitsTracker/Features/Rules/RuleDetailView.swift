@@ -14,7 +14,7 @@ import DesignKit
 ///   4. Stem  — "Stem habit" primary CTA (presents HabitCreateSheet — RULE-03)
 ///   5. Stemmed — "Stemmed habits" section (omitted when no stemmed habits)
 struct RuleDetailView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
 

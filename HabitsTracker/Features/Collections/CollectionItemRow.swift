@@ -10,7 +10,7 @@ import DesignKit
 /// contextMenu "Reset" + VoiceOver "Reset status" custom action sets `statusIndex = 0` (D-07).
 /// Compact position label shown when `progressTemplate != "none"` (D-09).
 struct CollectionItemRow: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     let item: CollectionItem

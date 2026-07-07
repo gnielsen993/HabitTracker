@@ -13,7 +13,7 @@ import DesignKit
 ///
 /// Toolbar: trailing "+" to add an item (CollectionItemEditorSheet wired in 03-04).
 struct CollectionDetailView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     let collection: Collection

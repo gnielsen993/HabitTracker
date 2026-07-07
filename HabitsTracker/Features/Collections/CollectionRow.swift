@@ -10,7 +10,7 @@ import DesignKit
 /// label when `showsAggregate == true` ("X/Y" caption or "$NNN" monoNumber).
 /// The entire row is a ≥44pt tap target. (§9.15)
 struct CollectionRow: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     let collection: Collection

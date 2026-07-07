@@ -5,7 +5,7 @@ import DesignKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(sort: \Domain.sortIndex) private var categories: [Domain]
@@ -34,12 +34,15 @@ struct SettingsView: View {
                             Text(mode.rawValue.capitalized).tag(mode)
                         }
                     }
+                    .pickerStyle(.segmented)
 
-                    Picker("Preset", selection: $themeManager.preset) {
-                        ForEach(ThemePreset.allCases, id: \.self) { preset in
-                            Text(preset.rawValue.capitalized).tag(preset)
-                        }
-                    }
+                    DKThemePicker(
+                        themeManager: themeManager,
+                        theme: theme,
+                        scheme: colorScheme
+                    )
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
                 }
 
                 Section("Management") {

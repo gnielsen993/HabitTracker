@@ -9,7 +9,7 @@ import DesignKit
 /// domains are focused, the designed empty state (§9.3, UI-SPEC copy) offers a link
 /// into the focus picker so the Hub is never a dead end.
 struct HubView: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(filter: #Predicate<Domain> { $0.isFocused }, sort: \Domain.sortIndex)

@@ -8,7 +8,7 @@ import DesignKit
 /// "Stemmed: {N}" when stem count > 0 and/or "· has link" when sourceURL is present.
 /// The entire row is a ≥44pt tap target.
 struct RuleRow: View {
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     let rule: Rule

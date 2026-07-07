@@ -12,7 +12,7 @@ import DesignKit
 struct DomainCreateSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     /// Existing domains — used only to compute the next `sortIndex` (parent owns the

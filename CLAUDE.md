@@ -40,13 +40,14 @@ Projects:
 ### Design
 - No hard-coded colors in UI.
 - All UI uses DesignKit semantic tokens.
-- Theme identity: Balanced Luxury
+- Theme identity (default / shipping brand): Balanced Luxury
   - Light: warm cream background (not pure white); cards/surfaces use slightly darker warm neutrals for depth
   - Dark: charcoal background (not pure black)
-  - Accents constrained to: forest, navy, maroon/oxblood, walnut, stone
-- Charts use the theme chart palette — no rainbow / high-saturation chaos.
+  - Core luxury accents: forest, navy, maroon/oxblood, walnut, stone — these define the out-of-the-box feel.
+- Charts use the theme chart palette — no rainbow / high-saturation chaos in the *default* palette.
 - “Personality” is achieved by presets and layout emphasis, not random styling.
-- Theme behavior: default follows System; in-app picker overrides System/Light/Dark; presets Forest / Navy / Maroon / Walnut / Stone.
+- Theme behavior: default follows System; in-app picker overrides System/Light/Dark.
+- **Preset exposure (decision 2026-07-06): the in-app theme picker uses DesignKit's `DKThemePicker` and exposes the FULL `PresetCatalog.all` catalog — including the loud/showcase presets (voltage, bubblegum, vaporwave, etc.) — plus custom themes.** This is a deliberate, user-facing relaxation of the earlier "accents constrained to the luxury 5 / no neon" rule: Balanced Luxury remains the default identity, but users may opt into any catalog preset. Do NOT re-restrict the picker to the luxury 5 or strip loud presets — that would revert an approved decision.
 
 ---
 

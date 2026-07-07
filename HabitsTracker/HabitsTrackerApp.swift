@@ -1,9 +1,10 @@
 import SwiftUI
 import SwiftData
+import DesignKit
 
 @main
 struct HabitsTrackerApp: App {
-    @StateObject private var themeManager = ThemeManager()
+    @StateObject private var themeManager = DKThemeManager()
 
     var body: some Scene {
         WindowGroup {

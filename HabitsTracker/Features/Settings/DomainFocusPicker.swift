@@ -15,7 +15,7 @@ import DesignKit
 /// Domain" toolbar button presents `DomainCreateSheet`.
 struct DomainFocusPicker: View {
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var themeManager: DKThemeManager
     @Environment(\.colorScheme) private var colorScheme
 
     @Query(sort: \Domain.sortIndex) private var domains: [Domain]
