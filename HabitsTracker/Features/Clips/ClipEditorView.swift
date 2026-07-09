@@ -193,8 +193,12 @@ struct ClipEditorView: View {
 
     private func domainSection(theme: Theme) -> some View {
         Section {
+            // No "None" row: CLIP-03 files clips strictly under a domain, and the
+            // only clip-rendering surface is DomainDetailView's per-domain section
+            // — an unfiled (domain == nil) clip would be unreachable in the UI
+            // (UI-SPEC open item #5, WR-03). The editor always opens pre-scoped to
+            // a domain, so one is always selected.
             Picker("Domain", selection: $selectedDomainID) {
-                Text("None").tag(UUID?.none)
                 ForEach(domains, id: \.id) { domain in
                     Text(domain.name).tag(UUID?.some(domain.id))
                 }
@@ -296,6 +300,13 @@ struct ClipEditorView: View {
         let trimmedURLValue = trimmedURL
         guard !trimmedTitleValue.isEmpty, !trimmedURLValue.isEmpty else { return }
 
+        // CLIP-03 / WR-03: a clip is always filed under a domain — never create or
+        // re-save an orphaned (domain == nil) clip that no UI surface can reach.
+        guard let domain = resolvedDomain() else {
+            logger.error("Aborting clip save: no domain resolved from selection")
+            return
+        }
+
         let storedURL = normalizedURL(from: trimmedURLValue)
         let storedNote = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
         let storedTag = tagText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -307,7 +318,7 @@ struct ClipEditorView: View {
                 url: storedURL,
                 note: storedNote.isEmpty ? nil : storedNote,
                 tag: storedTag.isEmpty ? nil : storedTag,
-                domain: resolvedDomain()
+                domain: domain
             )
             modelContext.insert(clip)
 
@@ -316,7 +327,7 @@ struct ClipEditorView: View {
             clip.url = storedURL
             clip.note = storedNote.isEmpty ? nil : storedNote
             clip.tag = storedTag.isEmpty ? nil : storedTag
-            clip.domain = resolvedDomain()
+            clip.domain = domain
         }
 
         try? modelContext.save()
