@@ -23,6 +23,9 @@ struct ClipRow: View {
 
         DKCard(theme: theme) {
             HStack(alignment: .center, spacing: theme.spacing.m) {
+                // Text block owns the row's navigation affordance: combined into a
+                // single VoiceOver element so the status-chip Button stays a
+                // separate, reachable control (WR-01 / WR-04).
                 VStack(alignment: .leading, spacing: theme.spacing.xs) {
                     Text(clip.title)
                         .font(theme.typography.headline)
@@ -36,27 +39,33 @@ struct ClipRow: View {
                             .foregroundStyle(theme.colors.textSecondary)
                     }
                 }
-
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(accessibilityLabel)
 
                 statusChip(theme: theme)
             }
             .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityLabel)
     }
 
     // MARK: - Status chip (D-04, D-05, D-08)
 
+    /// A `Button` (not a raw `.onTapGesture`) so the tap is not swallowed by the
+    /// enclosing `NavigationLink` and so VoiceOver exposes it as an activatable
+    /// control (WR-01 / WR-04). `.buttonStyle(.plain)` keeps the DKBadge visual.
     private func statusChip(theme: Theme) -> some View {
-        DKBadge(statusLabel, theme: theme)
-            .frame(minWidth: 44, minHeight: 44)
-            .onTapGesture {
-                tapCounter += 1
-                clip.status = clip.status == .saved ? .acted : .saved
-            }
-            .sensoryFeedback(.impact(weight: .light), trigger: tapCounter)
+        Button {
+            tapCounter += 1
+            clip.status = clip.status == .saved ? .acted : .saved
+        } label: {
+            DKBadge(statusLabel, theme: theme)
+                .frame(minWidth: 44, minHeight: 44)
+        }
+        .buttonStyle(.plain)
+        .sensoryFeedback(.impact(weight: .light), trigger: tapCounter)
+        .accessibilityLabel("Status: \(statusLabel), \(clip.title)")
+        .accessibilityHint("Toggles between saved and acted")
     }
 
     // MARK: - Helpers
