@@ -82,14 +82,20 @@ struct ClipDetailView: View {
 
     private func statusTagBlock(theme: Theme) -> some View {
         HStack(spacing: theme.spacing.s) {
-            DKBadge(statusLabel, theme: theme)
-                .frame(minWidth: 44, minHeight: 44)
-                .onTapGesture {
-                    chipTapCounter += 1
-                    clip.status = clip.status == .saved ? .acted : .saved
-                }
-                .sensoryFeedback(.impact(weight: .light), trigger: chipTapCounter)
-                .accessibilityLabel("Status: \(statusLabel), \(clip.title)")
+            // Button (not a raw .onTapGesture) so VoiceOver exposes it as an
+            // activatable control with a reliable double-tap action (WR-04, §9.15).
+            // .buttonStyle(.plain) preserves the DKBadge visual.
+            Button {
+                chipTapCounter += 1
+                clip.status = clip.status == .saved ? .acted : .saved
+            } label: {
+                DKBadge(statusLabel, theme: theme)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.plain)
+            .sensoryFeedback(.impact(weight: .light), trigger: chipTapCounter)
+            .accessibilityLabel("Status: \(statusLabel), \(clip.title)")
+            .accessibilityHint("Toggles between saved and acted")
 
             if let tag = clip.tag, !tag.isEmpty {
                 DKBadge(tag, theme: theme)
