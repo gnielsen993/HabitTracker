@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-07-09T04:22:53.059Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-07-09T04:29:47.461Z"
 last_activity: 2026-07-09
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 19
-  completed_plans: 17
+  completed_plans: 18
   percent: 50
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 04 (clips-d) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-07-09
 
-Progress: [█████████░] 89%
+Progress: [██████████] 95%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Progress: [█████████░] 89%
 | Phase 04-clips-d P02 | 5min | 2 tasks | 2 files |
 | Phase 04 P03 | 15 | 3 tasks | 3 files |
 | Phase 04 P03 | 15min | 3 tasks | 3 files |
+| Phase 04-clips-d P04 | 6min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,7 @@ Most relevant to current work (Phase 1):
 - [Phase 04]: ClipEditorView title suggestion uses a titleWasManuallyEdited + isApplyingTitleSuggestion double-flag guard so D-02's suggestion never overwrites a user-typed title
 - [Phase 04]: Clip.domain stays optional in ClipEditorView's picker (keeps the None row), matching RuleEditorView exactly
 - [Phase 04]: ClipEditorView omits a Status Picker entirely - status changes only via the chip tap-toggle on ClipRow/ClipDetailView
+- [Phase ?]: 04-04: ExportImportService bumped to schemaVersion 5 with ClipDTO mirroring RuleDTO shape (D-13); status carried as raw String, deleteAll deletes Clip before Domain (nullify ordering).
 
 ### Pending Todos
 
@@ -119,6 +121,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-09T04:03:18.514Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-07-09T04:29:47.453Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None

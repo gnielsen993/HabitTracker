@@ -82,7 +82,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 04-01-PLAN.md — Schema foundation: Clip @Model + ClipStatus enum + Domain.clips inverse + container registration + upgrade-test gate
 - [x] 04-02-PLAN.md — Zero-network title-suggestion helper (ClipTitleSuggestion) + runnable unit tests
 - [x] 04-03-PLAN.md — Clip surfaces: ClipEditorView + ClipRow + ClipDetailView (Open Link CTA, status chip toggle)
-- [ ] 04-04-PLAN.md — Export/Import schemaVersion 4→5 round-trip for Clip
+- [x] 04-04-PLAN.md — Export/Import schemaVersion 4→5 round-trip for Clip
 - [ ] 04-05-PLAN.md — Wire Clips section into DomainDetailView + owner visual/offline/round-trip verification
 **UI hint**: yes
 
@@ -125,6 +125,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
-| 4. Clips (D) | 3/5 | In Progress|  |
+| 4. Clips (D) | 4/5 | In Progress|  |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
 | 6. Polish (F) | 0/TBD | Not started | - |
