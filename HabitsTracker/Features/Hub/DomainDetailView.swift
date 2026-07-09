@@ -27,6 +27,7 @@ struct DomainDetailView: View {
 
     @State private var creatingRule = false
     @State private var creatingCollection = false
+    @State private var creatingClip = false
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -58,6 +59,9 @@ struct DomainDetailView: View {
         .sheet(isPresented: $creatingCollection) {
             CollectionPresetPickerSheet(domain: domain)
         }
+        .sheet(isPresented: $creatingClip) {
+            ClipEditorView(domain: domain)
+        }
     }
 
     // MARK: - Sections
@@ -78,7 +82,12 @@ struct DomainDetailView: View {
             sections.append(collectionsSection)
         }
 
-        // Phase D–E: append Clips / Ideas sections here.
+        // Phase D: Clips section (CLIP-03, D-10)
+        if let clipsSection = buildClipsSection(theme: theme) {
+            sections.append(clipsSection)
+        }
+
+        // Phase E: append Ideas section here.
         return sections
     }
 
@@ -182,6 +191,59 @@ struct DomainDetailView: View {
                     .frame(minWidth: 44, minHeight: 44)
             }
             .accessibilityLabel("Add collection to \(domain.name)")
+        }
+    }
+
+    // MARK: - Clips section content
+
+    /// Builds the Clips section for this domain, or returns nil when there are no
+    /// non-archived clips (preserving the DOM-03 "only non-empty sections" contract, D-10).
+    private func buildClipsSection(theme: Theme) -> DomainSection? {
+        let activeClips = domain.clips
+            .filter { !$0.isArchived }
+            .sorted { $0.createdAt > $1.createdAt }
+
+        guard !activeClips.isEmpty else { return nil }
+
+        let content = AnyView(clipsSectionContent(clips: activeClips, theme: theme))
+        return DomainSection(id: "clips", title: "Clips", content: content)
+    }
+
+    @ViewBuilder
+    private func clipsSectionContent(clips: [Clip], theme: Theme) -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.m) {
+            clipsSectionHeader(theme: theme)
+
+            ForEach(clips, id: \.id) { clip in
+                NavigationLink {
+                    ClipDetailView(clip: clip)
+                } label: {
+                    ClipRow(clip: clip)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    /// A section header row: "Clips" title on the left + "+" add button on the right.
+    private func clipsSectionHeader(theme: Theme) -> some View {
+        HStack(alignment: .center) {
+            Text("Clips")
+                .font(theme.typography.title)
+                .foregroundStyle(theme.colors.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            Spacer()
+
+            Button {
+                creatingClip = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(theme.colors.accentPrimary)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .accessibilityLabel("Add clip to \(domain.name)")
         }
     }
 
