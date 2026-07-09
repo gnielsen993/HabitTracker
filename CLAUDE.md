@@ -6,8 +6,9 @@ this file, so Codex and Claude read identical rules — edit only this file, nev
 Claude Code reads this at the start of every session. Follow it as the project constitution.
 
 > Mirrors the consolidated convention proven in the sibling `FitnessTracker` repo. The
-> standalone `Architecture_Constitution.md` and `Design_Philosophy.md` are now thin pointers
-> to this file — do not re-fork rules into them.
+> superseded standalone `Architecture_Constitution.md` and `Design_Philosophy.md` (and the
+> original v1 `Plan.md`) now live in `Docs/archive/` as historical records — do not re-fork
+> rules into them; this file is the single source of truth.
 
 ---
 

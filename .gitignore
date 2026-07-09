@@ -64,3 +64,18 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Swift Package Manager local build metadata
+.swiftpm
+
+# Xcode local build products
+build/
+
+# Local secrets (never commit)
+.secrets.env
+secrets/
+*.p8
+
+# Claude Code (local-only; shared settings.json remains tracked)
+.claude/settings.local.json
+.claude/worktrees/
