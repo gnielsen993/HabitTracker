@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-07-09T03:57:51.718Z"
+last_updated: "2026-07-09T04:22:53.059Z"
 last_activity: 2026-07-09
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 19
-  completed_plans: 16
+  completed_plans: 17
   percent: 50
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 04 (clips-d) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-07-09
 
-Progress: [████████░░] 84%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
@@ -64,6 +64,8 @@ Progress: [████████░░] 84%
 | Phase 03-collections-c P05 | 6 | 2 tasks | 4 files |
 | Phase 04 P01 | ~4min | 2 tasks | 4 files |
 | Phase 04-clips-d P02 | 5min | 2 tasks | 2 files |
+| Phase 04 P03 | 15 | 3 tasks | 3 files |
+| Phase 04 P03 | 15min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -85,6 +87,9 @@ Most relevant to current work (Phase 1):
 - [Phase ?]: 01-06: Custom-domain creation (DOM-05) is valid-by-construction — a curated 31-symbol SF grid (D-16) + a closed 5-accent-token swatch row (D-17), no system browser/wheel/hex; new domains persist isFocused:true, isSeeded:false, sortIndex max+1, Add Domain gated on a trimmed non-empty name; accentColor qualified as HabitsTracker.accentColor to dodge View.accentColor shadowing.
 - [Phase 04]: 04-01: Clip @Model + ClipStatus enum (D-03) added as a leaf model mirroring Rule.swift shape; Domain.clips is a .nullify inverse (never cascade, D-11); Clip registered plan-less in the container. @Model default-value expressions require full qualification (Date.now, not .now shorthand).
 - [Phase 04]: 04-02: ClipTitleSuggestion pure zero-network helper (D-02) — prefers humanized last-path slug, falls back to www.-stripped host, empty/malformed input returns "" gracefully. Grep-verified zero network APIs (SC1/D-01 offline gate).
+- [Phase 04]: ClipEditorView title suggestion uses a titleWasManuallyEdited + isApplyingTitleSuggestion double-flag guard so D-02's suggestion never overwrites a user-typed title
+- [Phase 04]: Clip.domain stays optional in ClipEditorView's picker (keeps the None row), matching RuleEditorView exactly
+- [Phase 04]: ClipEditorView omits a Status Picker entirely - status changes only via the chip tap-toggle on ClipRow/ClipDetailView
 
 ### Pending Todos
 
@@ -114,6 +119,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-09T03:57:51.696Z
+Last session: 2026-07-09T04:03:18.514Z
 Stopped at: Completed 04-02-PLAN.md
 Resume file: None

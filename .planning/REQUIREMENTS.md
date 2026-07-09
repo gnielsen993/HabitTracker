@@ -40,8 +40,8 @@
 
 - [x] **CLIP-01**: The Phase D offline-preview open question (Q1) is resolved and recorded before building (default: store URL + manual title/note, fully offline).
 - [x] **CLIP-02**: User can save a Clip/Link (`title`, `url`, `note`, `tag`, `status`) fully offline, with no network fetch.
-- [ ] **CLIP-03**: A Clip is filed by domain and found in that domain's Clips section in DomainDetailView.
-- [ ] **CLIP-04**: A Clip's status toggles saved → acted.
+- [x] **CLIP-03**: A Clip is filed by domain and found in that domain's Clips section in DomainDetailView.
+- [x] **CLIP-04**: A Clip's status toggles saved → acted.
 
 ### Ideas & Promotion (Phase E)
 
@@ -107,8 +107,8 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | COLL-07 | Phase C | Complete |
 | CLIP-01 | Phase D | Complete |
 | CLIP-02 | Phase D | Complete |
-| CLIP-03 | Phase D | Pending |
-| CLIP-04 | Phase D | Pending |
+| CLIP-03 | Phase D | Complete |
+| CLIP-04 | Phase D | Complete |
 | IDEA-01 | Phase E | Pending |
 | IDEA-02 | Phase E | Pending |
 | IDEA-03 | Phase E | Pending |
