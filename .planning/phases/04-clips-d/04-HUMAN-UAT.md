@@ -1,0 +1,47 @@
+---
+status: partial
+phase: 04-clips-d
+source: [04-VERIFICATION.md]
+started: 2026-07-09T23:57:48Z
+updated: 2026-07-09T23:57:48Z
+---
+
+## Current Test
+
+[awaiting human testing]
+
+## Tests
+
+### 1. 04-01 Task 3 — Schema upgrade test (Phase-3 store → Phase-4 build)
+expected: Old Phase-3 app builds data (domains/habits/rules/collections/history); new build (with Clip @Model) installs OVER that store; app launches without crashing; all prior data intact; Clip type present but empty. `xcrun simctl spawn booted launchctl list | grep -i habits` shows a PID > 0.
+why_human: XCTest host cannot launch UI/persistence flows on this simulator (CLAUDE.md §9.7 CoreSimulator blocker); requires an interactive build-install-relaunch sequence only the owner can drive.
+steps: |
+  1. `git checkout f8d6cf6` (last Phase-3-shipped commit). Clean the sim: `xcrun simctl shutdown all && xcrun simctl erase <device-id>`. Build + install + launch the OLD app on iPhone 17.
+  2. In the OLD app: create a domain, toggle a few habits, create a rule, create a collection with an item, log a day. Quit.
+  3. `git checkout main`; build + install the NEW app OVER the existing store; launch.
+  4. Confirm: launches without crashing; all prior domains/habits/rules/collections/items/history still visible; store not reset; Clip type present but empty.
+result: [pending]
+
+### 2. 04-05 Task 2 — Full Clips flow + offline gate + export/import round-trip (device)
+expected: |
+  (1) A focused domain with 0 clips shows NO Clips section.
+  (2) The section-header "+" opens ClipEditorView pre-scoped to the domain; pasting a URL auto-suggests a Title (D-02); typing a Title by hand stops further URL-driven overwrites; Save disabled until Title + URL are both non-empty.
+  (3) After save, a Clips section appears with the new row: title, tag caption, "Saved" status chip.
+  (4) Tapping the row's status chip flips Saved↔Acted WITH haptic feedback and WITHOUT navigating into the detail view (confirms the WR-01 NavigationLink-gesture-priority fix works with real touch).
+  (5) Tapping the row pushes ClipDetailView: full-width "Open Link" CTA opens Safari (never fetches), tap-toggle status chip, tag pill, note block, Edit → ClipEditorView prefilled, Delete Clip → "Delete this clip?" confirm dialog.
+  (6) OFFLINE GATE (SC1/D-01): Airplane Mode ON — create a clip and open its link; confirm it works fully offline with NO spinner/preview/thumbnail ever appearing.
+  (7) EXPORT/IMPORT (D-13, RC smoke §6): Settings → export a backup; delete the clip(s) or erase+reinstall; import the backup → clip returns with title/url/note/tag/status intact, still filed under the right domain.
+  (8) ACCESSIBILITY (§9.15): VoiceOver reads the composed row label and the status chip is reachable as a distinct Button (confirms WR-04); Dynamic Type at large sizes does not clip the 2-line row title. Today tab unchanged; 4-tab structure holds.
+why_human: XCTest cannot launch the UI host on this toolchain (§9.7); the offline gate (Airplane Mode), the Safari hand-off, VoiceOver gesture routing inside a NavigationLink, and the export/import backup round-trip can only be truly confirmed interactively on a device.
+result: [pending]
+
+## Summary
+
+total: 2
+passed: 0
+issues: 0
+pending: 2
+skipped: 0
+blocked: 0
+
+## Gaps
