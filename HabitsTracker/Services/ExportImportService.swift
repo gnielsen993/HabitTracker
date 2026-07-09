@@ -10,6 +10,7 @@ struct HabitExportBundle: Codable {
     let rules: [RuleDTO]
     let collections: [CollectionDTO]
     let collectionItems: [CollectionItemDTO]
+    let clips: [ClipDTO]
 }
 
 struct DomainDTO: Codable {
@@ -28,6 +29,18 @@ struct RuleDTO: Codable {
     let title: String
     let body: String
     let sourceURL: String?
+    let isArchived: Bool
+    let createdAt: Date
+    let domainID: UUID?
+}
+
+struct ClipDTO: Codable {
+    let id: UUID
+    let title: String
+    let url: String
+    let note: String?
+    let tag: String?
+    let status: String
     let isArchived: Bool
     let createdAt: Date
     let domainID: UUID?
@@ -95,7 +108,7 @@ struct HabitStateDTO: Codable {
 }
 
 final class ExportImportService {
-    private let schemaVersion = 4
+    private let schemaVersion = 5
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -117,7 +130,8 @@ final class ExportImportService {
         entries: [DailyEntry],
         rules: [Rule],
         collections: [Collection],
-        collectionItems: [CollectionItem]
+        collectionItems: [CollectionItem],
+        clips: [Clip]
     ) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: schemaVersion,
@@ -210,6 +224,19 @@ final class ExportImportService {
                     seedVersion: $0.seedVersion,
                     collectionID: $0.collection?.id
                 )
+            },
+            clips: clips.map {
+                ClipDTO(
+                    id: $0.id,
+                    title: $0.title,
+                    url: $0.url,
+                    note: $0.note,
+                    tag: $0.tag,
+                    status: $0.statusRaw,
+                    isArchived: $0.isArchived,
+                    createdAt: $0.createdAt,
+                    domainID: $0.domain?.id
+                )
             }
         )
 
@@ -255,6 +282,22 @@ final class ExportImportService {
             )
             context.insert(rule)
             ruleIndex[dto.id] = rule
+        }
+
+        // 2b. Create Clips (wire to domain; no index map needed, nothing references clips by id)
+        for dto in bundle.clips {
+            let clip = Clip(
+                id: dto.id,
+                title: dto.title,
+                url: dto.url,
+                note: dto.note,
+                tag: dto.tag,
+                status: ClipStatus(rawValue: dto.status) ?? .saved,
+                isArchived: dto.isArchived,
+                createdAt: dto.createdAt,
+                domain: dto.domainID.flatMap { categoryIndex[$0] }
+            )
+            context.insert(clip)
         }
 
         // 3. Create Habits (wire category + originRule)
@@ -355,6 +398,8 @@ final class ExportImportService {
         // Items before collections before domain (ownership order — T-03-10).
         try context.delete(model: CollectionItem.self)
         try context.delete(model: Collection.self)
+        // Clip.domain is .nullify — clips must be deleted before their domain (T-04-09).
+        try context.delete(model: Clip.self)
         try context.delete(model: Domain.self)
         try context.save()
     }
