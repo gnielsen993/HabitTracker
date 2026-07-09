@@ -51,9 +51,12 @@ struct ClipEditorView: View {
     /// Set true the moment the user edits Title directly; once true, URL edits
     /// never overwrite Title again.
     @State private var titleWasManuallyEdited = false
-    /// Guards the suggestion's own write to `title` so it does not flip
-    /// `titleWasManuallyEdited` (only a *direct* user edit should flip it).
-    @State private var isApplyingTitleSuggestion = false
+    /// Distinguishes a *direct* user edit of Title (field is focused) from the
+    /// suggestion's own programmatic write (fired while the URL field is focused).
+    /// Focus-based detection is race-free: it cannot go stale the way a manual
+    /// "isApplyingSuggestion" guard did when a suggestion equalled the current
+    /// title and `.onChange(of: title)` never fired (WR-02).
+    @FocusState private var titleFieldIsFocused: Bool
 
     // MARK: - UI state
 
@@ -134,7 +137,6 @@ struct ClipEditorView: View {
                 .autocorrectionDisabled()
                 .onChange(of: urlText) { _, newValue in
                     guard !titleWasManuallyEdited else { return }
-                    isApplyingTitleSuggestion = true
                     title = ClipTitleSuggestion.suggest(from: newValue)
                 }
         } header: {
@@ -147,10 +149,12 @@ struct ClipEditorView: View {
         Section {
             TextField("Clip title", text: $title)
                 .font(theme.typography.body)
+                .focused($titleFieldIsFocused)
                 .onChange(of: title) { _, _ in
-                    if isApplyingTitleSuggestion {
-                        isApplyingTitleSuggestion = false
-                    } else {
+                    // Only a change originating from the focused Title field is a
+                    // real manual edit; the URL-driven suggestion writes while the
+                    // URL field is focused, so it never flips this flag (WR-02).
+                    if titleFieldIsFocused {
                         titleWasManuallyEdited = true
                     }
                 }
