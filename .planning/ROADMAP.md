@@ -13,7 +13,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] **Phase 1: Domain Generalization (A)** - Generalize Category→Domain, add the Hub tab, focus picker, and custom domains. (completed 2026-07-02)
 - [x] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet. (completed 2026-07-05)
 - [x] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets. (completed 2026-07-06)
-- [ ] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain.
+- [x] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain. (completed 2026-07-09)
 - [ ] **Phase 5: Ideas + Promotion (E)** - Global capture-first quick-add, Hub inbox, File vs Promote graduations.
 - [ ] **Phase 6: Polish (F)** - Cross-domain search, empty states, full multi-type export/import, accessibility pass.
 
@@ -83,7 +83,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 04-02-PLAN.md — Zero-network title-suggestion helper (ClipTitleSuggestion) + runnable unit tests
 - [x] 04-03-PLAN.md — Clip surfaces: ClipEditorView + ClipRow + ClipDetailView (Open Link CTA, status chip toggle)
 - [x] 04-04-PLAN.md — Export/Import schemaVersion 4→5 round-trip for Clip
-- [ ] 04-05-PLAN.md — Wire Clips section into DomainDetailView + owner visual/offline/round-trip verification
+- [x] 04-05-PLAN.md — Wire Clips section into DomainDetailView + owner visual/offline/round-trip verification
 **UI hint**: yes
 
 ### Phase 5: Ideas + Promotion (E)
@@ -125,6 +125,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 1. Domain Generalization (A) | 6/6 | Complete   | 2026-07-02 |
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
-| 4. Clips (D) | 4/5 | In Progress|  |
+| 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
 | 5. Ideas + Promotion (E) | 0/TBD | Not started | - |
 | 6. Polish (F) | 0/TBD | Not started | - |

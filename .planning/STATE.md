@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
+status: verifying
 stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-07-09T04:29:47.461Z"
+last_updated: "2026-07-09T23:36:47.778Z"
 last_activity: 2026-07-09
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 19
-  completed_plans: 18
-  percent: 50
+  completed_plans: 19
+  percent: 67
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 
 Phase: 04 (clips-d) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-07-09
 
-Progress: [██████████] 95%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Progress: [██████████] 95%
 | Phase 04 P03 | 15 | 3 tasks | 3 files |
 | Phase 04 P03 | 15min | 3 tasks | 3 files |
 | Phase 04-clips-d P04 | 6min | 2 tasks | 3 files |
+| Phase 04 P05 | ~10min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,7 @@ Most relevant to current work (Phase 1):
 - [Phase 04]: Clip.domain stays optional in ClipEditorView's picker (keeps the None row), matching RuleEditorView exactly
 - [Phase 04]: ClipEditorView omits a Status Picker entirely - status changes only via the chip tap-toggle on ClipRow/ClipDetailView
 - [Phase ?]: 04-04: ExportImportService bumped to schemaVersion 5 with ClipDTO mirroring RuleDTO shape (D-13); status carried as raw String, deleteAll deletes Clip before Domain (nullify ordering).
+- [Phase 04]: 04-05: Clips section wired into DomainDetailView as a third domain-section trio (Rules+Collections+Clips) at the reserved Phase D-E hook; uses the Rules isArchived-filter + createdAt-descending shape (not Collections sortIndex) since Clip has a soft-archive flag and wants recency-first ordering (D-10, CLIP-03). No Clips-specific empty state (shared domain empty state covers it, §9.3). Owner full-flow visual verification (Task 2) deferred as a PENDING device-only checkpoint per §9.7.
 
 ### Pending Todos
 
@@ -112,6 +114,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 - DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when none focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - CLIP-01 upgrade test (04-01 Task 3) BLOCKING checkpoint PENDING owner verification — Clip @Model schema-expansion must be verified against a Phase-3 store on iPhone 17 per Docs/SCHEMA_MIGRATION_PLAYBOOK.md Step 4
+- CLIP-03 full-flow visual verification (04-05 Task 2) BLOCKING — PENDING owner verification: Task 1 (DomainDetailView Clips wiring, commit 7c9d811) build-verified exit 0; owner must confirm on iPhone 17 the full Clips flow (create → row with status chip → detail Open Link opens Safari with no fetch → toggle saved↔acted → edit → delete-confirm), the OFFLINE gate (Airplane Mode, no network fetch/preview ever — SC1/D-01), the schemaVersion-5 export/import round-trip, and that the section hides when empty + Today unchanged. Device-only per §9.7 (XCTest host cannot launch here). Steps persisted in 04-05-SUMMARY.md for the UAT file.
 
 ## Deferred Items
 
@@ -121,6 +124,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-09T04:29:47.453Z
+Last session: 2026-07-09T23:36:15.519Z
 Stopped at: Completed 04-04-PLAN.md
 Resume file: None
