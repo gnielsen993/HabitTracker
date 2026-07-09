@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-07-09T03:36:58.324Z"
-last_activity: 2026-07-09 -- Phase 04 planning complete
+stopped_at: Phase 4 Plan 1 (04-01) — Tasks 1-2 complete, paused at Task 3 blocking upgrade-test checkpoint (owner verification required)
+last_updated: "2026-07-09T03:45:57.207Z"
+last_activity: 2026-07-09
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 19
-  completed_plans: 14
+  completed_plans: 15
   percent: 50
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-28)
 
 **Core value:** The daily habit loop keeps you opening the app, and every part of your lifestyle gets the right kind of structure (check/status/position/stem/promote) filed in one opinionated place.
-**Current focus:** Phase 03 — collections-c
+**Current focus:** Phase 04 — clips-d
 
 ## Current Position
 
-Phase: 03 — COMPLETE
-Plan: 5 of 5
+Phase: 04 (clips-d) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-07-09 -- Phase 04 planning complete
+Last activity: 2026-07-09
 
-Progress: [██████████] 100%
+Progress: [████████░░] 79%
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 03 P02 | 14 | 2 tasks | 4 files |
 | Phase 03-collections-c P03 | 7 | 2 tasks | 4 files |
 | Phase 03-collections-c P05 | 6 | 2 tasks | 4 files |
+| Phase 04 P01 | ~4min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Most relevant to current work (Phase 1):
 - [Phase ?]: 01-05: Hub tab built as an adaptive grid of focused domains (accent-tinted data-driven DomainTiles); DomainDetailView is a real non-empty-sections loop yielding zero sections in Phase 1 (not a literal empty view) so Phases B-E append item-type sections without restructuring; 4-tab IA Today/Hub/Progress/Settings restored; accentColor call qualified as HabitsTracker.accentColor to avoid SwiftUI View.accentColor shadowing.
 - [Phase ?]: 01-06: DomainFocusPicker per-row isFocused Toggle flips+saves and never deletes (unfocus hides the Hub tile, DOM-04); merge-added seed domains (seedVersion==2, unfocused) get an inline DKBadge New + one caption hint (D-10); custom (non-seeded) domains alone are swipe-deletable behind a .nullify habit-preserving confirmation.
 - [Phase ?]: 01-06: Custom-domain creation (DOM-05) is valid-by-construction — a curated 31-symbol SF grid (D-16) + a closed 5-accent-token swatch row (D-17), no system browser/wheel/hex; new domains persist isFocused:true, isSeeded:false, sortIndex max+1, Add Domain gated on a trimmed non-empty name; accentColor qualified as HabitsTracker.accentColor to dodge View.accentColor shadowing.
+- [Phase 04]: 04-01: Clip @Model + ClipStatus enum (D-03) added as a leaf model mirroring Rule.swift shape; Domain.clips is a .nullify inverse (never cascade, D-11); Clip registered plan-less in the container. @Model default-value expressions require full qualification (Date.now, not .now shorthand).
 
 ### Pending Todos
 
@@ -100,6 +102,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 - RULE-01 manual upgrade test (02-01 Task 3) BLOCKING checkpoint PENDING owner verification — Rule @Model + Habit.originRule schema-expansion must be verified against a Phase-1 store
 - DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when none focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
+- CLIP-01 upgrade test (04-01 Task 3) BLOCKING checkpoint PENDING owner verification — Clip @Model schema-expansion must be verified against a Phase-3 store on iPhone 17 per Docs/SCHEMA_MIGRATION_PLAYBOOK.md Step 4
 
 ## Deferred Items
 
@@ -109,6 +112,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-09T03:10:47.150Z
-Stopped at: Phase 4 UI-SPEC approved
-Resume file: .planning/phases/04-clips-d/04-UI-SPEC.md
+Last session: 2026-07-09T03:45:57.193Z
+Stopped at: Phase 4 Plan 1 (04-01) — Tasks 1-2 complete, paused at Task 3 blocking upgrade-test checkpoint (owner verification required)
+Resume file: .planning/phases/04-clips-d/04-01-PLAN.md
