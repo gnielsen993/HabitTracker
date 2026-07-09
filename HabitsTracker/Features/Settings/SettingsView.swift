@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Query(sort: \Rule.createdAt) private var rules: [Rule]
     @Query(sort: \Collection.sortIndex) private var collections: [Collection]
     @Query(sort: \CollectionItem.sortIndex) private var collectionItems: [CollectionItem]
+    @Query(sort: \Clip.createdAt) private var clips: [Clip]
 
     @State private var showingExporter = false
     @State private var showingImporter = false
@@ -57,7 +58,7 @@ struct SettingsView: View {
                 Section("Backup") {
                     Button("Export JSON") {
                         do {
-                            let data = try exportImportService.exportData(categories: categories, habits: habits, entries: entries, rules: rules, collections: collections, collectionItems: collectionItems)
+                            let data = try exportImportService.exportData(categories: categories, habits: habits, entries: entries, rules: rules, collections: collections, collectionItems: collectionItems, clips: clips)
                             exportDocument = BackupJSONDocument(data: data)
                             showingExporter = true
                         } catch {

@@ -8,12 +8,16 @@ import SwiftData
 ///   Updated call site to pass the new v4 collections:/collectionItems: arguments.
 /// testExportImportRoundTripV4: schemaVersion-4 test (COLL-02, COLL-07) covering
 ///   Collection + CollectionItem scalar fields and index wiring (D-05, D-23).
+/// testExportImportRoundTripV5: schemaVersion-5 test (CLIP-02, D-13) covering Clip
+///   scalar fields, raw status, and domain wiring. Build-verify only per §9.7 — the
+///   XCTest host crashes at 0.000s for SwiftData @Model persistence suites on this
+///   simulator; executed on device via the 04-05 owner checkpoint.
 final class ExportImportTests: XCTestCase {
 
     @MainActor
     private func makeInMemoryContext() throws -> ModelContext {
         let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Rule.self,
-                             Collection.self, CollectionItem.self])
+                             Collection.self, CollectionItem.self, Clip.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
         return container.mainContext
@@ -38,7 +42,8 @@ final class ExportImportTests: XCTestCase {
             entries: [entry],
             rules: [rule],
             collections: [],
-            collectionItems: []
+            collectionItems: [],
+            clips: []
         )
 
         let context = try makeInMemoryContext()
@@ -110,7 +115,8 @@ final class ExportImportTests: XCTestCase {
             entries: [],
             rules: [],
             collections: [collection],
-            collectionItems: [item]
+            collectionItems: [item],
+            clips: []
         )
 
         let context = try makeInMemoryContext()
@@ -137,5 +143,56 @@ final class ExportImportTests: XCTestCase {
         // Index wiring survived (D-23): item is linked to the imported collection.
         XCTAssertNotNil(fetchedItem.collection, "CollectionItem.collection must be re-linked after import")
         XCTAssertEqual(fetchedItem.collection?.id, fetchedCollection.id, "collectionID wiring (index) must survive round-trip")
+    }
+
+    /// schemaVersion-5 round-trip: Clip survives with title/url/note/tag/status(raw)/
+    /// domain wiring intact (CLIP-02, D-13). Build-verify only per §9.7 — authored and
+    /// compiled here; executed on device via the 04-05 owner checkpoint.
+    @MainActor
+    func testExportImportRoundTripV5() throws {
+        let service = ExportImportService()
+
+        let domain = Domain(name: "Cooking", iconName: "fork.knife", colorToken: "forest", sortIndex: 0, isFocused: true)
+
+        let clip = Clip(
+            title: "Sourdough",
+            url: "https://example.com/sourdough",
+            note: "read later",
+            tag: "recipe",
+            status: .acted,
+            domain: domain
+        )
+
+        let data = try service.exportData(
+            categories: [domain],
+            habits: [],
+            entries: [],
+            rules: [],
+            collections: [],
+            collectionItems: [],
+            clips: [clip]
+        )
+
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: data, context: context)
+
+        let clips = try context.fetch(FetchDescriptor<Clip>())
+        let domains = try context.fetch(FetchDescriptor<Domain>())
+
+        XCTAssertEqual(clips.count, 1, "Clip must survive round-trip")
+
+        let fetchedClip = try XCTUnwrap(clips.first)
+        let fetchedDomain = try XCTUnwrap(domains.first)
+
+        XCTAssertEqual(fetchedClip.title, "Sourdough", "title must survive")
+        XCTAssertEqual(fetchedClip.url, "https://example.com/sourdough", "url must survive")
+        XCTAssertEqual(fetchedClip.note, "read later", "note must survive")
+        XCTAssertEqual(fetchedClip.tag, "recipe", "tag must survive")
+        XCTAssertEqual(fetchedClip.status, .acted, "status must survive as .acted (D-03)")
+        XCTAssertEqual(fetchedClip.isArchived, false, "isArchived must survive")
+
+        // Domain wiring survived: fetched clip.domain.id must equal fetched domain.id.
+        XCTAssertNotNil(fetchedClip.domain, "Clip.domain must be re-linked after import")
+        XCTAssertEqual(fetchedClip.domain?.id, fetchedDomain.id, "domainID wiring must survive round-trip")
     }
 }
