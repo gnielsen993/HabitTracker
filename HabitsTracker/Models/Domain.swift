@@ -21,6 +21,9 @@ final class Domain {
     @Relationship(deleteRule: .nullify, inverse: \Collection.domain)
     var collections: [Collection] = []
 
+    @Relationship(deleteRule: .nullify, inverse: \Clip.domain)
+    var clips: [Clip] = []
+
     init(
         id: UUID = UUID(),
         name: String,
@@ -32,7 +35,8 @@ final class Domain {
         isFocused: Bool = false,
         habits: [Habit] = [],
         rules: [Rule] = [],
-        collections: [Collection] = []
+        collections: [Collection] = [],
+        clips: [Clip] = []
     ) {
         self.id = id
         self.name = name
@@ -45,5 +49,6 @@ final class Domain {
         self.habits = habits
         self.rules = rules
         self.collections = collections
+        self.clips = clips
     }
 }
