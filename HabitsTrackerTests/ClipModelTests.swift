@@ -14,7 +14,10 @@ final class ClipModelTests: XCTestCase {
 
     @MainActor
     private func makeInMemoryContext() throws -> ModelContext {
-        let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Clip.self])
+        // Include every model Domain relates to so the in-memory schema is complete
+        // (Domain has rules/collections/clips relationships) — IN-04.
+        let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self,
+                             Rule.self, Collection.self, CollectionItem.self, Clip.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
         return container.mainContext

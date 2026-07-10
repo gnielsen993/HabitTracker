@@ -4,13 +4,18 @@ import SwiftData
 
 /// Round-trip tests for Export/Import.
 ///
-/// testExportImportRoundTripV3: schemaVersion-3 test (RULE-01, RULE-04, RULE-05).
-///   Updated call site to pass the new v4 collections:/collectionItems: arguments.
-/// testExportImportRoundTripV4: schemaVersion-4 test (COLL-02, COLL-07) covering
-///   Collection + CollectionItem scalar fields and index wiring (D-05, D-23).
-/// testExportImportRoundTripV5: schemaVersion-5 test (CLIP-02, D-13) covering Clip
-///   scalar fields, raw status, and domain wiring. Build-verify only per §9.7 — the
-///   XCTest host crashes at 0.000s for SwiftData @Model persistence suites on this
+/// NOTE: the service always stamps the current `schemaVersion` (5), so all three
+/// tests exercise a v5 round-trip. Their names reflect *which version's fields*
+/// they assert survive that round-trip, not a cross-version backward-import (IN-05).
+/// A real older-version fixture import is Phase F (Polish) work.
+///
+/// testV3FieldsSurviveRoundTrip: fields introduced at schemaVersion 3 (RULE-01,
+///   RULE-04, RULE-05) — domains, habits, entries, rules.
+/// testV4FieldsSurviveRoundTrip: fields introduced at schemaVersion 4 (COLL-02,
+///   COLL-07) — Collection + CollectionItem scalar fields and index wiring (D-05, D-23).
+/// testV5FieldsSurviveRoundTrip: fields introduced at schemaVersion 5 (CLIP-02, D-13)
+///   — Clip scalar fields, raw status, and domain wiring. Build-verify only per §9.7 —
+///   the XCTest host crashes at 0.000s for SwiftData @Model persistence suites on this
 ///   simulator; executed on device via the 04-05 owner checkpoint.
 final class ExportImportTests: XCTestCase {
 
@@ -27,7 +32,7 @@ final class ExportImportTests: XCTestCase {
     /// originRule stem link survive. Updated to pass empty collections/collectionItems to the
     /// v4 exportData signature.
     @MainActor
-    func testExportImportRoundTripV3() throws {
+    func testV3FieldsSurviveRoundTrip() throws {
         let service = ExportImportService()
 
         let domain = Domain(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 0, isFocused: true)
@@ -76,7 +81,7 @@ final class ExportImportTests: XCTestCase {
     /// schemaVersion-4 round-trip: Collection + CollectionItem survive with
     /// status/position/cost/wiring intact (D-05, D-23).
     @MainActor
-    func testExportImportRoundTripV4() throws {
+    func testV4FieldsSurviveRoundTrip() throws {
         let service = ExportImportService()
 
         let domain = Domain(name: "Entertainment", iconName: "play.rectangle", colorToken: "navy", sortIndex: 0, isFocused: true)
@@ -149,7 +154,7 @@ final class ExportImportTests: XCTestCase {
     /// domain wiring intact (CLIP-02, D-13). Build-verify only per §9.7 — authored and
     /// compiled here; executed on device via the 04-05 owner checkpoint.
     @MainActor
-    func testExportImportRoundTripV5() throws {
+    func testV5FieldsSurviveRoundTrip() throws {
         let service = ExportImportService()
 
         let domain = Domain(name: "Cooking", iconName: "fork.knife", colorToken: "forest", sortIndex: 0, isFocused: true)
