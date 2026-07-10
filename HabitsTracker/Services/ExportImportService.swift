@@ -1,111 +1,7 @@
 import Foundation
 import SwiftData
 
-struct HabitExportBundle: Codable {
-    let schemaVersion: Int
-    let exportedAt: Date
-    let categories: [DomainDTO]
-    let habits: [HabitDTO]
-    let dailyEntries: [DailyEntryDTO]
-    let rules: [RuleDTO]
-    let collections: [CollectionDTO]
-    let collectionItems: [CollectionItemDTO]
-    let clips: [ClipDTO]
-}
-
-struct DomainDTO: Codable {
-    let id: UUID
-    let name: String
-    let iconName: String
-    let colorToken: String
-    let sortIndex: Int
-    let isSeeded: Bool
-    let seedVersion: Int
-    let isFocused: Bool
-}
-
-struct RuleDTO: Codable {
-    let id: UUID
-    let title: String
-    let body: String
-    let sourceURL: String?
-    let isArchived: Bool
-    let createdAt: Date
-    let domainID: UUID?
-}
-
-struct ClipDTO: Codable {
-    let id: UUID
-    let title: String
-    let url: String
-    let note: String?
-    let tag: String?
-    let status: String
-    let isArchived: Bool
-    let createdAt: Date
-    let domainID: UUID?
-}
-
-struct CollectionDTO: Codable {
-    let id: UUID
-    let title: String
-    let statusSetID: String
-    let progressTemplate: String
-    let showsAggregate: Bool
-    let sortIndex: Int
-    let note: String?
-    let isSeeded: Bool
-    let seedVersion: Int
-    let domainID: UUID?
-}
-
-struct CollectionItemDTO: Codable {
-    let id: UUID
-    let title: String
-    let statusIndex: Int
-    let sortIndex: Int
-    let note: String?
-    let sourceURL: String?
-    let cost: Double?
-    let season: Int
-    let episode: Int
-    let counterValue: Int
-    let counterLabel: String?
-    let isSeeded: Bool
-    let seedVersion: Int
-    let collectionID: UUID?
-}
-
-struct HabitDTO: Codable {
-    let id: UUID
-    let name: String
-    let categoryId: UUID?
-    let scheduleTypeRaw: String
-    let scheduledDaysRaw: [Int]
-    let modeRaw: String
-    let weeklyTargetCount: Int?
-    let isPinned: Bool
-    let isArchived: Bool
-    let isSeeded: Bool
-    let seedVersion: Int
-    let createdAt: Date
-    let originRuleID: UUID?
-}
-
-struct DailyEntryDTO: Codable {
-    let id: UUID
-    let dateKey: Date
-    let note: String
-    let mood: String
-    let states: [HabitStateDTO]
-}
-
-struct HabitStateDTO: Codable {
-    let id: UUID
-    let habitId: UUID
-    let isCompleted: Bool
-    let completedAt: Date?
-}
+// DTOs live in `ExportImportDTOs.swift` (§9.1 file-size split).
 
 final class ExportImportService {
     private let schemaVersion = 5
@@ -245,7 +141,10 @@ final class ExportImportService {
 
     func importReplace(data: Data, context: ModelContext) throws {
         let bundle = try decoder.decode(HabitExportBundle.self, from: data)
-        guard bundle.schemaVersion == schemaVersion else {
+        // Accept this version or older (older backups decode missing type arrays
+        // as empty via HabitExportBundle's tolerant decoder). Reject only backups
+        // from a *newer* build we can't understand, so we never silently drop data.
+        guard bundle.schemaVersion <= schemaVersion else {
             throw ImportError.unsupportedSchema(bundle.schemaVersion)
         }
 

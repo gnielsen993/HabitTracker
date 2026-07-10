@@ -87,7 +87,7 @@ struct SettingsView: View {
                 isPresented: $showingExporter,
                 document: exportDocument,
                 contentType: .json,
-                defaultFilename: "habittracker-backup-v4"
+                defaultFilename: "habittracker-backup"
             ) { result in
                 if case .failure(let error) = result {
                     message = "Save failed: \(error.localizedDescription)"
