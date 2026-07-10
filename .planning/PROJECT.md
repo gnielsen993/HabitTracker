@@ -21,6 +21,7 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 - ✓ Export/Import JSON (`Services/ExportImportService.swift`, `schemaVersion = 1`) — v1.0
 - ✓ Plan-less SwiftData container, Balanced Luxury DesignKit theming — v1.0
 - ✓ Rules as reference-first items + Stem-a-habit flow with shared `HabitCreateSheet` (`Rule` @Model, `.nullify` stem link, schemaVersion 3) — Validated in Phase B (2026-07-05)
+- ✓ Clips: offline-only saved links with tag + saved/acted status, filed by domain (`Clip` @Model, `ClipStatus`, zero-network title suggestion, schemaVersion 5) — Validated in Phase D (2026-07-10; schema upgrade auto-verified + full flow owner-approved)
 
 ### Active
 
@@ -28,7 +29,6 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 
 - [ ] Domains generalize Categories: `isFocused`, Hub tab, focus picker, custom domains (Phase A)
 - [ ] Collections: StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets (Phase C)
-- [ ] Clips: offline-only saved links with tag + saved/acted status (Phase D)
 - [ ] Ideas: global capture-first quick-add, Hub inbox, File vs Promote graduations (Phase E)
 - [ ] Polish: cross-domain search, empty states, full multi-type export/import, accessibility pass (Phase F)
 
@@ -99,4 +99,4 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 | Q5 | Product naming/identity: keep "HabitTracker" or rename for the hub (bundle ID frozen regardless) | Any time; non-blocking |
 
 ---
-*Last updated: 2026-07-05 after Phase B (Rules) completion*
+*Last updated: 2026-07-10 after Phase D (Clips) completion*
