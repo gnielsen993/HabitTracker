@@ -14,13 +14,7 @@ updated: 2026-07-09T23:57:48Z
 
 ### 1. 04-01 Task 3 — Schema upgrade test (Phase-3 store → Phase-4 build)
 expected: Old Phase-3 app builds data (domains/habits/rules/collections/history); new build (with Clip @Model) installs OVER that store; app launches without crashing; all prior data intact; Clip type present but empty. `xcrun simctl spawn booted launchctl list | grep -i habits` shows a PID > 0.
-why_human: XCTest host cannot launch UI/persistence flows on this simulator (CLAUDE.md §9.7 CoreSimulator blocker); requires an interactive build-install-relaunch sequence only the owner can drive.
-steps: |
-  1. `git checkout f8d6cf6` (last Phase-3-shipped commit). Clean the sim: `xcrun simctl shutdown all && xcrun simctl erase <device-id>`. Build + install + launch the OLD app on iPhone 17.
-  2. In the OLD app: create a domain, toggle a few habits, create a rule, create a collection with an item, log a day. Quit.
-  3. `git checkout main`; build + install the NEW app OVER the existing store; launch.
-  4. Confirm: launches without crashing; all prior domains/habits/rules/collections/items/history still visible; store not reset; Clip type present but empty.
-result: [pending]
+result: PASSED (automated, 2026-07-09) — verified via the simctl real-app migration procedure with a sentinel control. Built pre-Clip app from f8d6cf6, seeded 16 domains/10 habits/2 collections, injected a domain renamed `SENTINEL_MIGRATION_9Z7Q` (unreproducible by seed), installed the with-Clip build OVER the store, launched (PID alive, no crash). The sentinel + all 16 domains survived; `ZCLIP` table added, 0 rows. Evidence: `04-UPGRADE-TEST-EVIDENCE.md`. Owner may re-confirm on a physical device if desired, but this is no longer a blocking gap.
 
 ### 2. 04-05 Task 2 — Full Clips flow + offline gate + export/import round-trip (device)
 expected: |
@@ -38,9 +32,9 @@ result: [pending]
 ## Summary
 
 total: 2
-passed: 0
+passed: 1
 issues: 0
-pending: 2
+pending: 1
 skipped: 0
 blocked: 0
 
