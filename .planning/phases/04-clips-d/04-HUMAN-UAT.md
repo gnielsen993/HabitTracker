@@ -1,14 +1,14 @@
 ---
-status: partial
+status: resolved
 phase: 04-clips-d
 source: [04-VERIFICATION.md]
 started: 2026-07-09T23:57:48Z
-updated: 2026-07-09T23:57:48Z
+updated: 2026-07-10T00:00:00Z
 ---
 
 ## Current Test
 
-[awaiting human testing]
+[all tests complete — owner approved 2026-07-10]
 
 ## Tests
 
@@ -26,15 +26,14 @@ expected: |
   (6) OFFLINE GATE (SC1/D-01): Airplane Mode ON — create a clip and open its link; confirm it works fully offline with NO spinner/preview/thumbnail ever appearing.
   (7) EXPORT/IMPORT (D-13, RC smoke §6): Settings → export a backup; delete the clip(s) or erase+reinstall; import the backup → clip returns with title/url/note/tag/status intact, still filed under the right domain.
   (8) ACCESSIBILITY (§9.15): VoiceOver reads the composed row label and the status chip is reachable as a distinct Button (confirms WR-04); Dynamic Type at large sizes does not clip the 2-line row title. Today tab unchanged; 4-tab structure holds.
-why_human: XCTest cannot launch the UI host on this toolchain (§9.7); the offline gate (Airplane Mode), the Safari hand-off, VoiceOver gesture routing inside a NavigationLink, and the export/import backup round-trip can only be truly confirmed interactively on a device.
-result: [pending]
+result: PASSED (owner device verification, 2026-07-10) — full Clips flow confirmed on iPhone 17: create with title-suggestion, in-row status chip toggles saved↔acted without navigating, detail Open Link opens Safari (no fetch), edit/delete-confirm, offline gate holds under Airplane Mode (no spinner/preview), export→wipe→import round-trip restores clips intact, section hides when empty, Today unchanged.
 
 ## Summary
 
 total: 2
-passed: 1
+passed: 2
 issues: 0
-pending: 1
+pending: 0
 skipped: 0
 blocked: 0
 

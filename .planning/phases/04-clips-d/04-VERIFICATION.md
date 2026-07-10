@@ -1,8 +1,9 @@
 ---
 phase: 04-clips-d
 verified: 2026-07-09T23:57:48Z
-status: human_needed
-score: 9/9 automated must-haves verified; 2 blocking owner-verification checkpoints remain (device-only)
+status: passed
+resolved: 2026-07-10T00:00:00Z
+score: 9/9 automated must-haves verified; both owner-verification checkpoints now cleared (upgrade test automated 2026-07-09 via simctl+sentinel, full Clips flow owner-approved 2026-07-10)
 overrides_applied: 0
 human_verification:
   - test: "04-01 Task 3 — Schema upgrade test (Phase-3 store -> Phase-4 build)"
