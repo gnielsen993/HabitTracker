@@ -20,15 +20,15 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 - ✓ Today screen (hero), Progress charts + calendar heatmap, Settings management dashboard — v1.0
 - ✓ Export/Import JSON (`Services/ExportImportService.swift`, `schemaVersion = 1`) — v1.0
 - ✓ Plan-less SwiftData container, Balanced Luxury DesignKit theming — v1.0
+- ✓ Domains generalize Categories: `isFocused`, Hub tab, focus picker, custom domains (`Category`→`Domain` rename via `@Attribute(originalName:)`, schemaVersion 2) — Validated in Phase A (2026-07-02)
 - ✓ Rules as reference-first items + Stem-a-habit flow with shared `HabitCreateSheet` (`Rule` @Model, `.nullify` stem link, schemaVersion 3) — Validated in Phase B (2026-07-05)
+- ✓ Collections: StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets (`Collection`/`CollectionItem` @Models, schemaVersion 4) — Validated in Phase C (2026-07-06)
 - ✓ Clips: offline-only saved links with tag + saved/acted status, filed by domain (`Clip` @Model, `ClipStatus`, zero-network title suggestion, schemaVersion 5) — Validated in Phase D (2026-07-10; schema upgrade auto-verified + full flow owner-approved)
 
 ### Active
 
 <!-- Lifestyle Hub milestone scope (Phases A–F). -->
 
-- [ ] Domains generalize Categories: `isFocused`, Hub tab, focus picker, custom domains (Phase A)
-- [ ] Collections: StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets (Phase C)
 - [ ] Ideas: global capture-first quick-add, Hub inbox, File vs Promote graduations (Phase E)
 - [ ] Polish: cross-domain search, empty states, full multi-type export/import, accessibility pass (Phase F)
 
