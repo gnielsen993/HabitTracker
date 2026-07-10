@@ -33,14 +33,24 @@ crashes with an uncatchable Obj-C exception.
 
 ## Current state of HabitsTracker
 
-- Live `@Model` types: `Category`, `Habit`, `DailyEntry`, `HabitState`
-  (in `HabitsTracker/Models/`).
+- Live `@Model` types (in `HabitsTracker/Models/`): `Domain` (renamed from
+  `Category` via `@Attribute(originalName:)` in Phase 1), `Habit`, `DailyEntry`,
+  `HabitState`, `Rule` (Phase 2), `Collection` + `CollectionItem` (Phase 3),
+  `Clip` (Phase 4). The container type list in `HabitsTrackerApp.swift` is:
+  ```swift
+  .modelContainer(for: [
+      Domain.self, Habit.self, DailyEntry.self, HabitState.self,
+      Rule.self, Collection.self, CollectionItem.self, Clip.self
+  ])
+  ```
 - Container is built by the `.modelContainer(for:)` modifier — **no
   `VersionedSchema` scaffolding exists yet.** Inferred migration runs directly
   against the live class shapes.
 - Export/Import backup exists (`Services/ExportImportService.swift`, currently
-  `schemaVersion = 1`) as the fallback safety net.
-- Bundle id: `gn.HabitsTracker`.
+  `schemaVersion = 5`) as the fallback safety net — bump + round-trip test it
+  whenever a new `@Model` type or field is added.
+- Bundle id: `lauterstar.HabitsTracker` (migrated from `lauterstar.HabitsTracker` on
+  2026-07-06 under Gabe's company account, team `JCWX4BK8GW`; see CLAUDE.md §1).
 
 ## The recipe — adding a new field (the common case)
 
@@ -91,16 +101,18 @@ git stash -u
 
 # Check out the last shipped commit and build the OLD app.
 git checkout <last-shipped-sha>
-xcrun simctl uninstall booted gn.HabitsTracker
+xcrun simctl uninstall booted lauterstar.HabitsTracker
 xcodebuild -scheme HabitsTracker \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   -derivedDataPath /tmp/htbuild_old build
 xcrun simctl install booted \
   /tmp/htbuild_old/Build/Products/Debug-iphonesimulator/HabitsTracker.app
-xcrun simctl launch booted gn.HabitsTracker
+xcrun simctl launch booted lauterstar.HabitsTracker
 
-# Use the app — create a category, toggle a few habits, log a day. Quit.
-xcrun simctl terminate booted gn.HabitsTracker
+# Use the app — create a domain, toggle a few habits, add a rule, add a
+# collection with an item, log a day. Quit. (Exercise every persisted type so
+# the "data intact" assertion covers the full model set, not just habits.)
+xcrun simctl terminate booted lauterstar.HabitsTracker
 
 # Restore work in progress, build the NEW app over the existing store.
 git checkout main
@@ -110,16 +122,30 @@ xcodebuild -scheme HabitsTracker \
   -derivedDataPath /tmp/htbuild_new build
 xcrun simctl install booted \
   /tmp/htbuild_new/Build/Products/Debug-iphonesimulator/HabitsTracker.app
-xcrun simctl launch booted gn.HabitsTracker
+xcrun simctl launch booted lauterstar.HabitsTracker
 
-# App must launch without crashing. Categories/habits/history from the old
-# build must still be visible.
+# App must launch without crashing. Domains/habits/rules/collections/history
+# from the old build must still be visible.
 sleep 6
 xcrun simctl spawn booted launchctl list | grep -i habits
 # PID > 0 = alive. Empty = crashed.
 ```
 If the new build crashes, do NOT merge. Either (a) figure out why inferred
 migration rejected the change, or (b) make the change purely additive.
+
+## Why the upgrade test is a `simctl` real-app run, not an XCTest
+
+In-process SwiftData container tests are **unreliable on this toolchain**
+(Xcode 26.3 / iOS 26 sim, verified 2026-07-09). HabitsTracker's own `@Model`
+persistence tests crash the XCTest host at 0.000s (CLAUDE.md §9.7). The sibling
+`FitnessTracker` repo built the "seed a frozen on-disk store, reopen plan-less,
+assert survival" XCTest pattern (`SchemaV9ToV10MigrationTests`) — and that test
+**also fatal-errors on this machine** (`Failed to cast model … to WorkoutSession`,
+`** TEST FAILED **`, 0 tests executed). So an automated in-process migration
+test is NOT a trustworthy substitute here. The **actual shipping app** builds
+and opens its on-disk container fine — the crash is XCTest-host-specific — which
+is exactly why the Step 4 gate drives the real app via `xcrun simctl` and
+inspects the on-disk store, rather than asserting inside a test process.
 
 ## If you ever introduce explicit versioned schemas
 
