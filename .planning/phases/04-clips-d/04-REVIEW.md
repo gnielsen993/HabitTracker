@@ -24,8 +24,8 @@ findings:
   total: 9
 status: resolved
 warnings_fixed: 4
-info_deferred: 5
-resolution: "All 4 warnings fixed (WR-01 98665c9, WR-02 d759888, WR-03 e0835d9, WR-04 8c61343); build green. Info items IN-01..IN-05 deferred as advisory."
+info_fixed: 5
+resolution: "All 4 warnings fixed (WR-01 98665c9, WR-02 d759888, WR-03 e0835d9, WR-04 8c61343). All 5 Info items also addressed 2026-07-10 (IN-01/02/03 in 582e9be, IN-04/05 in 5dcc2df): drift-proof filename, backward-tolerant import, DTO split, complete test schema, clarified test names. Build + build-for-testing green."
 ---
 
 # Phase 4: Code Review Report
