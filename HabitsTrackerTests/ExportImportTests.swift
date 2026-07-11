@@ -48,7 +48,8 @@ final class ExportImportTests: XCTestCase {
             rules: [rule],
             collections: [],
             collectionItems: [],
-            clips: []
+            clips: [],
+            ideas: []
         )
 
         let context = try makeInMemoryContext()
@@ -121,7 +122,8 @@ final class ExportImportTests: XCTestCase {
             rules: [],
             collections: [collection],
             collectionItems: [item],
-            clips: []
+            clips: [],
+            ideas: []
         )
 
         let context = try makeInMemoryContext()
@@ -175,7 +177,8 @@ final class ExportImportTests: XCTestCase {
             rules: [],
             collections: [],
             collectionItems: [],
-            clips: [clip]
+            clips: [clip],
+            ideas: []
         )
 
         let context = try makeInMemoryContext()
