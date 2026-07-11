@@ -94,3 +94,11 @@ None - no external service configuration required.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-11*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Ideas/InboxView.swift
+- FOUND: HabitsTracker/Features/Hub/HubView.swift
+- FOUND commit: 34cd5b0 (Task 1)
+- FOUND commit: c2727ed (Task 2)
+- FOUND commit: 98ba9b6 (docs: plan summary)
