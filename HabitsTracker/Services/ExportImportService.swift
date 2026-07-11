@@ -4,7 +4,7 @@ import SwiftData
 // DTOs live in `ExportImportDTOs.swift` (§9.1 file-size split).
 
 final class ExportImportService {
-    private let schemaVersion = 5
+    private let schemaVersion = 6
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -27,7 +27,8 @@ final class ExportImportService {
         rules: [Rule],
         collections: [Collection],
         collectionItems: [CollectionItem],
-        clips: [Clip]
+        clips: [Clip],
+        ideas: [Idea]
     ) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: schemaVersion,
@@ -133,6 +134,19 @@ final class ExportImportService {
                     createdAt: $0.createdAt,
                     domainID: $0.domain?.id
                 )
+            },
+            ideas: ideas.map {
+                IdeaDTO(
+                    id: $0.id,
+                    title: $0.title,
+                    note: $0.note,
+                    url: $0.url,
+                    isArchived: $0.isArchived,
+                    createdAt: $0.createdAt,
+                    promotedToKind: $0.promotedToKindRaw,
+                    promotedToID: $0.promotedToID,
+                    domainID: $0.domain?.id
+                )
             }
         )
 
@@ -197,6 +211,23 @@ final class ExportImportService {
                 domain: dto.domainID.flatMap { categoryIndex[$0] }
             )
             context.insert(clip)
+        }
+
+        // 2c. Create Ideas (wire to domain; no index map needed — nothing
+        // references an Idea by id, the promotedTo* fields are plain scalars)
+        for dto in bundle.ideas {
+            let idea = Idea(
+                id: dto.id,
+                title: dto.title,
+                note: dto.note,
+                url: dto.url,
+                isArchived: dto.isArchived,
+                createdAt: dto.createdAt,
+                promotedToKindRaw: dto.promotedToKind,
+                promotedToID: dto.promotedToID,
+                domain: dto.domainID.flatMap { categoryIndex[$0] }
+            )
+            context.insert(idea)
         }
 
         // 3. Create Habits (wire category + originRule)
@@ -299,6 +330,8 @@ final class ExportImportService {
         try context.delete(model: Collection.self)
         // Clip.domain is .nullify — clips must be deleted before their domain (T-04-09).
         try context.delete(model: Clip.self)
+        // Idea.domain is .nullify — ideas must be deleted before their domain (T-05-03).
+        try context.delete(model: Idea.self)
         try context.delete(model: Domain.self)
         try context.save()
     }

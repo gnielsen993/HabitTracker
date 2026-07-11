@@ -22,6 +22,7 @@ struct HabitExportBundle: Codable {
     let collections: [CollectionDTO]
     let collectionItems: [CollectionItemDTO]
     let clips: [ClipDTO]
+    let ideas: [IdeaDTO]
 
     init(
         schemaVersion: Int,
@@ -32,7 +33,8 @@ struct HabitExportBundle: Codable {
         rules: [RuleDTO],
         collections: [CollectionDTO],
         collectionItems: [CollectionItemDTO],
-        clips: [ClipDTO]
+        clips: [ClipDTO],
+        ideas: [IdeaDTO]
     ) {
         self.schemaVersion = schemaVersion
         self.exportedAt = exportedAt
@@ -43,6 +45,7 @@ struct HabitExportBundle: Codable {
         self.collections = collections
         self.collectionItems = collectionItems
         self.clips = clips
+        self.ideas = ideas
     }
 
     init(from decoder: Decoder) throws {
@@ -58,6 +61,7 @@ struct HabitExportBundle: Codable {
         collections = try container.decodeIfPresent([CollectionDTO].self, forKey: .collections) ?? []
         collectionItems = try container.decodeIfPresent([CollectionItemDTO].self, forKey: .collectionItems) ?? []
         clips = try container.decodeIfPresent([ClipDTO].self, forKey: .clips) ?? []
+        ideas = try container.decodeIfPresent([IdeaDTO].self, forKey: .ideas) ?? []
     }
 }
 
