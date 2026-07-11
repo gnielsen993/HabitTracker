@@ -15,6 +15,9 @@ struct HubView: View {
     @Query(filter: #Predicate<Domain> { $0.isFocused }, sort: \Domain.sortIndex)
     private var focusedDomains: [Domain]
 
+    @Query(filter: #Predicate<Idea> { $0.domain == nil && !$0.isArchived })
+    private var unfiledIdeas: [Idea]
+
     private let columns = [GridItem(.adaptive(minimum: 120), spacing: 12)]
 
     var body: some View {
@@ -39,25 +42,62 @@ struct HubView: View {
 
     private func grid(theme: Theme) -> some View {
         ScrollView {
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 120), spacing: theme.spacing.m)],
-                spacing: theme.spacing.m
-            ) {
-                ForEach(focusedDomains) { domain in
-                    NavigationLink(value: domain) {
-                        DomainTile(
-                            name: domain.name,
-                            iconName: domain.iconName,
-                            colorToken: domain.colorToken,
-                            theme: theme,
-                            scheme: colorScheme
-                        )
+            VStack(alignment: .leading, spacing: theme.spacing.l) {
+                if !unfiledIdeas.isEmpty {
+                    inboxCard(theme: theme)
+                }
+
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 120), spacing: theme.spacing.m)],
+                    spacing: theme.spacing.m
+                ) {
+                    ForEach(focusedDomains) { domain in
+                        NavigationLink(value: domain) {
+                            DomainTile(
+                                name: domain.name,
+                                iconName: domain.iconName,
+                                colorToken: domain.colorToken,
+                                theme: theme,
+                                scheme: colorScheme
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
             }
             .padding(theme.spacing.l)
         }
+    }
+
+    /// The Hub inbox card (S3, IDEA-03, D-03/D-04): pinned above the domain grid,
+    /// inside the same ScrollView/VStack — not a separate screen region. Shown only
+    /// when unfiled (domain == nil, !isArchived) ideas exist; the card's presence is
+    /// itself the signal, so it is entirely absent when the inbox is empty.
+    private func inboxCard(theme: Theme) -> some View {
+        NavigationLink {
+            InboxView()
+        } label: {
+            DKCard(theme: theme) {
+                HStack(spacing: theme.spacing.s) {
+                    Image(systemName: "tray.full")
+                        .foregroundStyle(theme.colors.accentPrimary)
+
+                    Text("Ideas to file")
+                        .font(theme.typography.headline)
+                        .foregroundStyle(theme.colors.textPrimary)
+
+                    Spacer()
+
+                    DKBadge("\(unfiledIdeas.count) to file", theme: theme)
+
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(theme.colors.textTertiary)
+                }
+                .frame(minHeight: 44)
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(unfiledIdeas.count) ideas to file, opens inbox")
     }
 
     private func emptyState(theme: Theme) -> some View {
