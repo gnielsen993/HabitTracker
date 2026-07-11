@@ -94,6 +94,18 @@ struct ClipDTO: Codable {
     let domainID: UUID?
 }
 
+struct IdeaDTO: Codable {
+    let id: UUID
+    let title: String
+    let note: String?
+    let url: String?
+    let isArchived: Bool
+    let createdAt: Date
+    let promotedToKind: String?
+    let promotedToID: UUID?
+    let domainID: UUID?
+}
+
 struct CollectionDTO: Codable {
     let id: UUID
     let title: String
