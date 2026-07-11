@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-07-11T01:36:36.880Z"
-last_activity: 2026-07-11 -- Phase 05 planning complete
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-07-11T01:51:51.294Z"
+last_activity: 2026-07-11
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 29
-  completed_plans: 19
-  percent: 66
+  completed_plans: 20
+  percent: 67
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-28)
 
 **Core value:** The daily habit loop keeps you opening the app, and every part of your lifestyle gets the right kind of structure (check/status/position/stem/promote) filed in one opinionated place.
-**Current focus:** Phase 5 — ideas + promotion (e)
+**Current focus:** Phase 05 — ideas-promotion-e
 
 ## Current Position
 
-Phase: 5
-Plan: Not started
+Phase: 05 (ideas-promotion-e) — EXECUTING
+Plan: 2 of 10
 Status: Ready to execute
-Last activity: 2026-07-11 -- Phase 05 planning complete
+Last activity: 2026-07-11
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 69%
 
 ## Performance Metrics
 
@@ -69,6 +69,7 @@ Progress: [██████████] 100%
 | Phase 04 P03 | 15min | 3 tasks | 3 files |
 | Phase 04-clips-d P04 | 6min | 2 tasks | 3 files |
 | Phase 04 P05 | ~10min | 1 tasks | 1 files |
+| Phase 05 P01 | 8min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,7 @@ Most relevant to current work (Phase 1):
 - [Phase 04]: ClipEditorView omits a Status Picker entirely - status changes only via the chip tap-toggle on ClipRow/ClipDetailView
 - [Phase ?]: 04-04: ExportImportService bumped to schemaVersion 5 with ClipDTO mirroring RuleDTO shape (D-13); status carried as raw String, deleteAll deletes Clip before Domain (nullify ordering).
 - [Phase 04]: 04-05: Clips section wired into DomainDetailView as a third domain-section trio (Rules+Collections+Clips) at the reserved Phase D-E hook; uses the Rules isArchived-filter + createdAt-descending shape (not Collections sortIndex) since Clip has a soft-archive flag and wants recency-first ordering (D-10, CLIP-03). No Clips-specific empty state (shared domain empty state covers it, §9.3). Owner full-flow visual verification (Task 2) deferred as a PENDING device-only checkpoint per §9.7.
+- [Phase 05]: 05-01: Idea @Model + nested Idea.PromotedKind facade + Domain.ideas .nullify inverse + plan-less container registration; IdeaModelTests build-verify tier.
 
 ### Pending Todos
 
@@ -125,6 +127,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T00:38:57.418Z
-Stopped at: Phase 5 UI-SPEC approved
-Resume file: .planning/phases/05-ideas-promotion-e/05-UI-SPEC.md
+Last session: 2026-07-11T01:51:51.286Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None

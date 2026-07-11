@@ -96,7 +96,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
   3. Promote converts an idea to a rule/habit/collection item per the asymmetry rule — the idea is archived with a forward-link and leaves the active list — and promote-to-habit reuses Phase 2's sheet.
   4. An unfiled-idea promote prompts for a domain; promote-to-collection prompts for the target list.
 **Plans**: 10 plans (6 waves)
-- [ ] 05-01-PLAN.md — Schema spine: Idea @Model + PromotedKind facade + Domain.ideas inverse + container registration + IdeaModelTests [wave 1]
+- [x] 05-01-PLAN.md — Schema spine: Idea @Model + PromotedKind facade + Domain.ideas inverse + container registration + IdeaModelTests [wave 1]
 - [ ] 05-02-PLAN.md — Export/Import schemaVersion 5→6 + IdeaDTO round-trip + SettingsView call site [wave 2]
 - [ ] 05-03-PLAN.md — PromoteService consume/archive/forward-link core + runnable engine-tier tests (§9.5) [wave 2]
 - [ ] 05-04-PLAN.md — Mandatory upgrade test (Phase-4 store → Idea-expanded schema, data intact) — owner/simctl checkpoint [wave 2]
@@ -136,5 +136,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
-| 5. Ideas + Promotion (E) | 0/10 | Not started | - |
+| 5. Ideas + Promotion (E) | 1/10 | In Progress|  |
 | 6. Polish (F) | 0/TBD | Not started | - |
