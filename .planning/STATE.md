@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-05-PLAN.md
-last_updated: "2026-07-11T02:12:56.106Z"
+stopped_at: "Checkpoint pending: 05-04 Task 2 (owner device sign-off) — automated Task 1 PASS recorded"
+last_updated: "2026-07-11T02:28:51.998Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 29
-  completed_plans: 23
+  completed_plans: 24
   percent: 67
 ---
 
@@ -103,6 +103,7 @@ Most relevant to current work (Phase 1):
 - [Phase 05-ideas-promotion-e]: 05-03: PromoteService (enum, pure/save-free) centralizes archiveAndForwardLink + requiresDomainBeforePromote; caller owns ModelContext.save(). — Keeps promote-consume logic in one small testable core (D-07); PromoteServiceTests runs ModelContainer-free in the runnable engine tier (§9.7).
 - [Phase 05-ideas-promotion-e]: 05-02: IdeaDTO Codable struct + schemaVersion 6 Idea round-trip (export map, import loop via categoryIndex, deleteAll before Domain); SettingsView ideas @Query threaded into exportData call.
 - [Phase 05]: 05-05: IdeaCaptureSheet is a shared plain-VStack (not Form) title-only sheet with dual init create(domain: Domain? = nil)/edit(idea:); fill-then-commit save; edit-mode hard-delete confirm. Today's NavigationStack gained a net-new top-trailing capture '+' presenting IdeaCaptureSheet() via .sheet, wired to no domain so captures land unfiled in the Hub inbox, never on Today's list.
+- [Phase 05]: 05-04: Reused the exact CLIP-01 sentinel-injection simctl upgrade procedure (sibling worktree at pre-Idea SHA 793b220, sentinel-rename a domain row, install new build over the store without erasing) to verify Idea @Model schema expansion — proves the procedure is now a repeatable pattern for future @Model changes.
 
 ### Pending Todos
 
@@ -121,9 +122,10 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 - DOM-01 manual upgrade test (01-02 Task 3) BLOCKING checkpoint PENDING owner verification
 - RULE-01 manual upgrade test (02-01 Task 3) BLOCKING checkpoint PENDING owner verification — Rule @Model + Habit.originRule schema-expansion must be verified against a Phase-1 store
 - DOM-06 device visual checkpoint (01-04 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 that no Calendar tab, Charts/Calendar segment toggles with a single nav bar, day-detail sheet presents, and Today is unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
-- DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when none focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
+- DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - CLIP-01 upgrade test (04-01 Task 3) ✅ RESOLVED 2026-07-09 (automated) — Clip @Model schema-expansion verified against a real Phase-3 store via the simctl migration procedure + sentinel control (data intact, no crash, ZCLIP added empty). Evidence: .planning/phases/04-clips-d/04-UPGRADE-TEST-EVIDENCE.md. No longer blocking.
 - CLIP-03 full-flow visual verification (04-05 Task 2) ✅ RESOLVED 2026-07-10 (owner device verification) — full Clips flow confirmed on iPhone 17: create with title-suggestion, in-row status chip toggles without navigating, detail Open Link opens Safari (no fetch), edit/delete-confirm, OFFLINE gate holds under Airplane Mode, schemaVersion-5 export/import round-trip intact, section hides when empty, Today unchanged. No longer blocking.
+- IDEA-01 upgrade test (05-04 Task 1) RESOLVED 2026-07-11 (automated) — Idea @Model + Domain.ideas nullify inverse schema-expansion verified against a real Phase-4 store via the simctl migration procedure + sentinel control (data intact, no crash, ZIDEA added empty). Evidence: .planning/phases/05-ideas-promotion-e/05-UPGRADE-TEST-EVIDENCE.md. Task 2 owner device sign-off checkpoint still PENDING (blocking gate) — automated PASS makes it a confirmation, not a required re-run.
 
 ## Deferred Items
 
@@ -133,6 +135,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T02:12:56.089Z
-Stopped at: Completed 05-05-PLAN.md
-Resume file: None
+Last session: 2026-07-11T02:28:51.990Z
+Stopped at: Checkpoint pending: 05-04 Task 2 (owner device sign-off) — automated Task 1 PASS recorded
+Resume file: .planning/phases/05-ideas-promotion-e/05-04-PLAN.md
