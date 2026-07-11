@@ -96,3 +96,11 @@ No blockers.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-11*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Services/PromoteService.swift
+- FOUND: HabitsTrackerTests/PromoteServiceTests.swift
+- FOUND commit: 087122d (feat)
+- FOUND commit: 32a7c87 (test)
+- FOUND commit: bfc8c6d (docs: summary)

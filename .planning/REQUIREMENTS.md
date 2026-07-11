@@ -48,7 +48,7 @@
 - [x] **IDEA-01**: An `Idea` model exists (freeform capture, title-only minimum, domain optional).
 - [ ] **IDEA-02**: A global quick-add (capture-first) is reachable without leaving Today and without adding a row to Today's list; it defaults to Idea and lands in the Hub inbox.
 - [ ] **IDEA-03**: The Hub inbox surfaces unfiled ideas with two one-tap graduations: **File** (stays an Idea, gains a domain) and **Promote** (becomes another type).
-- [ ] **IDEA-04**: Promote converts an idea to a Rule, Habit, or Collection item per the asymmetry rule: the idea is archived with a forward-link and leaves the active list; the result carries the right fields and no backref. Promote-to-habit reuses Phase B's shared habit sheet.
+- [x] **IDEA-04**: Promote converts an idea to a Rule, Habit, or Collection item per the asymmetry rule: the idea is archived with a forward-link and leaves the active list; the result carries the right fields and no backref. Promote-to-habit reuses Phase B's shared habit sheet.
 - [ ] **IDEA-05**: Promote prompts for missing context: an unfiled idea prompts for a domain; promote-to-collection prompts for the target list.
 
 ### Polish (Phase F)
@@ -112,7 +112,7 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | IDEA-01 | Phase E | Complete |
 | IDEA-02 | Phase E | Pending |
 | IDEA-03 | Phase E | Pending |
-| IDEA-04 | Phase E | Pending |
+| IDEA-04 | Phase E | Complete |
 | IDEA-05 | Phase E | Pending |
 | POL-01 | Phase F | Pending |
 | POL-02 | Phase F | Pending |
