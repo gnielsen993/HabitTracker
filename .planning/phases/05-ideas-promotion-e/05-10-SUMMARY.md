@@ -80,6 +80,15 @@ None.
 
 None — no new network endpoints, auth paths, file-access patterns, or schema changes introduced by this plan. This plan is verification-only.
 
-## Self-Check: PENDING
+## Self-Check: PASSED
 
-(appended below after file/commit existence checks)
+- FOUND: `.planning/phases/05-ideas-promotion-e/05-10-SUMMARY.md`
+- FOUND: commit `17abfd8` (`fix(05-10): pre-checkpoint automated gates green ...`)
+- No unexpected file deletions in the commit (`git diff --diff-filter=D` empty).
+
+## Task 2 Status
+
+**NOT self-answered.** Task 2 (`checkpoint:human-verify`, `gate="blocking"`) requires the owner's
+physical iPhone 17 per §9.7 (the iOS 26 simulator cannot launch this UI/@Model host for a live
+walkthrough). Returning the structured checkpoint state to the orchestrator so SC1–SC4 + the
+baseline DoD device walkthrough can be handed to the owner (Gabe).
