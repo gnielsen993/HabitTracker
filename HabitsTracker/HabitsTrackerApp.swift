@@ -20,7 +20,8 @@ struct HabitsTrackerApp: App {
             Rule.self,
             Collection.self,
             CollectionItem.self,
-            Clip.self
+            Clip.self,
+            Idea.self
         ])
     }
 }
