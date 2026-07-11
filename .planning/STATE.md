@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-08-PLAN.md (InboxView + Hub inbox card)
-last_updated: "2026-07-11T13:39:48.316Z"
+stopped_at: 05-10 Task 1 automated gates complete; Task 2 owner device checkpoint PENDING (blocking)
+last_updated: "2026-07-11T14:33:03.274Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 29
-  completed_plans: 28
-  percent: 67
+  completed_plans: 29
+  percent: 83
 ---
 
 # Project State
@@ -132,6 +132,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 - CLIP-01 upgrade test (04-01 Task 3) ✅ RESOLVED 2026-07-09 (automated) — Clip @Model schema-expansion verified against a real Phase-3 store via the simctl migration procedure + sentinel control (data intact, no crash, ZCLIP added empty). Evidence: .planning/phases/04-clips-d/04-UPGRADE-TEST-EVIDENCE.md. No longer blocking.
 - CLIP-03 full-flow visual verification (04-05 Task 2) ✅ RESOLVED 2026-07-10 (owner device verification) — full Clips flow confirmed on iPhone 17: create with title-suggestion, in-row status chip toggles without navigating, detail Open Link opens Safari (no fetch), edit/delete-confirm, OFFLINE gate holds under Airplane Mode, schemaVersion-5 export/import round-trip intact, section hides when empty, Today unchanged. No longer blocking.
 - IDEA-01 upgrade test (05-04) ✅ RESOLVED 2026-07-10 (automated + owner-approved) — Idea @Model + Domain.ideas nullify inverse schema-expansion verified against a real Phase-4 store via the simctl migration procedure + sentinel control (data intact, no crash, ZIDEA added empty). Task 2 blocking human-verify checkpoint CLOSED: owner (Gabe) reviewed the automated evidence and responded "approved" (same precedent as CLIP-01). Evidence: .planning/phases/05-ideas-promotion-e/05-UPGRADE-TEST-EVIDENCE.md. No longer blocking.
+- IDEA-02/03/04/05 owner device walkthrough (05-10 Task 2) BLOCKING PENDING owner verification — Task 1 automated gates green (build exit 0, PromoteServiceTests 4/4, tokens/print grep sweeps clean on Ideas surfaces; evidence: .planning/phases/05-ideas-promotion-e/05-10-SUMMARY.md). Owner must confirm on iPhone 17 (§9.7): SC1 capture+inbox, SC2 File, SC3 Rule/Habit/Collection promote (no backref), SC4 unfiled-domain-gate + collection-target prompt, and baseline DoD (schemaVersion-6 export/import round-trip, Today unchanged, 4 tabs, VoiceOver separateness). Closes Phase 5 on approval.
 
 ## Deferred Items
 
@@ -141,6 +142,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T13:39:48.300Z
-Stopped at: Completed 05-08-PLAN.md (InboxView + Hub inbox card)
+Last session: 2026-07-11T14:33:03.263Z
+Stopped at: 05-10 Task 1 automated gates complete; Task 2 owner device checkpoint PENDING (blocking)
 Resume file: None

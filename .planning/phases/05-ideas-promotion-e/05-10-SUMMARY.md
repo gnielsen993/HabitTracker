@@ -88,7 +88,16 @@ None — no new network endpoints, auth paths, file-access patterns, or schema c
 
 ## Task 2 Status
 
-**NOT self-answered.** Task 2 (`checkpoint:human-verify`, `gate="blocking"`) requires the owner's
-physical iPhone 17 per §9.7 (the iOS 26 simulator cannot launch this UI/@Model host for a live
-walkthrough). Returning the structured checkpoint state to the orchestrator so SC1–SC4 + the
-baseline DoD device walkthrough can be handed to the owner (Gabe).
+**RESOLVED — owner approved (2026-07-11).** Task 2 (`checkpoint:human-verify`, `gate="blocking"`)
+was handed to the owner (Gabe), who ran the full SC1–SC4 + baseline-DoD walkthrough on a physical
+iPhone 17 (§9.7 — the iOS 26 simulator cannot launch this UI/@Model host for a live walkthrough)
+and signed off "approved":
+
+- SC1 — Today "+" opens capture without leaving Today; captured idea adds no Today row and surfaces in the Hub "Ideas to file" inbox card. ✓
+- SC2 — File assigns a domain; the item stays an Idea and moves into that domain's Ideas section, leaving the inbox. ✓
+- SC3 — Promote → Rule / Habit / Collection item opens the prefilled editor; Save archives the idea (leaves the active list) with no backref; promote-to-habit reuses Phase 2's HabitCreateSheet. ✓
+- SC4 — an unfiled idea's Promote → Rule keeps Save disabled until a domain is chosen; Promote → Collection prompts for the target list first. ✓
+- Baseline DoD — schemaVersion-6 export/import round-trip green (ideas survive), Today visually unchanged aside from the "+", 4 tabs hold, VoiceOver reaches File and Promote as separate elements. ✓
+- Escape hatch — idea title → edit sheet → Delete Idea hard-delete confirmation + removal. ✓
+
+Phase 5 capture → inbox → File / Promote spine confirmed on device. Plan 05-10 complete (2/2 tasks).

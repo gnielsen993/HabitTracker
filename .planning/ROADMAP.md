@@ -14,7 +14,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] **Phase 2: Rules (B)** - Reference-first Rules plus the Stem-a-habit flow and the shared habit-create-from-source sheet. (completed 2026-07-05)
 - [x] **Phase 3: Collections (C)** - StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets. (completed 2026-07-06)
 - [x] **Phase 4: Clips (D)** - Offline-only saved links with tag and saved/acted status, filed by domain. (completed 2026-07-09)
-- [ ] **Phase 5: Ideas + Promotion (E)** - Global capture-first quick-add, Hub inbox, File vs Promote graduations.
+- [x] **Phase 5: Ideas + Promotion (E)** - Global capture-first quick-add, Hub inbox, File vs Promote graduations. (completed 2026-07-11)
 - [ ] **Phase 6: Polish (F)** - Cross-domain search, empty states, full multi-type export/import, accessibility pass.
 
 ## Phase Details
@@ -105,7 +105,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 05-07-PLAN.md — IdeaRow: reusable row + tap-to-edit + inline File/Promote menus + promote routing [wave 4]
 - [x] 05-08-PLAN.md — Hub inbox card (count-gated) + data-driven InboxView [wave 5]
 - [x] 05-09-PLAN.md — Ideas section in DomainDetailView + in-domain place-first "+" [wave 5]
-- [ ] 05-10-PLAN.md — Owner full-flow device verification (SC1–SC4 + baseline DoD) [wave 6]
+- [x] 05-10-PLAN.md — Owner full-flow device verification (SC1–SC4 + baseline DoD) [wave 6]
 **UI hint**: yes
 
 ### Phase 6: Polish (F)
@@ -136,5 +136,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
-| 5. Ideas + Promotion (E) | 9/10 | In Progress|  |
+| 5. Ideas + Promotion (E) | 10/10 | Complete   | 2026-07-11 |
 | 6. Polish (F) | 0/TBD | Not started | - |
