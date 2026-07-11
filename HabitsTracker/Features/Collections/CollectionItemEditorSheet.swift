@@ -26,6 +26,11 @@ struct CollectionItemEditorSheet: View {
 
     private let editorMode: EditorMode
 
+    /// Set only via `init(collection:promotingIdea:)` — nil for the normal create/edit
+    /// inits. Drives the post-save consume call (T-05-04); no extra domain gate is
+    /// needed here — picking the collection already implies its domain (S7).
+    private let sourceIdea: Idea?
+
     // MARK: - Field state
 
     @State private var title: String
@@ -41,6 +46,7 @@ struct CollectionItemEditorSheet: View {
 
     init(collection: Collection) {
         self.editorMode = .create(collection)
+        self.sourceIdea = nil
         _title = State(initialValue: "")
         _noteText = State(initialValue: "")
         _urlText = State(initialValue: "")
@@ -49,10 +55,22 @@ struct CollectionItemEditorSheet: View {
 
     init(item: CollectionItem) {
         self.editorMode = .edit(item)
+        self.sourceIdea = nil
         _title = State(initialValue: item.title)
         _noteText = State(initialValue: item.note ?? "")
         _urlText = State(initialValue: item.sourceURL ?? "")
         _costText = State(initialValue: item.cost.map { String(format: "%.2f", $0) } ?? "")
+    }
+
+    /// Promote-to-Collection entry point (IDEA-04/IDEA-05). The collection is already
+    /// resolved by the caller (`PromoteToCollectionPicker`) — no extra domain gate needed.
+    init(collection: Collection, promotingIdea idea: Idea) {
+        self.editorMode = .create(collection)
+        self.sourceIdea = idea
+        _title = State(initialValue: idea.title)
+        _noteText = State(initialValue: "")
+        _urlText = State(initialValue: idea.url ?? "")
+        _costText = State(initialValue: "")
     }
 
     // MARK: - Body
@@ -238,15 +256,23 @@ struct CollectionItemEditorSheet: View {
             )
             newItem.collection = collection
             modelContext.insert(newItem)
+            try? modelContext.save()
+
+            // Consume the source idea only after a successful promote-Save (T-05-04) —
+            // never before. No backref is set on the CollectionItem (D-07).
+            if let sourceIdea {
+                PromoteService.archiveAndForwardLink(idea: sourceIdea, as: .collectionItem, targetID: newItem.id)
+                try? modelContext.save()
+            }
 
         case .edit(let item):
             item.title = trimmed
             item.note = storedNote
             item.sourceURL = storedURL
             item.cost = parsedCost
+            try? modelContext.save()
         }
 
-        try? modelContext.save()
         dismiss()
     }
 }
