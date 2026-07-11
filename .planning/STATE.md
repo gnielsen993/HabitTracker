@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-07-11T02:06:13.747Z"
+stopped_at: Completed 05-05-PLAN.md
+last_updated: "2026-07-11T02:12:56.106Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 29
-  completed_plans: 22
+  completed_plans: 23
   percent: 67
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 05 (ideas-promotion-e) — EXECUTING
-Plan: 4 of 10
+Plan: 5 of 10
 Status: Ready to execute
 Last activity: 2026-07-11
 
-Progress: [████████░░] 76%
+Progress: [████████░░] 79%
 
 ## Performance Metrics
 
@@ -72,6 +72,7 @@ Progress: [████████░░] 76%
 | Phase 05 P01 | 8min | 2 tasks | 4 files |
 | Phase 05-ideas-promotion-e P03 | 4min | 2 tasks | 2 files |
 | Phase 05-ideas-promotion-e P02 | 6min | 2 tasks | 3 files |
+| Phase 05-ideas-promotion-e P05 | 5min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,7 @@ Most relevant to current work (Phase 1):
 - [Phase 05]: 05-01: Idea @Model + nested Idea.PromotedKind facade + Domain.ideas .nullify inverse + plan-less container registration; IdeaModelTests build-verify tier.
 - [Phase 05-ideas-promotion-e]: 05-03: PromoteService (enum, pure/save-free) centralizes archiveAndForwardLink + requiresDomainBeforePromote; caller owns ModelContext.save(). — Keeps promote-consume logic in one small testable core (D-07); PromoteServiceTests runs ModelContainer-free in the runnable engine tier (§9.7).
 - [Phase 05-ideas-promotion-e]: 05-02: IdeaDTO Codable struct + schemaVersion 6 Idea round-trip (export map, import loop via categoryIndex, deleteAll before Domain); SettingsView ideas @Query threaded into exportData call.
+- [Phase 05]: 05-05: IdeaCaptureSheet is a shared plain-VStack (not Form) title-only sheet with dual init create(domain: Domain? = nil)/edit(idea:); fill-then-commit save; edit-mode hard-delete confirm. Today's NavigationStack gained a net-new top-trailing capture '+' presenting IdeaCaptureSheet() via .sheet, wired to no domain so captures land unfiled in the Hub inbox, never on Today's list.
 
 ### Pending Todos
 
@@ -131,6 +133,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T02:06:13.739Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-07-11T02:12:56.089Z
+Stopped at: Completed 05-05-PLAN.md
 Resume file: None
