@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-07-11T02:00:20.174Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-07-11T02:06:13.747Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 29
-  completed_plans: 21
+  completed_plans: 22
   percent: 67
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 05 (ideas-promotion-e) — EXECUTING
-Plan: 3 of 10
+Plan: 4 of 10
 Status: Ready to execute
 Last activity: 2026-07-11
 
-Progress: [███████░░░] 72%
+Progress: [████████░░] 76%
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ Progress: [███████░░░] 72%
 | Phase 04 P05 | ~10min | 1 tasks | 1 files |
 | Phase 05 P01 | 8min | 2 tasks | 4 files |
 | Phase 05-ideas-promotion-e P03 | 4min | 2 tasks | 2 files |
+| Phase 05-ideas-promotion-e P02 | 6min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,7 @@ Most relevant to current work (Phase 1):
 - [Phase 04]: 04-05: Clips section wired into DomainDetailView as a third domain-section trio (Rules+Collections+Clips) at the reserved Phase D-E hook; uses the Rules isArchived-filter + createdAt-descending shape (not Collections sortIndex) since Clip has a soft-archive flag and wants recency-first ordering (D-10, CLIP-03). No Clips-specific empty state (shared domain empty state covers it, §9.3). Owner full-flow visual verification (Task 2) deferred as a PENDING device-only checkpoint per §9.7.
 - [Phase 05]: 05-01: Idea @Model + nested Idea.PromotedKind facade + Domain.ideas .nullify inverse + plan-less container registration; IdeaModelTests build-verify tier.
 - [Phase 05-ideas-promotion-e]: 05-03: PromoteService (enum, pure/save-free) centralizes archiveAndForwardLink + requiresDomainBeforePromote; caller owns ModelContext.save(). — Keeps promote-consume logic in one small testable core (D-07); PromoteServiceTests runs ModelContainer-free in the runnable engine tier (§9.7).
+- [Phase 05-ideas-promotion-e]: 05-02: IdeaDTO Codable struct + schemaVersion 6 Idea round-trip (export map, import loop via categoryIndex, deleteAll before Domain); SettingsView ideas @Query threaded into exportData call.
 
 ### Pending Todos
 
@@ -129,6 +131,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T02:00:20.128Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-07-11T02:06:13.739Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
