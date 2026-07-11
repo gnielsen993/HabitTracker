@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Checkpoint pending: 05-04 Task 2 (owner device sign-off) — automated Task 1 PASS recorded"
-last_updated: "2026-07-11T02:28:51.998Z"
+stopped_at: Completed 05-04-PLAN.md (IDEA-01 upgrade test — automated PASS + owner approved)
+last_updated: "2026-07-11T02:31:50.141Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 05 (ideas-promotion-e) — EXECUTING
-Plan: 5 of 10
+Plan: 6 of 10
 Status: Ready to execute
 Last activity: 2026-07-11
 
-Progress: [████████░░] 79%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
@@ -73,6 +73,7 @@ Progress: [████████░░] 79%
 | Phase 05-ideas-promotion-e P03 | 4min | 2 tasks | 2 files |
 | Phase 05-ideas-promotion-e P02 | 6min | 2 tasks | 3 files |
 | Phase 05-ideas-promotion-e P05 | 5min | 2 tasks | 2 files |
+| Phase 05-ideas-promotion-e P04 | 18min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -125,7 +126,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 - DOM-03/DOM-06 Hub device visual checkpoint (01-05 Task 3) BLOCKING — PENDING owner verification: build+grep passed; owner must confirm on iPhone 17 the 4 tabs (Today/Hub/Progress/Settings), accent-tinted focused-domain grid (Style/Diet/Money/Media hidden until focused), the "Your Hub is empty" state + Choose Domains CTA when focused, DomainDetailView opening with header + "Nothing here yet" under a single nav bar, and Today unchanged (XCTest host cannot launch here per recorded CoreSimulator blocker).
 - CLIP-01 upgrade test (04-01 Task 3) ✅ RESOLVED 2026-07-09 (automated) — Clip @Model schema-expansion verified against a real Phase-3 store via the simctl migration procedure + sentinel control (data intact, no crash, ZCLIP added empty). Evidence: .planning/phases/04-clips-d/04-UPGRADE-TEST-EVIDENCE.md. No longer blocking.
 - CLIP-03 full-flow visual verification (04-05 Task 2) ✅ RESOLVED 2026-07-10 (owner device verification) — full Clips flow confirmed on iPhone 17: create with title-suggestion, in-row status chip toggles without navigating, detail Open Link opens Safari (no fetch), edit/delete-confirm, OFFLINE gate holds under Airplane Mode, schemaVersion-5 export/import round-trip intact, section hides when empty, Today unchanged. No longer blocking.
-- IDEA-01 upgrade test (05-04 Task 1) RESOLVED 2026-07-11 (automated) — Idea @Model + Domain.ideas nullify inverse schema-expansion verified against a real Phase-4 store via the simctl migration procedure + sentinel control (data intact, no crash, ZIDEA added empty). Evidence: .planning/phases/05-ideas-promotion-e/05-UPGRADE-TEST-EVIDENCE.md. Task 2 owner device sign-off checkpoint still PENDING (blocking gate) — automated PASS makes it a confirmation, not a required re-run.
+- IDEA-01 upgrade test (05-04) ✅ RESOLVED 2026-07-10 (automated + owner-approved) — Idea @Model + Domain.ideas nullify inverse schema-expansion verified against a real Phase-4 store via the simctl migration procedure + sentinel control (data intact, no crash, ZIDEA added empty). Task 2 blocking human-verify checkpoint CLOSED: owner (Gabe) reviewed the automated evidence and responded "approved" (same precedent as CLIP-01). Evidence: .planning/phases/05-ideas-promotion-e/05-UPGRADE-TEST-EVIDENCE.md. No longer blocking.
 
 ## Deferred Items
 
@@ -135,6 +136,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T02:28:51.990Z
-Stopped at: Checkpoint pending: 05-04 Task 2 (owner device sign-off) — automated Task 1 PASS recorded
-Resume file: .planning/phases/05-ideas-promotion-e/05-04-PLAN.md
+Last session: 2026-07-11T02:31:50.133Z
+Stopped at: Completed 05-04-PLAN.md (IDEA-01 upgrade test — automated PASS + owner approved)
+Resume file: None

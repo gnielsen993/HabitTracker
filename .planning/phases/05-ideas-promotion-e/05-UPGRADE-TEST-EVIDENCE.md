@@ -2,6 +2,7 @@
 
 **Date:** 2026-07-10
 **Result:** ✅ PASS — inferred migration preserves the Phase-4 store when the `Idea` `@Model` (+ `Domain.ideas` nullify inverse) is added.
+**Owner sign-off (05-04 Task 2, blocking human-verify):** ✅ APPROVED 2026-07-10 — Gabe reviewed this automated evidence and accepted the PASS as sufficient sign-off, no on-device re-run needed (same precedent as CLIP-01 in Phase 4). The blocking checkpoint is satisfied by owner review of the automated evidence.
 **Gate:** 05-04 Task 1 (IDEA-01 schema upgrade test) — the data-integrity + no-crash portion.
 **Method:** Real-app `xcrun simctl` procedure per `Docs/SCHEMA_MIGRATION_PLAYBOOK.md` §Step 4, made deterministic with a sentinel — reusing the exact CLIP-01 precedent (`04-clips-d/04-UPGRADE-TEST-EVIDENCE.md`) since the in-process SwiftData test path remains unreliable on this toolchain (§9.7).
 
@@ -39,7 +40,7 @@ The sentinel is the decisive control: because it is a value the seed logic never
 ## Scope / what this does and does not cover
 
 - **Covered (automated):** no-crash launch over an existing Phase-4 store; prior data (domains/habits/collections/collectionItems/clips/rules/dailyEntries) preserved intact; `Idea` type present and empty after migration. This is exactly the playbook Step-4 assertion, extended to the full Phase-4 model set.
-- **Not covered here (still owner device sign-off per the Task 2 checkpoint):** the interactive Ideas capture/promote *flow* (global quick-add, Hub inbox, File vs Promote), VoiceOver/Dynamic Type, and the Settings export→wipe→import round-trip for `Idea`. Those need real UI interaction and can't be driven headlessly here.
+- **Not covered by this automated data-integrity test:** the interactive Ideas capture/promote *flow* (global quick-add, Hub inbox, File vs Promote), VoiceOver/Dynamic Type, and the Settings export→wipe→import round-trip for `Idea`. Those need real UI interaction and can't be driven headlessly here — they are covered by the phase's later UI plans + owner UAT, not this schema-upgrade gate. The Task 2 blocking human-verify checkpoint for the *migration* itself is satisfied by the owner's 2026-07-10 review-and-approve of this automated evidence (see the sign-off line at the top).
 
 ## Reproduce
 

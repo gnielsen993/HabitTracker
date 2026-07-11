@@ -34,7 +34,7 @@ patterns-established:
 requirements-completed: [IDEA-01]
 
 # Metrics
-duration: 15min
+duration: 18min
 completed: 2026-07-11
 ---
 
@@ -44,10 +44,10 @@ completed: 2026-07-11
 
 ## Performance
 
-- **Duration:** ~15 min
+- **Duration:** ~18 min
 - **Started:** 2026-07-11T02:14:00Z (approx)
-- **Completed:** 2026-07-11T02:17:33Z
-- **Tasks:** 1 of 2 completed (Task 2 is a blocking human-verify checkpoint, returned to orchestrator)
+- **Completed:** 2026-07-11T02:20:00Z
+- **Tasks:** 2 of 2 completed (Task 1 automated PASS; Task 2 blocking human-verify checkpoint satisfied by owner "approved" sign-off 2026-07-10)
 - **Files modified:** 1 created
 
 ## Accomplishments
@@ -60,8 +60,9 @@ completed: 2026-07-11
 ## Task Commits
 
 1. **Task 1: Run the automated simctl upgrade-migration procedure** - `3d6841a` (test)
+2. **Task 2: Blocking human-verify checkpoint** - satisfied by owner "approved" sign-off (2026-07-10); recorded in the checkpoint-closeout commit alongside the evidence verdict line (no code change — checkpoint gate)
 
-**Plan metadata:** commit pending (this SUMMARY + STATE/ROADMAP update, added below)
+**Plan metadata:** `eba8110` (SUMMARY.md), `cb1795e` (STATE.md interim), plus the checkpoint-closeout commit finalizing the evidence verdict + STATE/ROADMAP/REQUIREMENTS.
 
 ## Files Created/Modified
 - `.planning/phases/05-ideas-promotion-e/05-UPGRADE-TEST-EVIDENCE.md` - Full procedure, before/after row-count table, sentinel verification, forbidden-move grep, and PASS verdict
@@ -84,8 +85,8 @@ None - no external service configuration required.
 
 ## Next Phase Readiness
 
-- IDEA-01 automated evidence is PASS. Task 2 (blocking human-verify checkpoint) is being returned to the orchestrator per plan requirements — do NOT self-answer it. The owner still needs to explicitly sign off (or may treat the clean automated PASS as sufficient confirmation per the plan's own checkpoint language: "Only required if Task 1 recorded infeasibility, or to sign off the automated evidence on real hardware").
-- No blockers for continuing Phase 5 plans (05-06 onward) once the checkpoint is acknowledged.
+- IDEA-01 automated evidence is PASS and the blocking human-verify checkpoint (Task 2) is CLOSED — owner (Gabe) reviewed the automated evidence and responded "approved" on 2026-07-10, accepting it as sufficient sign-off (same precedent as CLIP-01 in Phase 4). No on-device re-run performed or needed.
+- The mandatory §9.12 upgrade-test gate is cleared before Phase 5 UI ships. No blockers for continuing Phase 5 plans (05-06 onward).
 
 ---
 *Phase: 05-ideas-promotion-e*
