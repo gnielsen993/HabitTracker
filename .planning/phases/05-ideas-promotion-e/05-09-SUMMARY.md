@@ -95,3 +95,10 @@ None - no external service configuration required.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-11*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Hub/DomainDetailView.swift
+- FOUND: .planning/phases/05-ideas-promotion-e/05-09-SUMMARY.md
+- FOUND commit: f008f4d (Task 1)
+- FOUND commit: 0ca3a32 (docs: plan summary)
