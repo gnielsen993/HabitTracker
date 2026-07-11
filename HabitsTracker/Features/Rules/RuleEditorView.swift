@@ -24,11 +24,15 @@ struct RuleEditorView: View {
     // MARK: - Mode
 
     private enum EditorMode {
-        case create(domain: Domain)
+        case create(domain: Domain?)
         case edit(rule: Rule)
     }
 
     private let editorMode: EditorMode
+
+    /// Set only via `init(promotingIdea:)` — nil for the normal create/edit inits.
+    /// Drives the domain-required Save-gate and the post-save consume call (T-05-04/T-05-06).
+    private let sourceIdea: Idea?
 
     // MARK: - Field state (bound to form controls)
 
@@ -45,6 +49,7 @@ struct RuleEditorView: View {
 
     init(domain: Domain) {
         self.editorMode = .create(domain: domain)
+        self.sourceIdea = nil
         _title = State(initialValue: "")
         _bodyText = State(initialValue: "")
         _sourceURLText = State(initialValue: "")
@@ -53,10 +58,22 @@ struct RuleEditorView: View {
 
     init(rule: Rule) {
         self.editorMode = .edit(rule: rule)
+        self.sourceIdea = nil
         _title = State(initialValue: rule.title)
         _bodyText = State(initialValue: rule.body)
         _sourceURLText = State(initialValue: rule.sourceURL ?? "")
         _selectedDomainID = State(initialValue: rule.domain?.id)
+    }
+
+    /// Promote-to-Rule entry point (IDEA-04/IDEA-05). No force-unwrap of `idea.domain` —
+    /// an unfiled idea (idea.domain == nil) is a valid, expected input on this path.
+    init(promotingIdea idea: Idea) {
+        self.editorMode = .create(domain: idea.domain)
+        self.sourceIdea = idea
+        _title = State(initialValue: idea.title)
+        _bodyText = State(initialValue: idea.note ?? "")
+        _sourceURLText = State(initialValue: idea.url ?? "")
+        _selectedDomainID = State(initialValue: idea.domain?.id)
     }
 
     // MARK: - Body
@@ -192,8 +209,18 @@ struct RuleEditorView: View {
         Button(saveCTATitle) {
             saveRule()
         }
-        .disabled(trimmedTitle.isEmpty)
+        .disabled(trimmedTitle.isEmpty || isDomainRequiredButMissing)
         .font(theme.typography.headline)
+    }
+
+    /// Promoting an unfiled idea (idea.domain == nil) requires a domain be chosen
+    /// before Save enables — Rules live in domains (IDEA-05, T-05-06). A filed idea's
+    /// promote, or the normal create/edit paths, need no extra gate.
+    private var isDomainRequiredButMissing: Bool {
+        guard let sourceIdea, PromoteService.requiresDomainBeforePromote(idea: sourceIdea) else {
+            return false
+        }
+        return selectedDomainID == nil
     }
 
     // MARK: - Delete Dialog
@@ -267,15 +294,23 @@ struct RuleEditorView: View {
                 domain: resolvedDomain()
             )
             modelContext.insert(rule)
+            try? modelContext.save()
+
+            // Consume the source idea only after a successful promote-Save (T-05-04) —
+            // never before. No backref is set on the Rule (D-07).
+            if let sourceIdea {
+                PromoteService.archiveAndForwardLink(idea: sourceIdea, as: .rule, targetID: rule.id)
+                try? modelContext.save()
+            }
 
         case .edit(let rule):
             rule.title = trimmed
             rule.body = bodyText
             rule.sourceURL = storedURL
             rule.domain = resolvedDomain()
+            try? modelContext.save()
         }
 
-        try? modelContext.save()
         dismiss()
     }
 }
