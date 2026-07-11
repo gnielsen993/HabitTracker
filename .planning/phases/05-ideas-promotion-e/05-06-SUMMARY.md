@@ -107,3 +107,13 @@ None - no external service configuration required.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-11*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Habits/HabitCreateSheet.swift
+- FOUND: HabitsTracker/Features/Rules/RuleEditorView.swift
+- FOUND: HabitsTracker/Features/Collections/CollectionItemEditorSheet.swift
+- FOUND: HabitsTracker/Features/Ideas/PromoteToCollectionPicker.swift
+- FOUND commit: 41bf378 (Task 1)
+- FOUND commit: ae7d8e1 (Task 2)
+- FOUND commit: 05c16b4 (Task 3)
