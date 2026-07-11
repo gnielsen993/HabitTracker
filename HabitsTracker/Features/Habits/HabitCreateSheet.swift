@@ -46,8 +46,9 @@ struct HabitCreateSheet: View {
 
     // MARK: - Init
 
-    init(source: HabitSource = .manual) {
+    init(source: HabitSource = .manual, onSaved: ((Habit) -> Void)? = nil) {
         self.source = source
+        self.onSaved = onSaved
     }
 
     // MARK: - Body

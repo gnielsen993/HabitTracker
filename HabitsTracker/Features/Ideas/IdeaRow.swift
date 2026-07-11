@@ -23,6 +23,16 @@ struct IdeaRow: View {
     let idea: Idea
 
     @State private var editingIdea = false
+    @State private var promoteRoute: PromoteRoute?
+
+    /// Promote destination (S7, IDEA-04/IDEA-05) - drives `.sheet(item:)` presentation.
+    private enum PromoteRoute: Identifiable {
+        case rule
+        case habit
+        case collection
+
+        var id: Self { self }
+    }
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -40,12 +50,25 @@ struct IdeaRow: View {
                     if idea.domain == nil {
                         filePill(theme: theme)
                     }
-                    // Promote pill: Task 2.
+                    promotePill(theme: theme)
                 }
             }
         }
         .sheet(isPresented: $editingIdea) {
             IdeaCaptureSheet(idea: idea)
+        }
+        .sheet(item: $promoteRoute) { route in
+            switch route {
+            case .rule:
+                RuleEditorView(promotingIdea: idea)
+            case .habit:
+                HabitCreateSheet(source: .idea(idea), onSaved: { habit in
+                    PromoteService.archiveAndForwardLink(idea: idea, as: .habit, targetID: habit.id)
+                    try? modelContext.save()
+                })
+            case .collection:
+                PromoteToCollectionPicker(idea: idea)
+            }
         }
     }
 
@@ -94,6 +117,19 @@ struct IdeaRow: View {
             pillLabel(systemImage: "tray.and.arrow.down", text: "File", theme: theme)
         }
         .accessibilityLabel("File idea, choose a domain")
+    }
+
+    // MARK: - Promote pill (Row 2, always shown, D-07)
+
+    private func promotePill(theme: Theme) -> some View {
+        Menu {
+            Button("Rule") { promoteRoute = .rule }
+            Button("Habit") { promoteRoute = .habit }
+            Button("Collection item") { promoteRoute = .collection }
+        } label: {
+            pillLabel(systemImage: "arrow.up.forward.circle", text: "Promote", theme: theme)
+        }
+        .accessibilityLabel("Promote idea, choose a type")
     }
 
     // MARK: - Pill recipe (DKBadge-style, tokens only)
