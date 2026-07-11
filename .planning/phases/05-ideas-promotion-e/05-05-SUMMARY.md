@@ -104,3 +104,12 @@ None - no external service configuration required.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-10*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Ideas/IdeaCaptureSheet.swift
+- FOUND: HabitsTracker/Features/Today/TodayView.swift
+- FOUND: .planning/phases/05-ideas-promotion-e/05-05-SUMMARY.md
+- FOUND commit: 8342274 (Task 1)
+- FOUND commit: d3c3ecd (Task 2)
+- FOUND commit: 3ecf235 (docs: plan summary)
