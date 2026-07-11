@@ -28,6 +28,7 @@ struct DomainDetailView: View {
     @State private var creatingRule = false
     @State private var creatingCollection = false
     @State private var creatingClip = false
+    @State private var creatingIdea = false
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -62,6 +63,9 @@ struct DomainDetailView: View {
         .sheet(isPresented: $creatingClip) {
             ClipEditorView(domain: domain)
         }
+        .sheet(isPresented: $creatingIdea) {
+            IdeaCaptureSheet(domain: domain)
+        }
     }
 
     // MARK: - Sections
@@ -87,7 +91,11 @@ struct DomainDetailView: View {
             sections.append(clipsSection)
         }
 
-        // Phase E: append Ideas section here.
+        // Phase E: Ideas section (IDEA-01, IDEA-03, D-08, D-09)
+        if let ideasSection = buildIdeasSection(theme: theme) {
+            sections.append(ideasSection)
+        }
+
         return sections
     }
 
@@ -244,6 +252,61 @@ struct DomainDetailView: View {
                     .frame(minWidth: 44, minHeight: 44)
             }
             .accessibilityLabel("Add clip to \(domain.name)")
+        }
+    }
+
+    // MARK: - Ideas section content
+
+    /// Builds the Ideas section for this domain, or returns nil when there are no
+    /// non-archived filed ideas (preserving the DOM-03 "only non-empty sections"
+    /// contract, D-09). Filed ideas are those with `domain != nil` — unfiled ideas
+    /// live in the Hub inbox (05-08), not here.
+    private func buildIdeasSection(theme: Theme) -> DomainSection? {
+        let activeIdeas = domain.ideas
+            .filter { !$0.isArchived }
+            .sorted { $0.createdAt > $1.createdAt }
+
+        guard !activeIdeas.isEmpty else { return nil }
+
+        let content = AnyView(ideasSectionContent(ideas: activeIdeas, theme: theme))
+        return DomainSection(id: "ideas", title: "Ideas", content: content)
+    }
+
+    /// Renders each idea via `IdeaRow` directly — deliberately NO `NavigationLink`/
+    /// detail-view wrapper here (D-08 deviation from the Rules/Collections/Clips
+    /// trio shape): `IdeaRow` owns its own tap-to-edit affordance internally.
+    @ViewBuilder
+    private func ideasSectionContent(ideas: [Idea], theme: Theme) -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.m) {
+            ideasSectionHeader(theme: theme)
+
+            ForEach(ideas, id: \.id) { idea in
+                IdeaRow(idea: idea)
+            }
+        }
+    }
+
+    /// A section header row: "Ideas" title on the left + "+" add button on the right.
+    /// The "+" presents `IdeaCaptureSheet(domain:)` pre-filed under this domain
+    /// (place-first, D-09) — no domain picker.
+    private func ideasSectionHeader(theme: Theme) -> some View {
+        HStack(alignment: .center) {
+            Text("Ideas")
+                .font(theme.typography.title)
+                .foregroundStyle(theme.colors.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            Spacer()
+
+            Button {
+                creatingIdea = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(theme.colors.accentPrimary)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .accessibilityLabel("Add idea to \(domain.name)")
         }
     }
 
