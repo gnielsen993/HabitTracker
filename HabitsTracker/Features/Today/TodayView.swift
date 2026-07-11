@@ -12,6 +12,7 @@ struct TodayView: View {
     @Query(sort: \DailyEntry.dateKey, order: .reverse) private var entries: [DailyEntry]
 
     @State private var saveError: String?
+    @State private var showingCapture = false
 
     private let bootstrapService = BootstrapService()
 
@@ -94,6 +95,22 @@ struct TodayView: View {
             }
             .background(theme.colors.background.ignoresSafeArea())
             .navigationTitle("Today")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingCapture = true
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(theme.colors.accentPrimary)
+                    }
+                    .accessibilityLabel("Add idea")
+                    .accessibilityHint("Opens a quick capture sheet")
+                }
+            }
+            .sheet(isPresented: $showingCapture) {
+                IdeaCaptureSheet()
+            }
             .alert("Save Error", isPresented: Binding(get: { saveError != nil }, set: { _ in saveError = nil })) {
                 Button("OK", role: .cancel) {}
             } message: {
