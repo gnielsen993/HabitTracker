@@ -117,3 +117,11 @@ None - no external service configuration required.
 ---
 *Phase: 05-ideas-promotion-e*
 *Completed: 2026-07-10*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Ideas/IdeaRow.swift
+- FOUND: HabitsTracker/Features/Habits/HabitCreateSheet.swift
+- FOUND commit: 895ae70 (Task 1)
+- FOUND commit: 3dd1531 (Task 2)
+- FOUND commit: e9c9fd7 (docs: plan summary)

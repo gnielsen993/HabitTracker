@@ -102,7 +102,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
 - [x] 05-04-PLAN.md — Mandatory upgrade test (Phase-4 store → Idea-expanded schema, data intact) — owner/simctl checkpoint [wave 2]
 - [x] 05-05-PLAN.md — Capture spine: IdeaCaptureSheet (title-only) + Today top-trailing "+" [wave 2]
 - [x] 05-06-PLAN.md — Promote target editors: HabitSource.idea + RuleEditorView/CollectionItemEditorSheet prefill+gate + PromoteToCollectionPicker [wave 3]
-- [ ] 05-07-PLAN.md — IdeaRow: reusable row + tap-to-edit + inline File/Promote menus + promote routing [wave 4]
+- [x] 05-07-PLAN.md — IdeaRow: reusable row + tap-to-edit + inline File/Promote menus + promote routing [wave 4]
 - [ ] 05-08-PLAN.md — Hub inbox card (count-gated) + data-driven InboxView [wave 5]
 - [ ] 05-09-PLAN.md — Ideas section in DomainDetailView + in-domain place-first "+" [wave 5]
 - [ ] 05-10-PLAN.md — Owner full-flow device verification (SC1–SC4 + baseline DoD) [wave 6]
@@ -136,5 +136,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 2. Rules (B) | 3/3 | Complete   | 2026-07-05 |
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
-| 5. Ideas + Promotion (E) | 6/10 | In Progress|  |
+| 5. Ideas + Promotion (E) | 7/10 | In Progress|  |
 | 6. Polish (F) | 0/TBD | Not started | - |
