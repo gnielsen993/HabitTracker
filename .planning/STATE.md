@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 05-06-PLAN.md (promote target editors: HabitCreateSheet/RuleEditorView/CollectionItemEditorSheet + PromoteToCollectionPicker)"
-last_updated: "2026-07-11T02:46:34.132Z"
+stopped_at: Completed 05-08-PLAN.md (InboxView + Hub inbox card)
+last_updated: "2026-07-11T13:14:21.136Z"
 last_activity: 2026-07-11
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 29
-  completed_plans: 26
+  completed_plans: 27
   percent: 67
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 05 (ideas-promotion-e) — EXECUTING
-Plan: 8 of 10
+Plan: 9 of 10
 Status: Ready to execute
 Last activity: 2026-07-11
 
-Progress: [█████████░] 90%
+Progress: [█████████░] 93%
 
 ## Performance Metrics
 
@@ -75,6 +75,7 @@ Progress: [█████████░] 90%
 | Phase 05-ideas-promotion-e P05 | 5min | 2 tasks | 2 files |
 | Phase 05-ideas-promotion-e P04 | 18min | 2 tasks | 1 files |
 | Phase 05-ideas-promotion-e P06 | 4min | 3 tasks | 4 files |
+| Phase 05-ideas-promotion-e P08 | 4min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,7 @@ Most relevant to current work (Phase 1):
 - [Phase 05]: 05-05: IdeaCaptureSheet is a shared plain-VStack (not Form) title-only sheet with dual init create(domain: Domain? = nil)/edit(idea:); fill-then-commit save; edit-mode hard-delete confirm. Today's NavigationStack gained a net-new top-trailing capture '+' presenting IdeaCaptureSheet() via .sheet, wired to no domain so captures land unfiled in the Hub inbox, never on Today's list.
 - [Phase 05]: 05-04: Reused the exact CLIP-01 sentinel-injection simctl upgrade procedure (sibling worktree at pre-Idea SHA 793b220, sentinel-rename a domain row, install new build over the store without erasing) to verify Idea @Model schema expansion — proves the procedure is now a repeatable pattern for future @Model changes.
 - [Phase 05]: 05-06: HabitCreateSheet gains .idea(Idea) prefill + additive onSaved: ((Habit) -> Void)? = nil completion; RuleEditorView's EditorMode.create widened to Domain? with init(promotingIdea:) + domain-required Save gate; CollectionItemEditorSheet gains init(collection:promotingIdea:); new PromoteToCollectionPicker routes to it — Promote routes into the three existing target editors prefilled, not a bespoke PromoteSheet (D-06); Rule/CollectionItem self-consume via PromoteService on save, Habit hands consume off to its onSaved caller (D-07)
+- [Phase 05-ideas-promotion-e]: 05-08: InboxView owns @Query(domain==nil && !isArchived, sort createdAt desc) rendering IdeaRow with D-04 minimal single-line empty state; HubView gained an unfiledIdeas @Query + count-gated inbox card (DKCard, tray.full, DKBadge count, chevron) pinned above the domain grid via a new wrapping VStack, LazyVGrid internals unchanged.
 
 ### Pending Todos
 
@@ -138,6 +140,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-11T02:41:38.613Z
-Stopped at: Completed 05-06-PLAN.md (promote target editors: HabitCreateSheet/RuleEditorView/CollectionItemEditorSheet + PromoteToCollectionPicker)
+Last session: 2026-07-11T13:14:21.121Z
+Stopped at: Completed 05-08-PLAN.md (InboxView + Hub inbox card)
 Resume file: None
