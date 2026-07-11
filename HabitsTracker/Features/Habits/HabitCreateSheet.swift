@@ -3,10 +3,10 @@ import SwiftData
 import DesignKit
 
 /// Source for HabitCreateSheet — drives prefill only; chrome is identical for all cases (D-07).
-/// Phase 5 will add `.idea(Idea)` without touching the sheet.
 enum HabitSource {
     case manual
     case rule(Rule)
+    case idea(Idea)
 }
 
 /// Shared fill-then-commit habit creation sheet (S4, RULE-02).
@@ -24,6 +24,11 @@ struct HabitCreateSheet: View {
     @Query(sort: \Domain.sortIndex) private var domains: [Domain]
 
     let source: HabitSource
+
+    /// Additive, backward-compatible completion invoked once after a successful save
+    /// (default nil — existing call sites are unaffected). Lets the promote-to-habit
+    /// caller consume the source idea via `PromoteService` (D-07: no backref is set here).
+    var onSaved: ((Habit) -> Void)? = nil
 
     // MARK: - Draft state (in-memory only — NO persisted Habit until Save)
 
@@ -183,6 +188,12 @@ struct HabitCreateSheet: View {
             // Prefill title + domain from the rule; both remain editable
             title = rule.title
             selectedDomain = rule.domain
+        case .idea(let idea):
+            // Prefill title + domain from the idea; both remain editable.
+            // No backref is set anywhere (D-07) — the idea-side consume is the
+            // promote caller's job via the `onSaved` completion below.
+            title = idea.title
+            selectedDomain = idea.domain
         }
     }
 
@@ -199,6 +210,9 @@ struct HabitCreateSheet: View {
         case .rule(let rule):
             originRule = rule
             // Rule is NOT mutated here — stem sets the link only on the Habit side (RULE-03)
+        case .idea:
+            // No backref from Habit to Idea (D-07) — promote is consume, not a reference.
+            originRule = nil
         }
 
         let weeklyTarget: Int? = mode == .optional ? weeklyTargetCount : nil
@@ -216,6 +230,7 @@ struct HabitCreateSheet: View {
         )
         modelContext.insert(habit)
         try? modelContext.save()
+        onSaved?(habit)
         dismiss()
     }
 }
