@@ -43,8 +43,8 @@ struct InboxView: View {
 
     // MARK: - Empty state
 
-    /// Minimal D-04 placeholder — NOT the Phase 6 designed empty state (flag: POL-02
-    /// replaces this with a fuller treatment). Single centered line, no heading, no CTA.
+    /// Single centered line, no heading, no CTA (D-11: this minimal treatment is the
+    /// accepted designed inbox empty state, verified in Phase 6/POL-02).
     private func emptyState(theme: Theme) -> some View {
         Text("Nothing to file right now.")
             .font(theme.typography.body)

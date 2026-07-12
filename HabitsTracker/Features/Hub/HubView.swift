@@ -18,12 +18,19 @@ struct HubView: View {
     @Query(filter: #Predicate<Idea> { $0.domain == nil && !$0.isArchived })
     private var unfiledIdeas: [Idea]
 
+    /// Cross-domain search (POL-01, D-01/D-02): backs `.searchable` on this stack.
+    /// A non-empty (trimmed) query swaps the Group's content for `SearchResultsView`.
+    @State private var searchText = ""
+
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
+        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
 
         NavigationStack {
             Group {
-                if focusedDomains.isEmpty {
+                if !trimmedSearch.isEmpty {
+                    SearchResultsView(query: searchText)
+                } else if focusedDomains.isEmpty {
                     emptyState(theme: theme)
                 } else {
                     grid(theme: theme)
@@ -35,6 +42,8 @@ struct HubView: View {
             .navigationDestination(for: Domain.self) { domain in
                 DomainDetailView(domain: domain)
             }
+            .searchable(text: $searchText)
+            .searchToolbarBehavior(.minimize)
         }
     }
 
