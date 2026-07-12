@@ -24,12 +24,13 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 - ✓ Rules as reference-first items + Stem-a-habit flow with shared `HabitCreateSheet` (`Rule` @Model, `.nullify` stem link, schemaVersion 3) — Validated in Phase B (2026-07-05)
 - ✓ Collections: StatusSet model, tap-to-advance chips, fixed progress templates, aggregate/cost rollups, curated presets (`Collection`/`CollectionItem` @Models, schemaVersion 4) — Validated in Phase C (2026-07-06)
 - ✓ Clips: offline-only saved links with tag + saved/acted status, filed by domain (`Clip` @Model, `ClipStatus`, zero-network title suggestion, schemaVersion 5) — Validated in Phase D (2026-07-10; schema upgrade auto-verified + full flow owner-approved)
+- ✓ Ideas: global capture-first "+" on Today, Hub inbox, File (domain) vs Promote (Rule/Habit/Collection item) graduations via a pure `PromoteService` consume/forward-link (no backref) reusing the existing target editors (`Idea` @Model + `Domain.ideas` `.nullify` inverse, schemaVersion 6) — Validated in Phase E (2026-07-11; schema upgrade auto-verified + full flow owner-approved)
 
 ### Active
 
 <!-- Lifestyle Hub milestone scope (Phases A–F). -->
 
-- [ ] Ideas: global capture-first quick-add, Hub inbox, File vs Promote graduations (Phase E)
+- [x] Ideas: global capture-first quick-add, Hub inbox, File vs Promote graduations (Phase E) — validated 2026-07-11
 - [ ] Polish: cross-domain search, empty states, full multi-type export/import, accessibility pass (Phase F)
 
 ### Out of Scope
@@ -99,4 +100,4 @@ The daily habit loop keeps you opening the app, and every part of your lifestyle
 | Q5 | Product naming/identity: keep "HabitTracker" or rename for the hub (bundle ID frozen regardless) | Any time; non-blocking |
 
 ---
-*Last updated: 2026-07-10 after Phase D (Clips) completion*
+*Last updated: 2026-07-11 after Phase E (Ideas + Promotion) completion*
