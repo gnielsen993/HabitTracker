@@ -269,4 +269,211 @@ final class ExportImportTests: XCTestCase {
         XCTAssertNotNil(fetchedIdea.domain, "Idea.domain must be re-linked after import")
         XCTAssertEqual(fetchedIdea.domain?.id, fetchedDomain.id, "domainID wiring (categoryIndex) must survive round-trip")
     }
+
+    /// POL-03: a single bundle containing one of EVERY persisted type (Domain, Habit,
+    /// DailyEntry, Rule, Collection, CollectionItem, Clip, Idea) survives export ->
+    /// importReplace together, with fields AND cross-type relationships intact at
+    /// schemaVersion 6 (D-14). The per-version tests above isolate one type's fields
+    /// at a time; this proves they all round-trip together in one real backup shape.
+    /// StatusSet is asserted via the stored `statusSetID` identifier (code catalog,
+    /// not a DTO — D-14). Build-verify only per §9.7; device execution is 06-04.
+    @MainActor
+    func testAllTypesSurviveRoundTripV6() throws {
+        let service = ExportImportService()
+
+        let domain = Domain(name: "Home", iconName: "house", colorToken: "forest", sortIndex: 0, isFocused: true)
+
+        let rule = Rule(
+            title: "Keep counters clear",
+            body: "Wipe down nightly",
+            sourceURL: "https://example.com/kitchen",
+            domain: domain,
+            isArchived: false
+        )
+
+        let habit = Habit(name: "Wipe counters", category: domain, scheduleType: .daily, mode: .required)
+        let entry = DailyEntry(dateKey: DateUtilities.startOfDay(.now), note: "All done")
+        let habitState = HabitState(isCompleted: true, completedAt: .now, dailyEntry: entry, habit: habit)
+        entry.habitStates = [habitState]
+        habit.states = [habitState]
+
+        let collection = Collection(
+            title: "Watchlist",
+            statusSetID: "shows",
+            progressTemplate: "seasonEpisode",
+            showsAggregate: true,
+            sortIndex: 0,
+            isSeeded: false,
+            seedVersion: 0,
+            domain: domain
+        )
+        let item = CollectionItem(
+            title: "Severance",
+            statusIndex: 1,
+            sortIndex: 0,
+            note: "Started season 2",
+            sourceURL: "https://tv.apple.com/show/severance",
+            cost: nil,
+            season: 2,
+            episode: 1,
+            counterValue: 0,
+            counterLabel: nil,
+            isSeeded: false,
+            seedVersion: 0,
+            collection: collection
+        )
+        collection.items = [item]
+
+        let clip = Clip(
+            title: "Sourdough starter guide",
+            url: "https://example.com/sourdough",
+            note: "read this weekend",
+            tag: "recipe",
+            status: .saved,
+            domain: domain
+        )
+
+        // Filed under domain AND promoted (consumed) — exercises both the
+        // domain forward-link and the promotedToKind(raw)/promotedToID pair
+        // in the same bundle (D-14).
+        let ideaTargetID = UUID()
+        let idea = Idea(
+            title: "Weekly kitchen reset ritual",
+            note: "grew out of the counters rule",
+            url: "https://example.com/ritual",
+            isArchived: true,
+            promotedToKindRaw: Idea.PromotedKind.rule.rawValue,
+            promotedToID: ideaTargetID,
+            domain: domain
+        )
+
+        let data = try service.exportData(
+            categories: [domain],
+            habits: [habit],
+            entries: [entry],
+            rules: [rule],
+            collections: [collection],
+            collectionItems: [item],
+            clips: [clip],
+            ideas: [idea]
+        )
+
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: data, context: context)
+
+        let domains = try context.fetch(FetchDescriptor<Domain>())
+        let habits = try context.fetch(FetchDescriptor<Habit>())
+        let entries = try context.fetch(FetchDescriptor<DailyEntry>())
+        let rules = try context.fetch(FetchDescriptor<Rule>())
+        let collections = try context.fetch(FetchDescriptor<Collection>())
+        let items = try context.fetch(FetchDescriptor<CollectionItem>())
+        let clips = try context.fetch(FetchDescriptor<Clip>())
+        let ideas = try context.fetch(FetchDescriptor<Idea>())
+
+        XCTAssertEqual(domains.count, 1, "Domain must survive round-trip")
+        XCTAssertEqual(habits.count, 1, "Habit must survive round-trip")
+        XCTAssertEqual(entries.count, 1, "DailyEntry must survive round-trip")
+        XCTAssertEqual(rules.count, 1, "Rule must survive round-trip")
+        XCTAssertEqual(collections.count, 1, "Collection must survive round-trip")
+        XCTAssertEqual(items.count, 1, "CollectionItem must survive round-trip")
+        XCTAssertEqual(clips.count, 1, "Clip must survive round-trip")
+        XCTAssertEqual(ideas.count, 1, "Idea must survive round-trip")
+
+        let fetchedDomain = try XCTUnwrap(domains.first)
+        let fetchedHabit = try XCTUnwrap(habits.first)
+        let fetchedEntry = try XCTUnwrap(entries.first)
+        let fetchedRule = try XCTUnwrap(rules.first)
+        let fetchedCollection = try XCTUnwrap(collections.first)
+        let fetchedItem = try XCTUnwrap(items.first)
+        let fetchedClip = try XCTUnwrap(clips.first)
+        let fetchedIdea = try XCTUnwrap(ideas.first)
+
+        // Rule.domain relationship + fields.
+        XCTAssertEqual(fetchedRule.domain?.id, fetchedDomain.id, "Rule.domain must be re-linked after import")
+        XCTAssertEqual(fetchedRule.body, "Wipe down nightly", "Rule.body must survive")
+        XCTAssertEqual(fetchedRule.sourceURL, "https://example.com/kitchen", "Rule.sourceURL must survive")
+
+        // Habit <-> DailyEntry relationship, via the shared HabitState.
+        XCTAssertEqual(fetchedEntry.habitStates.count, 1, "HabitState must survive round-trip")
+        XCTAssertEqual(fetchedEntry.habitStates.first?.habit?.id, fetchedHabit.id, "HabitState.habit must be re-linked after import")
+
+        // Collection + CollectionItem: statusSetID (StatusSet-by-id, D-14), note, position fields.
+        XCTAssertEqual(fetchedCollection.statusSetID, "shows", "Collection.statusSetID must survive as the stored identifier (StatusSet-by-id, D-14)")
+        XCTAssertEqual(fetchedItem.collection?.id, fetchedCollection.id, "CollectionItem.collection must be re-linked after import")
+        XCTAssertEqual(fetchedItem.note, "Started season 2", "CollectionItem.note must survive")
+        XCTAssertEqual(fetchedItem.sortIndex, 0, "CollectionItem.sortIndex (position) must survive")
+        XCTAssertEqual(fetchedItem.statusIndex, 1, "CollectionItem.statusIndex (position within StatusSet) must survive")
+
+        // Clip.domain relationship + status.
+        XCTAssertEqual(fetchedClip.domain?.id, fetchedDomain.id, "Clip.domain must be re-linked after import")
+        XCTAssertEqual(fetchedClip.status, .saved, "Clip.status must survive")
+
+        // Idea.domain relationship + promoted forward-link.
+        XCTAssertEqual(fetchedIdea.domain?.id, fetchedDomain.id, "Idea.domain must be re-linked after import")
+        XCTAssertEqual(fetchedIdea.promotedTo, .rule, "Idea.promotedTo facade must survive")
+        XCTAssertEqual(fetchedIdea.promotedToID, ideaTargetID, "Idea.promotedToID forward-link must survive")
+        XCTAssertEqual(fetchedIdea.isArchived, true, "Idea.isArchived (consumed) must survive")
+    }
+
+    /// POL-03 safety net (T-06-03-T): a malformed (non-JSON) import and an import
+    /// from a newer, unsupported `schemaVersion` (7 > current 6) must both throw
+    /// AND leave the existing store untouched. `importReplace` decodes + guards
+    /// `schemaVersion <= currentSchemaVersion` BEFORE `deleteAll` (service lines
+    /// 157-165), so a decode/guard failure never reaches the destructive delete —
+    /// a bad backup file must never destroy the local store.
+    @MainActor
+    func testMalformedAndUnsupportedImportPreservesStore() throws {
+        let service = ExportImportService()
+        let context = try makeInMemoryContext()
+
+        // Seed a non-empty store directly (not via import) so there is a clear
+        // baseline to prove untouched after each throwing import attempt.
+        let domain = Domain(name: "Health", iconName: "heart", colorToken: "maroon", sortIndex: 0, isFocused: true)
+        let habit = Habit(name: "Stretch", category: domain, scheduleType: .daily, mode: .required)
+        context.insert(domain)
+        context.insert(habit)
+        try context.save()
+
+        let baselineDomains = try context.fetch(FetchDescriptor<Domain>()).count
+        let baselineHabits = try context.fetch(FetchDescriptor<Habit>()).count
+        XCTAssertEqual(baselineDomains, 1)
+        XCTAssertEqual(baselineHabits, 1)
+
+        // b1: syntactically invalid JSON must throw at decode, before any delete.
+        let garbageData = Data("{ this is not valid json".utf8)
+        XCTAssertThrowsError(try service.importReplace(data: garbageData, context: context)) { error in
+            XCTAssertTrue(error is DecodingError, "malformed JSON must fail at decode, before any delete")
+        }
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Domain>()).count, baselineDomains, "malformed import must not touch existing domains")
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Habit>()).count, baselineHabits, "malformed import must not touch existing habits")
+
+        // b2: a syntactically valid bundle whose schemaVersion (7) is newer than
+        // this build's currentSchemaVersion (6) must also throw at the guard,
+        // before any delete.
+        let futureEncoder = JSONEncoder()
+        futureEncoder.dateEncodingStrategy = .iso8601
+        let futureBundle = HabitExportBundle(
+            schemaVersion: ExportImportService.currentSchemaVersion + 1,
+            exportedAt: .now,
+            categories: [],
+            habits: [],
+            dailyEntries: [],
+            rules: [],
+            collections: [],
+            collectionItems: [],
+            clips: [],
+            ideas: []
+        )
+        let futureData = try futureEncoder.encode(futureBundle)
+
+        XCTAssertThrowsError(try service.importReplace(data: futureData, context: context)) { error in
+            guard case ImportError.unsupportedSchema(let version) = error else {
+                XCTFail("expected ImportError.unsupportedSchema, got \(error)")
+                return
+            }
+            XCTAssertEqual(version, ExportImportService.currentSchemaVersion + 1)
+        }
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Domain>()).count, baselineDomains, "unsupported-schema import must not touch existing domains")
+        XCTAssertEqual(try context.fetch(FetchDescriptor<Habit>()).count, baselineHabits, "unsupported-schema import must not touch existing habits")
+    }
 }
