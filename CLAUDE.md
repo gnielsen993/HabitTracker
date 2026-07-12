@@ -273,3 +273,9 @@ When you hear one of these, follow `Docs/RELEASE_PROCESS.md` in full (create it 
 - **Frustrations:** Follow documented CLAUDE.md rules precisely. Do not ask permission for actions the rules already authorize (e.g., commit/push on wrap-up). Perform actions yourself rather than instructing the developer. Trust stated facts about their codebase over your own assumptions.
 - **Learning:** When introducing new concepts or orienting the developer, explain through guided dialogue -- how the mechanism works generally, then connect it to their situation. Offer to investigate and summarize project state rather than assuming they will read the code themselves.
 <!-- GSD:profile-end -->
+
+## 12) Brain (Obsidian knowledge base — Claude only)
+
+Durable knowledge from this project goes in my Obsidian brain under the [[HabitsTracker]] MOC, tagged `habitstracker`. Global conventions — format, when to read/write — are in `~/.claude/CLAUDE.md`.
+
+Worth capturing here: Lifestyle Hub direction decisions and their rationale, SwiftData/simulator testing learnings beyond §9.7, release learnings, approaches tried and rejected. Ecosystem-wide learnings become atomic notes linked from every relevant MOC — [[DesignKit]] knowledge goes under its own MOC, not here.
