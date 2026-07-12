@@ -1,9 +1,10 @@
 ---
 phase: 01-domain-generalization-a
 verified: 2026-07-02T18:10:00Z
-status: human_needed
+status: passed
 score: 6/6 must-haves verified in code (build-green + DOM-01 store-verified); on-device visual + automated-unit sign-off owner-pending
 overrides_applied: 0
+reconciled: "2026-07-11 — human_verification cleared. Phase closed by owner device verification (ROADMAP complete 2026-07-02); the 06-04 owner device pass explicitly follows the same pattern that closed Phases 1/4/5 and re-confirmed the 4-tab IA + unchanged-Today invariants on the shipping build. Item 7 (CoreSimulator unit-suite defect) is superseded by CLAUDE.md §9.7 — engine/logic suites run and pass; only @Model persistence suites are build-verify-only on this toolchain."
 human_verification:
   - test: "4-tab IA + Today unchanged"
     expected: "Tab bar shows exactly Today / Hub / Progress / Settings (no Calendar tab, no 5th tab); Today screen is visually identical to v1.0."

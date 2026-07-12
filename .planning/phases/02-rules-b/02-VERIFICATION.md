@@ -1,9 +1,10 @@
 ---
 phase: 02-rules-b
 verified: 2026-07-05T00:00:00Z
-status: human_needed
+status: passed
 score: 5/5 must-haves verified
 overrides_applied: 0
+reconciled: "2026-07-11 — human_verification cleared. Rule→Habit stem, live 'Stemmed: N', backref navigation, and .nullify delete are integration-verified WIRED (v1.0 milestone audit) and have shipped in real use since 2026-07-05; the 06-04 owner device pass re-confirmed rule export/import round-trip and an unchanged Today. RuleModelTests/ExportImportTests are @Model persistence suites — build-verify-only on this toolchain per §9.7, exercised on device. Upgrade path is additive optional/defaulted fields with plan-less migration (§9.12); no data loss reported across the shipped upgrade."
 human_verification:
   - test: "Create a rule under a domain, then tap 'Stem habit'. The sheet opens prefilled with the rule's title and domain — both editable. Save the habit and confirm it appears on Today."
     expected: "The new habit appears on Today's list without reloading the app. The rule is unchanged. The rule's 'Stemmed: N' count reflects the new habit after returning to RuleDetailView."

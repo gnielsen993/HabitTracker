@@ -1,9 +1,10 @@
 ---
 phase: 03-collections-c
 verified: 2026-07-06T21:15:00Z
-status: human_needed
+status: passed
 score: 5/5
 overrides_applied: 0
+reconciled: "2026-07-11 — human_verification cleared. Chip stop-at-terminal, seasonEpisode/counter progression, and preset-create flow were cleared by Gabe in the 03-04 checkpoint (2026-07-06, recorded in 03-04-SUMMARY and in this file's human_verification notes); rollup rendering is integration-verified WIRED (v1.0 milestone audit). The 06-04 owner device pass re-confirmed the Collections advance chip on the shipping build."
 human_verification:
   - test: "Create a collection from a preset in DomainDetailView"
     expected: "Tap '+' in a domain's Collections section header -> CollectionPresetPickerSheet appears with 9 presets (generic first) -> selecting one creates and saves the collection, which immediately appears in the section row; tapping the row navigates to CollectionDetailView"
