@@ -106,3 +106,11 @@ None - no external service configuration required.
 ---
 *Phase: 06-polish-f*
 *Completed: 2026-07-12*
+
+## Self-Check: PASSED
+
+- FOUND: HabitsTracker/Features/Hub/SearchResultsView.swift
+- FOUND: .planning/phases/06-polish-f/06-01-SUMMARY.md
+- FOUND commit: 36359bf (Task 1)
+- FOUND commit: 5f43b68 (Task 2)
+- FOUND commit: e0e1679 (SUMMARY.md)
