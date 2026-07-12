@@ -80,6 +80,14 @@ struct SettingsView: View {
                         }
                     }
                 }
+
+                // Read-only app/data visibility (POL-04 D-13) — surfaces the same
+                // source-of-truth schema constant Export/Import uses, never a
+                // divergent literal.
+                Section("About") {
+                    LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—")
+                    LabeledContent("Data schema", value: "v\(ExportImportService.currentSchemaVersion)")
+                }
             }
             .scrollContentBackground(.hidden)
             .background(theme.colors.background)

@@ -4,7 +4,10 @@ import SwiftData
 // DTOs live in `ExportImportDTOs.swift` (§9.1 file-size split).
 
 final class ExportImportService {
-    private let schemaVersion = 6
+    /// Single source of truth for the export/import schema version (currently 6).
+    /// Readable so callers like `SettingsView`'s About row never carry a divergent
+    /// literal (POL-04 D-13).
+    static let currentSchemaVersion = 6
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -31,7 +34,7 @@ final class ExportImportService {
         ideas: [Idea]
     ) throws -> Data {
         let payload = HabitExportBundle(
-            schemaVersion: schemaVersion,
+            schemaVersion: Self.currentSchemaVersion,
             exportedAt: .now,
             categories: categories.map {
                 DomainDTO(
@@ -158,7 +161,7 @@ final class ExportImportService {
         // Accept this version or older (older backups decode missing type arrays
         // as empty via HabitExportBundle's tolerant decoder). Reject only backups
         // from a *newer* build we can't understand, so we never silently drop data.
-        guard bundle.schemaVersion <= schemaVersion else {
+        guard bundle.schemaVersion <= Self.currentSchemaVersion else {
             throw ImportError.unsupportedSchema(bundle.schemaVersion)
         }
 
