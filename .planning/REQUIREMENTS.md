@@ -53,8 +53,8 @@
 
 ### Polish (Phase F)
 
-- [ ] **POL-01**: Cross-domain search returns items across all types and navigates to a tapped result.
-- [ ] **POL-02**: Every section, the inbox, and the Hub have a designed empty state.
+- [x] **POL-01**: Cross-domain search returns items across all types and navigates to a tapped result.
+- [x] **POL-02**: Every section, the inbox, and the Hub have a designed empty state.
 - [ ] **POL-03**: Full export/import round-trips ALL types (Domain, Habit, Rule, Collection, CollectionItem, Idea, Clip, StatusSet) under the bumped `schemaVersion`.
 - [ ] **POL-04**: Accessibility pass: Dynamic Type, VoiceOver labels on chips/buttons/Hub grid, tokens-only colors; absorbs the pending "Next 3" (accessibility, empty states, schema/version visibility in Settings).
 
@@ -114,8 +114,8 @@ Explicitly excluded for this milestone. Documented to prevent scope creep.
 | IDEA-03 | Phase E | Complete |
 | IDEA-04 | Phase E | Complete |
 | IDEA-05 | Phase E | Complete |
-| POL-01 | Phase F | Pending |
-| POL-02 | Phase F | Pending |
+| POL-01 | Phase F | Complete |
+| POL-02 | Phase F | Complete |
 | POL-03 | Phase F | Pending |
 | POL-04 | Phase F | Pending |
 

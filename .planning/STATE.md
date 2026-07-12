@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 6 context gathered
-last_updated: "2026-07-12T02:38:03.070Z"
-last_activity: 2026-07-12 -- Phase 06 planning complete
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-07-12T02:49:27.499Z"
+last_activity: 2026-07-12
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 33
-  completed_plans: 29
+  completed_plans: 30
   percent: 83
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-28)
 
 **Core value:** The daily habit loop keeps you opening the app, and every part of your lifestyle gets the right kind of structure (check/status/position/stem/promote) filed in one opinionated place.
-**Current focus:** Phase 6 — polish (f)
+**Current focus:** Phase 06 — polish-f
 
 ## Current Position
 
-Phase: 6
-Plan: Not started
+Phase: 06 (polish-f) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
-Last activity: 2026-07-12 -- Phase 06 planning complete
+Last activity: 2026-07-12
 
-Progress: [██████████] 97%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -78,6 +78,7 @@ Progress: [██████████] 97%
 | Phase 05-ideas-promotion-e P06 | 4min | 3 tasks | 4 files |
 | Phase 05-ideas-promotion-e P08 | 4min | 2 tasks | 2 files |
 | Phase 05-ideas-promotion-e P09 | 5min | 1 tasks | 1 files |
+| Phase 06-polish-f P01 | 10min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,9 @@ Most relevant to current work (Phase 1):
 - [Phase 05]: 05-04: Reused the exact CLIP-01 sentinel-injection simctl upgrade procedure (sibling worktree at pre-Idea SHA 793b220, sentinel-rename a domain row, install new build over the store without erasing) to verify Idea @Model schema expansion — proves the procedure is now a repeatable pattern for future @Model changes.
 - [Phase 05]: 05-06: HabitCreateSheet gains .idea(Idea) prefill + additive onSaved: ((Habit) -> Void)? = nil completion; RuleEditorView's EditorMode.create widened to Domain? with init(promotingIdea:) + domain-required Save gate; CollectionItemEditorSheet gains init(collection:promotingIdea:); new PromoteToCollectionPicker routes to it — Promote routes into the three existing target editors prefilled, not a bespoke PromoteSheet (D-06); Rule/CollectionItem self-consume via PromoteService on save, Habit hands consume off to its onSaved caller (D-07)
 - [Phase 05-ideas-promotion-e]: 05-08: InboxView owns @Query(domain==nil && !isArchived, sort createdAt desc) rendering IdeaRow with D-04 minimal single-line empty state; HubView gained an unfiledIdeas @Query + count-gated inbox card (DKCard, tray.full, DKBadge count, chevron) pinned above the domain grid via a new wrapping VStack, LazyVGrid internals unchanged.
+- [Phase 06-01]: 06-01: SearchResultsView is a type-grouped read-only lens over six per-type @Query fetches (Habit/Rule/Collection/CollectionItem/Clip/Idea), .localizedStandardContains matching over title + free-text fields, reusing each type's existing row + detail/editor destination (Habit opens HabitEditorView as a sheet, never Today).
+- [Phase 06-01]: 06-01: CollectionItem search hits fold into their parent Collection's result row/section rather than a standalone CollectionItem section.
+- [Phase 06-01]: 06-01: InboxView's minimal single-line empty state confirmed as the accepted D-11 designed treatment; stale POL-02 placeholder doc-comment removed, rendered copy unchanged.
 
 ### Pending Todos
 
@@ -143,6 +147,6 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-12T01:37:18.568Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-polish-f/06-CONTEXT.md
+Last session: 2026-07-12T02:49:27.473Z
+Stopped at: Completed 06-01-PLAN.md
+Resume file: None
