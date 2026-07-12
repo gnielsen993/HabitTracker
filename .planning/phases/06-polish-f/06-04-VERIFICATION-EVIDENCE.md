@@ -3,7 +3,7 @@ phase: 06-polish-f
 plan: 04
 type: verification-evidence
 requirements: [POL-01, POL-02, POL-03, POL-04]
-status: awaiting-owner-signoff
+status: approved
 ---
 
 # Phase 6 (polish-f) — Owner Device Verification Evidence
@@ -45,4 +45,4 @@ Files: `SearchResultsView.swift`, `HubView.swift`, `CollectionItemRow.swift`, `S
 - [ ] **Baseline DoD:** Today unchanged, tab bar still 4 tabs, no debug/placeholder strings.
 
 ## Owner sign-off
-_Pending — owner types "approved" to close Phase 6, or describes the failing SC to route a gap-closure plan._
+**APPROVED** by owner (Gabe) on 2026-07-11. SC1–SC4 + baseline DoD confirmed on device. Phase 6 closed.
