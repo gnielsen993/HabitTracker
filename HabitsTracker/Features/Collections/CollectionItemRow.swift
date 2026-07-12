@@ -86,7 +86,10 @@ struct CollectionItemRow: View {
         // D-08: fire on every tap, including terminal (keyed on tapCounter not statusIndex)
         .sensoryFeedback(.impact(weight: .light), trigger: tapCounter)
         .accessibilityLabel("Status: \(statusLabel), \(item.title)")
-        .accessibilityHint("Advances to the next status")
+        // D-08: at the terminal status the tap is a documented no-op — don't claim an advance.
+        .accessibilityHint(item.statusIndex < terminalIndex
+            ? "Advances to the next status"
+            : "Already at the final status")
         .accessibilityAction(named: "Reset status") {
             item.statusIndex = 0
         }

@@ -6,8 +6,9 @@ import DesignKit
 /// `.searchable` field attached to `HubView` holds a non-empty query (D-01/D-02).
 ///
 /// Owns six `@Query`s — one per searchable type (§9.2: the view owns the queries,
-/// rows take values) — each already excluding archived/consumed items (D-06) at the
-/// `#Predicate` level. Matching against `query` (title + free-text fields, D-04) is
+/// rows take values). Types with an archived/consumed flag (Habit, Rule, Clip, Idea)
+/// exclude those items at the `#Predicate` level (D-06); Collection/CollectionItem
+/// have no such flag, so they need none. Matching against `query` (title + free-text fields, D-04) is
 /// done in memory via `.localizedStandardContains` since SwiftData has no cross-model
 /// full-text search. Results render as one `Section`-style block per non-empty type
 /// (D-03), in Habits/Rules/Collections/Clips/Ideas order, each reusing the item's

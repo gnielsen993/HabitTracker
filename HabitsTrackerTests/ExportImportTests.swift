@@ -4,9 +4,11 @@ import SwiftData
 
 /// Round-trip tests for Export/Import.
 ///
-/// NOTE: the service always stamps the current `schemaVersion` (6), so all four
-/// tests exercise a v6 round-trip. Their names reflect *which version's fields*
-/// they assert survive that round-trip, not a cross-version backward-import (IN-05).
+/// NOTE: the service always stamps the current `schemaVersion` (6), so every
+/// test here exercises a v6 round-trip. The per-version names reflect *which
+/// version's fields* they assert survive that round-trip, not a cross-version
+/// backward-import (IN-05). Phase 6 (POL-03) added the all-types-in-one-bundle
+/// round-trip and the malformed/unsupported-import safety test below.
 /// A real older-version fixture import is Phase F (Polish) work.
 ///
 /// testV3FieldsSurviveRoundTrip: fields introduced at schemaVersion 3 (RULE-01,
