@@ -4,8 +4,8 @@ import SwiftData
 
 /// Round-trip tests for Export/Import.
 ///
-/// NOTE: the service always stamps the current `schemaVersion` (5), so all three
-/// tests exercise a v5 round-trip. Their names reflect *which version's fields*
+/// NOTE: the service always stamps the current `schemaVersion` (6), so all four
+/// tests exercise a v6 round-trip. Their names reflect *which version's fields*
 /// they assert survive that round-trip, not a cross-version backward-import (IN-05).
 /// A real older-version fixture import is Phase F (Polish) work.
 ///
@@ -14,15 +14,20 @@ import SwiftData
 /// testV4FieldsSurviveRoundTrip: fields introduced at schemaVersion 4 (COLL-02,
 ///   COLL-07) — Collection + CollectionItem scalar fields and index wiring (D-05, D-23).
 /// testV5FieldsSurviveRoundTrip: fields introduced at schemaVersion 5 (CLIP-02, D-13)
-///   — Clip scalar fields, raw status, and domain wiring. Build-verify only per §9.7 —
-///   the XCTest host crashes at 0.000s for SwiftData @Model persistence suites on this
-///   simulator; executed on device via the 04-05 owner checkpoint.
+///   — Clip scalar fields, raw status, and domain wiring.
+/// testV6IdeaFieldsSurviveRoundTrip: fields introduced at schemaVersion 6 (IDEA-01, D-14)
+///   — Idea title/note/url/isArchived, the promotedToKind(raw)/promotedToID forward-link,
+///   and domain re-wiring through categoryIndex (WR-01, §9.5).
+///
+/// All are build-verify only per §9.7 — the XCTest host crashes at 0.000s for SwiftData
+/// @Model persistence suites on this simulator; executed on device via the owner
+/// full-flow checkpoints (04-05 for Clips, 05-10 for Ideas).
 final class ExportImportTests: XCTestCase {
 
     @MainActor
     private func makeInMemoryContext() throws -> ModelContext {
         let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Rule.self,
-                             Collection.self, CollectionItem.self, Clip.self])
+                             Collection.self, CollectionItem.self, Clip.self, Idea.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
         return container.mainContext
@@ -202,5 +207,66 @@ final class ExportImportTests: XCTestCase {
         // Domain wiring survived: fetched clip.domain.id must equal fetched domain.id.
         XCTAssertNotNil(fetchedClip.domain, "Clip.domain must be re-linked after import")
         XCTAssertEqual(fetchedClip.domain?.id, fetchedDomain.id, "domainID wiring must survive round-trip")
+    }
+
+    /// schemaVersion-6 round-trip: a filed, promoted Idea survives with title/note/url/
+    /// isArchived, the promotedToKind(raw)/promotedToID forward-link, and domain re-wiring
+    /// intact (IDEA-01, D-14, WR-01). This exercises the `promotedToKindRaw`↔`promotedToKind`
+    /// facade crossover and the domainID→categoryIndex re-link — the exact wiring that
+    /// silently breaks. The forward-link is a lean scalar pair with no backref (D-07), so
+    /// `promotedToID` is asserted as a bare UUID, not a relationship. Build-verify only per
+    /// §9.7 — authored and compiled here; executed on device via the 05-10 owner checkpoint.
+    @MainActor
+    func testV6IdeaFieldsSurviveRoundTrip() throws {
+        let service = ExportImportService()
+
+        let domain = Domain(name: "Writing", iconName: "pencil", colorToken: "walnut", sortIndex: 0, isFocused: true)
+
+        // A promoted idea: consumed (archived) with a scalar forward-link to a Rule.
+        let targetID = UUID()
+        let idea = Idea(
+            title: "Draft a weekly review ritual",
+            note: "kicked off from a shower thought",
+            url: "https://example.com/ritual",
+            isArchived: true,
+            promotedToKindRaw: Idea.PromotedKind.rule.rawValue,
+            promotedToID: targetID,
+            domain: domain
+        )
+
+        let data = try service.exportData(
+            categories: [domain],
+            habits: [],
+            entries: [],
+            rules: [],
+            collections: [],
+            collectionItems: [],
+            clips: [],
+            ideas: [idea]
+        )
+
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: data, context: context)
+
+        let ideas = try context.fetch(FetchDescriptor<Idea>())
+        let domains = try context.fetch(FetchDescriptor<Domain>())
+
+        XCTAssertEqual(ideas.count, 1, "Idea must survive round-trip")
+
+        let fetchedIdea = try XCTUnwrap(ideas.first)
+        let fetchedDomain = try XCTUnwrap(domains.first)
+
+        XCTAssertEqual(fetchedIdea.title, "Draft a weekly review ritual", "title must survive")
+        XCTAssertEqual(fetchedIdea.note, "kicked off from a shower thought", "note must survive")
+        XCTAssertEqual(fetchedIdea.url, "https://example.com/ritual", "url must survive")
+        XCTAssertEqual(fetchedIdea.isArchived, true, "isArchived (consumed) must survive")
+
+        // Forward-link facade crossover: raw string round-trips back into the enum facade.
+        XCTAssertEqual(fetchedIdea.promotedTo, .rule, "promotedToKind facade must survive as .rule")
+        XCTAssertEqual(fetchedIdea.promotedToID, targetID, "promotedToID forward-link must survive")
+
+        // Domain wiring survived: fetched idea.domain.id must equal fetched domain.id.
+        XCTAssertNotNil(fetchedIdea.domain, "Idea.domain must be re-linked after import")
+        XCTAssertEqual(fetchedIdea.domain?.id, fetchedDomain.id, "domainID wiring (categoryIndex) must survive round-trip")
     }
 }
