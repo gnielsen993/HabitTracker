@@ -42,6 +42,13 @@ struct PromoteToCollectionPicker: View {
             }
             .sheet(item: $pickedCollection) { collection in
                 CollectionItemEditorSheet(collection: collection, promotingIdea: idea)
+                    .onDisappear {
+                        // A successful promote-Save consumes the idea (archived); close
+                        // the picker so a second pick can't create a duplicate item
+                        // (WR-02). On Cancel the idea is untouched, so the picker stays
+                        // open for another choice.
+                        if idea.isArchived { dismiss() }
+                    }
             }
         }
     }

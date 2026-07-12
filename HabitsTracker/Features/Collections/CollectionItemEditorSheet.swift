@@ -256,14 +256,15 @@ struct CollectionItemEditorSheet: View {
             )
             newItem.collection = collection
             modelContext.insert(newItem)
-            try? modelContext.save()
 
-            // Consume the source idea only after a successful promote-Save (T-05-04) —
-            // never before. No backref is set on the CollectionItem (D-07).
+            // Consume the source idea in the SAME commit as the item insert (WR-03):
+            // target + consume persist atomically, so a save failure can't leave the
+            // item created but the idea still un-archived and re-promotable. No backref
+            // is set on the CollectionItem (D-07); the mutation is guarded idempotent (T-05-04).
             if let sourceIdea {
                 PromoteService.archiveAndForwardLink(idea: sourceIdea, as: .collectionItem, targetID: newItem.id)
-                try? modelContext.save()
             }
+            try? modelContext.save()
 
         case .edit(let item):
             item.title = trimmed

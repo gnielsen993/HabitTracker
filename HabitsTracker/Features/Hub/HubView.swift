@@ -18,8 +18,6 @@ struct HubView: View {
     @Query(filter: #Predicate<Idea> { $0.domain == nil && !$0.isArchived })
     private var unfiledIdeas: [Idea]
 
-    private let columns = [GridItem(.adaptive(minimum: 120), spacing: 12)]
-
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
 
