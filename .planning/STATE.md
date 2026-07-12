@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-07-12T02:58:57.518Z"
+stopped_at: Completed 06-03-PLAN.md
+last_updated: "2026-07-12T03:05:27.866Z"
 last_activity: 2026-07-12
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 33
-  completed_plans: 31
+  completed_plans: 32
   percent: 83
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-28)
 ## Current Position
 
 Phase: 06 (polish-f) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-07-12
 
-Progress: [█████████░] 94%
+Progress: [██████████] 97%
 
 ## Performance Metrics
 
@@ -80,6 +80,7 @@ Progress: [█████████░] 94%
 | Phase 05-ideas-promotion-e P09 | 5min | 1 tasks | 1 files |
 | Phase 06-polish-f P01 | 10min | 2 tasks | 3 files |
 | Phase 06-polish-f P02 | 4min | 2 tasks | 3 files |
+| Phase 06-polish-f P03 | 8min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -117,6 +118,8 @@ Most relevant to current work (Phase 1):
 - [Phase 06-01]: 06-01: CollectionItem search hits fold into their parent Collection's result row/section rather than a standalone CollectionItem section.
 - [Phase 06-01]: 06-01: InboxView's minimal single-line empty state confirmed as the accepted D-11 designed treatment; stale POL-02 placeholder doc-comment removed, rendered copy unchanged.
 - [Phase 06-polish-f]: 06-02: Reachable-chip pattern (Button + accessibilityLabel/Hint, keyed sensoryFeedback) applied to CollectionItemRow matching ClipRow's template; ExportImportService.schemaVersion exposed as static let currentSchemaVersion (readable, unchanged at 6) for Settings About row (D-13); zero hardcoded colors found in tokens/Dynamic-Type verify sweep (D-09).
+- [Phase 06-03]: 06-03: testAllTypesSurviveRoundTripV6 seeds one Domain, Habit+DailyEntry+HabitState, Rule, Collection+CollectionItem, Clip, and a filed+promoted Idea in one bundle and asserts all cross-type relationships (Rule.domain, HabitState.habit, CollectionItem.collection, Clip.domain, Idea.domain) re-link after importReplace at schemaVersion 6
+- [Phase 06-03]: 06-03: testMalformedAndUnsupportedImportPreservesStore proves invalid JSON and a hand-built schemaVersion-7 bundle both throw and leave the seeded store untouched (decode/guard happen before deleteAll, T-06-03-T); ExportImportService.swift left unchanged, schemaVersion stays 6 (D-15)
 
 ### Pending Todos
 
@@ -149,6 +152,7 @@ Pre-existing owner-side BLOCKER (not a planning blocker): local Xcode/TestFlight
 
 ## Session Continuity
 
-Last session: 2026-07-12T02:58:57.353Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-07-12T03:05:27.850Z
+Stopped at: Completed 06-03-PLAN.md
 Resume file: 
+None
