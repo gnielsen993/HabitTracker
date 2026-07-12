@@ -117,7 +117,11 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
   2. Every section, the inbox, and the Hub have a designed empty state.
   3. Full export/import round-trips ALL types (Domain, Habit, Rule, Collection, CollectionItem, Idea, Clip, StatusSet) under the bumped schemaVersion.
   4. Accessibility holds: Dynamic Type, VoiceOver labels on chips/buttons/grid, tokens-only colors; schema/version is visible in Settings.
-**Plans**: TBD
+**Plans**: 4 plans (2 waves)
+- [ ] 06-01-PLAN.md — Cross-domain search: SearchResultsView (type-grouped, N per-type fetches, reused destinations) + .searchable on HubView + search no-results state (POL-01, POL-02) [wave 1]
+- [ ] 06-02-PLAN.md — A11y pass: CollectionItemRow advance-chip VoiceOver fix + Settings About schema/version row + tokens/Dynamic-Type sweep (POL-04) [wave 1]
+- [ ] 06-03-PLAN.md — Export/import hardening: all-7-types single-bundle round-trip test + malformed-import store-preservation test (POL-03, no schema bump) [wave 1]
+- [ ] 06-04-PLAN.md — Owner device verification: SC1–SC4 walkthrough (search, empty states, on-device backup round-trip, VoiceOver + schema row) [wave 2]
 **UI hint**: yes
 
 ### Deferred — Widgets (Later, out of milestone)
@@ -137,4 +141,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
 | 5. Ideas + Promotion (E) | 10/10 | Complete   | 2026-07-11 |
-| 6. Polish (F) | 0/TBD | Not started | - |
+| 6. Polish (F) | 0/4 | Not started | - |
