@@ -119,7 +119,7 @@ HabitsTracker v1.0 (binary habits + streaks + weekly goals + calendar heatmap) i
   4. Accessibility holds: Dynamic Type, VoiceOver labels on chips/buttons/grid, tokens-only colors; schema/version is visible in Settings.
 **Plans**: 4 plans (2 waves)
 - [x] 06-01-PLAN.md — Cross-domain search: SearchResultsView (type-grouped, N per-type fetches, reused destinations) + .searchable on HubView + search no-results state (POL-01, POL-02) [wave 1]
-- [ ] 06-02-PLAN.md — A11y pass: CollectionItemRow advance-chip VoiceOver fix + Settings About schema/version row + tokens/Dynamic-Type sweep (POL-04) [wave 1]
+- [x] 06-02-PLAN.md — A11y pass: CollectionItemRow advance-chip VoiceOver fix + Settings About schema/version row + tokens/Dynamic-Type sweep (POL-04) [wave 1]
 - [ ] 06-03-PLAN.md — Export/import hardening: all-7-types single-bundle round-trip test + malformed-import store-preservation test (POL-03, no schema bump) [wave 1]
 - [ ] 06-04-PLAN.md — Owner device verification: SC1–SC4 walkthrough (search, empty states, on-device backup round-trip, VoiceOver + schema row) [wave 2]
 **UI hint**: yes
@@ -141,4 +141,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6.
 | 3. Collections (C) | 5/5 | Complete   | 2026-07-07 |
 | 4. Clips (D) | 5/5 | Complete   | 2026-07-09 |
 | 5. Ideas + Promotion (E) | 10/10 | Complete   | 2026-07-11 |
-| 6. Polish (F) | 1/4 | In Progress|  |
+| 6. Polish (F) | 2/4 | In Progress|  |
