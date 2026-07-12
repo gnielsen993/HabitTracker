@@ -30,19 +30,19 @@ Files: `SearchResultsView.swift`, `HubView.swift`, `CollectionItemRow.swift`, `S
 
 ## Task 2 — Owner device checklist (confirm on physical iPhone / device runtime, NOT the sim)
 
-- [ ] **SC1 — Search (POL-01):** Hub tab → tap magnifying glass (expands inline, iOS 26 minimize) →
+- [x] **SC1 — Search (POL-01):** Hub tab → tap magnifying glass (expands inline, iOS 26 minimize) →
       type a multi-type term → results grouped one section per type (Habits/Rules/Collections/Clips/Ideas).
       Rule/Collection/Clip result **pushes** its detail; Idea opens IdeaCaptureSheet; Habit opens
       HabitEditorView (must NOT jump to Today). Archived/consumed items absent.
-- [ ] **SC2 — Empty states (POL-02):** gibberish query → search no-results state renders. Spot-check
+- [x] **SC2 — Empty states (POL-02):** gibberish query → search no-results state renders. Spot-check
       Hub empty state, a domain's empty section, inbox empty state still render.
-- [ ] **SC3 — Export/import round-trip (POL-03):** Settings → Export JSON → save. Change/delete data →
+- [x] **SC3 — Export/import round-trip (POL-03):** Settings → Export JSON → save. Change/delete data →
       Import JSON (Replace) → all types return intact (domains, habits, rules, collections+items with
       status, clips, ideas). Garbage-file import fails gracefully WITHOUT wiping data.
-- [ ] **SC4 — Accessibility + schema row (POL-04):** VoiceOver on → Collection items → status chip is
+- [x] **SC4 — Accessibility + schema row (POL-04):** VoiceOver on → Collection items → status chip is
       REACHABLE, announces current status AND advances (previously silent). Settings → About shows
       "Data schema v6" and "Version 1.0". Dynamic Type large size sane on chips/Hub grid.
-- [ ] **Baseline DoD:** Today unchanged, tab bar still 4 tabs, no debug/placeholder strings.
+- [x] **Baseline DoD:** Today unchanged, tab bar still 4 tabs, no debug/placeholder strings.
 
 ## Owner sign-off
 **APPROVED** by owner (Gabe) on 2026-07-11. SC1–SC4 + baseline DoD confirmed on device. Phase 6 closed.
