@@ -22,6 +22,7 @@ struct SettingsView: View {
     @State private var showingImporter = false
     @State private var exportDocument = BackupJSONDocument()
     @State private var message: String?
+    @State private var showingOnboarding = false
 
     private let exportImportService = ExportImportService()
     private let seedDataService = SeedDataService()
@@ -54,6 +55,12 @@ struct SettingsView: View {
                     }
                     NavigationLink("Manage Habits") {
                         HabitManagerView()
+                    }
+                }
+
+                Section("Help") {
+                    Button("Replay Welcome") {
+                        showingOnboarding = true
                     }
                 }
 
@@ -121,6 +128,11 @@ struct SettingsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(message ?? "")
+            }
+            .fullScreenCover(isPresented: $showingOnboarding) {
+                OnboardingView(isFirstRun: false) {
+                    showingOnboarding = false
+                }
             }
         }
     }

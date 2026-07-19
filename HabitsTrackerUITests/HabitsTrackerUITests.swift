@@ -10,25 +10,34 @@ import XCTest
 final class HabitsTrackerUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testOnboardingIntroducesTheCoreExperience() throws {
         let app = XCUIApplication()
+        app.launchArguments = [
+            "-onboardingStateV1", "completed",
+            "-uiTestingShowOnboarding"
+        ]
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        XCTAssertTrue(app.staticTexts["Build a life that feels like yours."].waitForExistence(timeout: 5))
+        app.buttons["See how it feels"].tap()
+
+        XCTAssertTrue(app.staticTexts["Start with what’s next."].waitForExistence(timeout: 2))
+        app.buttons["Mark complete"].tap()
+        XCTAssertTrue(app.staticTexts["You showed up."].waitForExistence(timeout: 2))
+        app.buttons["Keep going"].tap()
+
+        XCTAssertTrue(app.staticTexts["Keep the whole picture."].waitForExistence(timeout: 2))
+        app.buttons["Make it yours"].tap()
+
+        XCTAssertTrue(app.staticTexts["What matters right now?"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.buttons["Productivity, selected"].exists)
+        app.buttons["Enter your day"].tap()
+
+        XCTAssertTrue(app.navigationBars["Today"].waitForExistence(timeout: 5))
     }
 
     @MainActor
