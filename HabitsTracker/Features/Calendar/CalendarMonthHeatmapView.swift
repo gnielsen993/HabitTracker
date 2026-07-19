@@ -15,6 +15,7 @@ struct CalendarMonthHeatmapView: View {
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
         let days = MonthGridBuilder.days(for: monthAnchor)
+        let snapshots = habits.filter { !$0.isArchived }.map { HabitProgressEngine.snapshot(from: $0) }
 
         // Folded into ProgressDashboardView behind a Charts ⇄ Calendar segmented
         // control (D-13/D-14). No inner NavigationStack / navigationTitle here —
@@ -45,8 +46,7 @@ struct CalendarMonthHeatmapView: View {
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: theme.spacing.xs), count: 7), spacing: theme.spacing.xs) {
                 ForEach(days, id: \.self) { day in
-                    let completion = StatsEngine.dayCompletion(date: day, habits: habits, entries: entries)
-                    DayCell(day: day, completion: completion, monthAnchor: monthAnchor, theme: theme)
+                    DayCell(day: day, snapshots: snapshots, monthAnchor: monthAnchor, theme: theme)
                         .onTapGesture { selectedDay = day }
                 }
             }
@@ -63,24 +63,52 @@ struct CalendarMonthHeatmapView: View {
 
 private struct DayCell: View {
     let day: Date
-    let completion: DayCompletion
+    let snapshots: [HabitProgressEngine.HabitSnapshot]
     let monthAnchor: Date
     let theme: Theme
 
     var body: some View {
         let sameMonth = Calendar.current.isDate(day, equalTo: monthAnchor, toGranularity: .month)
 
-        Text(day.formatted(.dateTime.day()))
-            .font(theme.typography.caption)
-            .foregroundStyle(sameMonth ? theme.colors.textPrimary : theme.colors.textTertiary)
-            .frame(maxWidth: .infinity, minHeight: 36)
-            .background(background)
-            .clipShape(RoundedRectangle(cornerRadius: theme.radii.chip, style: .continuous))
+        VStack(spacing: theme.spacing.xs) {
+            Text(day.formatted(.dateTime.day()))
+            Image(systemName: symbol)
+                .accessibilityHidden(true)
+        }
+        .font(theme.typography.caption)
+        .foregroundStyle(sameMonth ? theme.colors.textPrimary : theme.colors.textTertiary)
+        .frame(maxWidth: .infinity, minHeight: 44)
+        .background(background)
+        .clipShape(RoundedRectangle(cornerRadius: theme.radii.chip, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(day.formatted(date: .abbreviated, time: .omitted)), \(statusLabel)")
     }
 
     private var background: Color {
-        guard completion.totalRequired > 0 else { return theme.colors.surfaceElevated }
-        return theme.colors.accentPrimary.opacity(max(0.12, completion.ratio))
+        if Calendar.current.isDateInToday(day) { return theme.colors.highlight }
+        if completed > 0 && completed == scheduled { return theme.colors.success }
+        return scheduled > 0 ? theme.colors.surfaceElevated : theme.colors.surface
+    }
+
+    private var historicalStatuses: [HabitProgressEngine.DayStatus] {
+        snapshots.map { HabitProgressEngine.status(for: $0, on: day) }
+    }
+
+    private var completed: Int { historicalStatuses.filter { $0 == .completed }.count }
+    private var scheduled: Int { historicalStatuses.filter { $0 == .completed || $0 == .missed || $0 == .inProgress }.count }
+
+    private var symbol: String {
+        if DateUtilities.startOfDay(day) > DateUtilities.startOfDay(.now) { return "lock" }
+        if Calendar.current.isDateInToday(day) { return "ellipsis" }
+        if scheduled == 0 { return "circle" }
+        return completed == scheduled ? "checkmark" : "minus"
+    }
+
+    private var statusLabel: String {
+        if DateUtilities.startOfDay(day) > DateUtilities.startOfDay(.now) { return "future day, read-only" }
+        if Calendar.current.isDateInToday(day) { return "in progress" }
+        if scheduled == 0 { return "nothing scheduled" }
+        return "\(completed) of \(scheduled) completed"
     }
 }
 
