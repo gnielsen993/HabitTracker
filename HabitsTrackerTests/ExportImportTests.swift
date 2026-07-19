@@ -29,7 +29,8 @@ final class ExportImportTests: XCTestCase {
     @MainActor
     private func makeInMemoryContext() throws -> ModelContext {
         let schema = Schema([Domain.self, Habit.self, DailyEntry.self, HabitState.self, Rule.self,
-                             Collection.self, CollectionItem.self, Clip.self, Idea.self])
+                             Collection.self, CollectionItem.self, Clip.self, Idea.self,
+                             HabitScheduleRevision.self])
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [config])
         return container.mainContext
@@ -477,5 +478,63 @@ final class ExportImportTests: XCTestCase {
         }
         XCTAssertEqual(try context.fetch(FetchDescriptor<Domain>()).count, baselineDomains, "unsupported-schema import must not touch existing domains")
         XCTAssertEqual(try context.fetch(FetchDescriptor<Habit>()).count, baselineHabits, "unsupported-schema import must not touch existing habits")
+    }
+
+    @MainActor
+    func testV7ScheduleRevisionsSurviveRoundTrip() throws {
+        let service = ExportImportService()
+        let habit = Habit(name: "Walk", scheduleType: .daily, mode: .required, createdAt: Date(timeIntervalSince1970: 1_700_000_000))
+        let first = HabitScheduleRevision(habit: habit, effectiveDate: habit.createdAt, scheduleType: .daily, mode: .required)
+        let second = HabitScheduleRevision(
+            habit: habit,
+            effectiveDate: habit.createdAt.addingTimeInterval(86_400 * 10),
+            scheduleType: .customDays,
+            scheduledDays: [.monday, .friday],
+            mode: .optional,
+            weeklyTargetCount: 2
+        )
+        habit.scheduleRevisions = [first, second]
+
+        let data = try service.exportData(
+            categories: [], habits: [habit], entries: [], rules: [], collections: [],
+            collectionItems: [], clips: [], ideas: [], scheduleRevisions: [first, second]
+        )
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: data, context: context)
+
+        let revisions = try context.fetch(FetchDescriptor<HabitScheduleRevision>())
+        XCTAssertEqual(revisions.count, 2)
+        XCTAssertEqual(revisions.first(where: { $0.mode == .optional })?.weeklyTargetCount, 2)
+        XCTAssertEqual(Set(revisions.first(where: { $0.mode == .optional })?.scheduledDays ?? []), Set([.monday, .friday]))
+    }
+
+    @MainActor
+    func testSchema6ImportSynthesizesInitialRevision() throws {
+        let service = ExportImportService()
+        let createdAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let habitID = UUID()
+        let bundle = HabitExportBundle(
+            schemaVersion: 6,
+            exportedAt: .now,
+            categories: [],
+            habits: [HabitDTO(
+                id: habitID, name: "Read", categoryId: nil,
+                scheduleTypeRaw: HabitScheduleType.customDays.rawValue,
+                scheduledDaysRaw: [Weekday.tuesday.rawValue],
+                modeRaw: HabitMode.required.rawValue,
+                weeklyTargetCount: nil, isPinned: false, isArchived: false,
+                isSeeded: false, seedVersion: 0, createdAt: createdAt, originRuleID: nil
+            )],
+            dailyEntries: [], rules: [], collections: [], collectionItems: [], clips: [], ideas: []
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let context = try makeInMemoryContext()
+        try service.importReplace(data: encoder.encode(bundle), context: context)
+
+        let revision = try XCTUnwrap(context.fetch(FetchDescriptor<HabitScheduleRevision>()).first)
+        XCTAssertEqual(revision.habit?.id, habitID)
+        XCTAssertEqual(revision.scheduleType, .customDays)
+        XCTAssertEqual(revision.scheduledDays, [.tuesday])
     }
 }

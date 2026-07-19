@@ -229,6 +229,7 @@ struct HabitCreateSheet: View {
             originRule: originRule
         )
         modelContext.insert(habit)
+        HabitScheduleRevisionService.recordCurrentConfiguration(for: habit, effectiveDate: habit.createdAt, context: modelContext)
         try? modelContext.save()
         onSaved?(habit)
         dismiss()

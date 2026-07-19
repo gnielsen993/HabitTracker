@@ -7,7 +7,7 @@ final class ExportImportService {
     /// Single source of truth for the export/import schema version (currently 6).
     /// Readable so callers like `SettingsView`'s About row never carry a divergent
     /// literal (POL-04 D-13).
-    static let currentSchemaVersion = 6
+    static let currentSchemaVersion = 7
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
@@ -31,7 +31,8 @@ final class ExportImportService {
         collections: [Collection],
         collectionItems: [CollectionItem],
         clips: [Clip],
-        ideas: [Idea]
+        ideas: [Idea],
+        scheduleRevisions: [HabitScheduleRevision] = []
     ) throws -> Data {
         let payload = HabitExportBundle(
             schemaVersion: Self.currentSchemaVersion,
@@ -150,6 +151,18 @@ final class ExportImportService {
                     promotedToID: $0.promotedToID,
                     domainID: $0.domain?.id
                 )
+            },
+            scheduleRevisions: scheduleRevisions.compactMap { revision in
+                guard let habitID = revision.habit?.id else { return nil }
+                return HabitScheduleRevisionDTO(
+                    id: revision.id,
+                    habitID: habitID,
+                    effectiveDate: revision.effectiveDate,
+                    scheduleTypeRaw: revision.scheduleTypeRaw,
+                    scheduledDaysRaw: revision.scheduledDaysRaw,
+                    modeRaw: revision.modeRaw,
+                    weeklyTargetCount: revision.weeklyTargetCount
+                )
             }
         )
 
@@ -255,6 +268,33 @@ final class ExportImportService {
             habitIndex[dto.id] = habit
         }
 
+        // Schema 7 preserves effective-dated history. Older backups synthesize
+        // one initial revision from each habit's active configuration.
+        if bundle.schemaVersion >= 7, !bundle.scheduleRevisions.isEmpty {
+            for dto in bundle.scheduleRevisions {
+                guard let habit = habitIndex[dto.habitID] else { continue }
+                let revision = HabitScheduleRevision(
+                    id: dto.id,
+                    habit: habit,
+                    effectiveDate: dto.effectiveDate,
+                    scheduleType: HabitScheduleType(rawValue: dto.scheduleTypeRaw) ?? .daily,
+                    scheduledDays: dto.scheduledDaysRaw.compactMap(Weekday.init(rawValue:)),
+                    mode: HabitMode(rawValue: dto.modeRaw) ?? .required,
+                    weeklyTargetCount: dto.weeklyTargetCount
+                )
+                context.insert(revision)
+                habit.scheduleRevisions.append(revision)
+            }
+        } else {
+            for habit in habitIndex.values {
+                HabitScheduleRevisionService.recordCurrentConfiguration(
+                    for: habit,
+                    effectiveDate: habit.createdAt,
+                    context: context
+                )
+            }
+        }
+
         // 4. Create Collections (build id->Collection index, wire to domain)
         var collectionIndex: [UUID: Collection] = [:]
         for dto in bundle.collections {
@@ -326,6 +366,7 @@ final class ExportImportService {
     private func deleteAll(context: ModelContext) throws {
         try context.delete(model: HabitState.self)
         try context.delete(model: DailyEntry.self)
+        try context.delete(model: HabitScheduleRevision.self)
         try context.delete(model: Habit.self)
         try context.delete(model: Rule.self)
         // Items before collections before domain (ownership order — T-03-10).

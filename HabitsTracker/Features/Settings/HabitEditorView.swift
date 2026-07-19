@@ -115,6 +115,7 @@ struct HabitEditorView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
+                        HabitScheduleRevisionService.recordCurrentConfiguration(for: habit, context: modelContext)
                         try? modelContext.save()
                         dismiss()
                     }

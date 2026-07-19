@@ -52,6 +52,7 @@ final class BootstrapService {
         }
 
         _ = try ensureDailyEntryExists(for: .now, context: context)
+        try HabitScheduleRevisionService.synthesizeMissingInitialRevisions(context: context)
     }
 
     /// D-07: flip every pre-existing Domain to focused, exactly once. Gated by the caller's

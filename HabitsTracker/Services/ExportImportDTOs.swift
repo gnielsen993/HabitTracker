@@ -23,6 +23,7 @@ struct HabitExportBundle: Codable {
     let collectionItems: [CollectionItemDTO]
     let clips: [ClipDTO]
     let ideas: [IdeaDTO]
+    let scheduleRevisions: [HabitScheduleRevisionDTO]
 
     init(
         schemaVersion: Int,
@@ -34,7 +35,8 @@ struct HabitExportBundle: Codable {
         collections: [CollectionDTO],
         collectionItems: [CollectionItemDTO],
         clips: [ClipDTO],
-        ideas: [IdeaDTO]
+        ideas: [IdeaDTO],
+        scheduleRevisions: [HabitScheduleRevisionDTO] = []
     ) {
         self.schemaVersion = schemaVersion
         self.exportedAt = exportedAt
@@ -46,6 +48,7 @@ struct HabitExportBundle: Codable {
         self.collectionItems = collectionItems
         self.clips = clips
         self.ideas = ideas
+        self.scheduleRevisions = scheduleRevisions
     }
 
     init(from decoder: Decoder) throws {
@@ -62,6 +65,7 @@ struct HabitExportBundle: Codable {
         collectionItems = try container.decodeIfPresent([CollectionItemDTO].self, forKey: .collectionItems) ?? []
         clips = try container.decodeIfPresent([ClipDTO].self, forKey: .clips) ?? []
         ideas = try container.decodeIfPresent([IdeaDTO].self, forKey: .ideas) ?? []
+        scheduleRevisions = try container.decodeIfPresent([HabitScheduleRevisionDTO].self, forKey: .scheduleRevisions) ?? []
     }
 }
 
@@ -169,4 +173,14 @@ struct HabitStateDTO: Codable {
     let habitId: UUID
     let isCompleted: Bool
     let completedAt: Date?
+}
+
+struct HabitScheduleRevisionDTO: Codable {
+    let id: UUID
+    let habitID: UUID
+    let effectiveDate: Date
+    let scheduleTypeRaw: String
+    let scheduledDaysRaw: [Int]
+    let modeRaw: String
+    let weeklyTargetCount: Int?
 }

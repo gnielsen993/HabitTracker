@@ -24,6 +24,9 @@ final class Habit {
     @Relationship(deleteRule: .cascade, inverse: \HabitState.habit)
     var states: [HabitState]
 
+    @Relationship(deleteRule: .cascade, inverse: \HabitScheduleRevision.habit)
+    var scheduleRevisions: [HabitScheduleRevision] = []
+
     var scheduleType: HabitScheduleType {
         get { HabitScheduleType(rawValue: scheduleTypeRaw) ?? .daily }
         set { scheduleTypeRaw = newValue.rawValue }
@@ -53,7 +56,8 @@ final class Habit {
         seedVersion: Int = 0,
         createdAt: Date = .now,
         originRule: Rule? = nil,
-        states: [HabitState] = []
+        states: [HabitState] = [],
+        scheduleRevisions: [HabitScheduleRevision] = []
     ) {
         self.id = id
         self.name = name
@@ -69,5 +73,6 @@ final class Habit {
         self.createdAt = createdAt
         self.originRule = originRule
         self.states = states
+        self.scheduleRevisions = scheduleRevisions
     }
 }
