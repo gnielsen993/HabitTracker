@@ -89,7 +89,7 @@ struct HabitEditorView: View {
                             RuleDetailView(rule: originRule)
                         } label: {
                             VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                                Text("Stemmed from")
+                                Text("Inspired by")
                                     .font(theme.typography.caption)
                                     .foregroundStyle(theme.colors.textSecondary)
                                 Text(originRule.title)
@@ -99,13 +99,13 @@ struct HabitEditorView: View {
                             .frame(minHeight: 44, alignment: .leading)
                             .padding(.vertical, theme.spacing.xs)
                         }
-                        .accessibilityLabel("Stemmed from \(originRule.title), opens rule")
+                        .accessibilityLabel("Inspired by \(originRule.title), opens principle")
                         // Read-only backref: no write path from HabitEditorView to habit.originRule (T-0203-03)
                     }
                 }
 
                 Section("Flags") {
-                    Toggle("Pinned", isOn: Binding(get: { habit.isPinned }, set: { habit.isPinned = $0 }))
+                    Toggle("Show First", isOn: Binding(get: { habit.isPinned }, set: { habit.isPinned = $0 }))
                     Toggle("Archived", isOn: Binding(get: { habit.isArchived }, set: { habit.isArchived = $0 }))
                 }
             }

@@ -18,7 +18,7 @@ struct RootTabView: View {
 
             HubView()
                 .tabItem {
-                    Label("Hub", systemImage: "square.grid.2x2")
+                    Label("My Life", systemImage: "square.grid.2x2")
                 }
 
             ProgressDashboardView()

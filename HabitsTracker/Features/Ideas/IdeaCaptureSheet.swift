@@ -38,6 +38,8 @@ struct IdeaCaptureSheet: View {
     // MARK: - Field state
 
     @State private var title: String
+    @State private var note: String
+    @State private var referenceLink: String
     @FocusState private var titleFieldIsFocused: Bool
 
     // MARK: - UI state
@@ -49,11 +51,15 @@ struct IdeaCaptureSheet: View {
     init(domain: Domain? = nil) {
         self.mode = .create(domain: domain)
         _title = State(initialValue: "")
+        _note = State(initialValue: "")
+        _referenceLink = State(initialValue: "")
     }
 
     init(idea: Idea) {
         self.mode = .edit(idea: idea)
         _title = State(initialValue: idea.title)
+        _note = State(initialValue: idea.note ?? "")
+        _referenceLink = State(initialValue: idea.url ?? "")
     }
 
     // MARK: - Body
@@ -64,6 +70,19 @@ struct IdeaCaptureSheet: View {
         NavigationStack {
             VStack(alignment: .leading, spacing: theme.spacing.xl) {
                 titleField(theme: theme)
+
+                TextField("Note (optional)", text: $note, axis: .vertical)
+                    .font(theme.typography.body)
+                    .foregroundStyle(theme.colors.textPrimary)
+                    .lineLimit(2...5)
+                    .accessibilityLabel("Thought note, optional")
+
+                TextField("Reference link (optional)", text: $referenceLink)
+                    .font(theme.typography.body)
+                    .foregroundStyle(theme.colors.textPrimary)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.URL)
+                    .accessibilityLabel("Thought reference link, optional")
 
                 if case .edit = mode {
                     deleteRow(theme: theme)
@@ -85,7 +104,7 @@ struct IdeaCaptureSheet: View {
                 }
             }
             .confirmationDialog(
-                "Delete this idea?",
+                "Delete this thought?",
                 isPresented: $showDeleteConfirm,
                 titleVisibility: .visible
             ) {
@@ -108,11 +127,11 @@ struct IdeaCaptureSheet: View {
                 .font(theme.typography.headline)
                 .foregroundStyle(theme.colors.textPrimary)
 
-            TextField("What's the idea?", text: $title)
+            TextField("What's on your mind?", text: $title)
                 .font(theme.typography.body)
                 .foregroundStyle(theme.colors.textPrimary)
                 .focused($titleFieldIsFocused)
-                .accessibilityLabel("Idea title")
+                .accessibilityLabel("Thought title")
 
             if trimmedTitle.isEmpty {
                 Text("Give this a name to continue.")
@@ -128,7 +147,7 @@ struct IdeaCaptureSheet: View {
         Button(role: .destructive) {
             showDeleteConfirm = true
         } label: {
-            Text("Delete Idea")
+            Text("Delete Thought")
                 .font(theme.typography.body)
                 .foregroundStyle(theme.colors.danger)
                 .frame(minHeight: 44)
@@ -137,7 +156,7 @@ struct IdeaCaptureSheet: View {
 
     @ViewBuilder
     private var deleteDialogActions: some View {
-        Button("Delete Idea", role: .destructive) {
+        Button("Delete Thought", role: .destructive) {
             if case .edit(let idea) = mode {
                 modelContext.delete(idea)
                 try? modelContext.save()
@@ -165,14 +184,14 @@ struct IdeaCaptureSheet: View {
 
     private var navigationTitle: String {
         switch mode {
-        case .create: return "New Idea"
-        case .edit:   return "Edit Idea"
+        case .create: return "New Thought"
+        case .edit:   return "Edit Thought"
         }
     }
 
     private var saveCTATitle: String {
         switch mode {
-        case .create: return "Add Idea"
+        case .create: return "Add Thought"
         case .edit:   return "Save Changes"
         }
     }
@@ -183,14 +202,26 @@ struct IdeaCaptureSheet: View {
 
         switch mode {
         case .create(let domain):
-            let idea = Idea(title: trimmed, domain: domain)
+            let idea = Idea(
+                title: trimmed,
+                note: normalized(note),
+                url: normalized(referenceLink),
+                domain: domain
+            )
             modelContext.insert(idea)
 
         case .edit(let idea):
             idea.title = trimmed
+            idea.note = normalized(note)
+            idea.url = normalized(referenceLink)
         }
 
         try? modelContext.save()
         dismiss()
+    }
+
+    private func normalized(_ value: String) -> String? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 }

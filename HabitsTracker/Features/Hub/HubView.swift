@@ -21,6 +21,20 @@ struct HubView: View {
     /// Cross-domain search (POL-01, D-01/D-02): backs `.searchable` on this stack.
     /// A non-empty (trimmed) query swaps the Group's content for `SearchResultsView`.
     @State private var searchText = ""
+    @State private var creation: LifeCreation?
+
+    private enum LifeCreation: Identifiable {
+        case habit(Domain?), principle(Domain), list(Domain), savedLink(Domain), thought(Domain?)
+        var id: String {
+            switch self {
+            case .habit(let area): "habit-\(area?.id.uuidString ?? "none")"
+            case .principle(let area): "principle-\(area.id)"
+            case .list(let area): "list-\(area.id)"
+            case .savedLink(let area): "link-\(area.id)"
+            case .thought(let area): "thought-\(area?.id.uuidString ?? "none")"
+            }
+        }
+    }
 
     var body: some View {
         let theme = themeManager.theme(for: colorScheme)
@@ -38,12 +52,46 @@ struct HubView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(theme.colors.background.ignoresSafeArea())
-            .navigationTitle("Hub")
+            .navigationTitle("My Life")
             .navigationDestination(for: Domain.self) { domain in
                 DomainDetailView(domain: domain)
             }
             .searchable(text: $searchText)
             .searchToolbarBehavior(.minimize)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button("Habit") { creation = .habit(nil) }
+                        areaMenu("Principle") { .principle($0) }
+                        areaMenu("List") { .list($0) }
+                        areaMenu("Saved Link") { .savedLink($0) }
+                        Button("Thought") { creation = .thought(nil) }
+                    } label: {
+                        Label("Create", systemImage: "plus")
+                    }
+                    .accessibilityLabel("Create in My Life")
+                }
+            }
+            .sheet(item: $creation) { item in
+                switch item {
+                case .habit(let area): HabitCreateSheet(source: .manual(area))
+                case .principle(let area): RuleEditorView(domain: area)
+                case .list(let area): CollectionPresetPickerSheet(domain: area)
+                case .savedLink(let area): ClipEditorView(domain: area)
+                case .thought(let area): IdeaCaptureSheet(domain: area)
+                }
+            }
+        }
+    }
+
+    private func areaMenu(
+        _ title: String,
+        route: @escaping (Domain) -> LifeCreation
+    ) -> some View {
+        Menu(title) {
+            ForEach(focusedDomains) { area in
+                Button(area.name) { creation = route(area) }
+            }
         }
     }
 
@@ -89,13 +137,13 @@ struct HubView: View {
                     Image(systemName: "tray.full")
                         .foregroundStyle(theme.colors.accentPrimary)
 
-                    Text("Ideas to file")
+                    Text("Thoughts without an area")
                         .font(theme.typography.headline)
                         .foregroundStyle(theme.colors.textPrimary)
 
                     Spacer()
 
-                    DKBadge("\(unfiledIdeas.count) to file", theme: theme)
+                    DKBadge("\(unfiledIdeas.count)", theme: theme)
 
                     Image(systemName: "chevron.right")
                         .foregroundStyle(theme.colors.textTertiary)
@@ -104,17 +152,17 @@ struct HubView: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(unfiledIdeas.count) ideas to file, opens inbox")
+        .accessibilityLabel("\(unfiledIdeas.count) thoughts without an area")
     }
 
     private func emptyState(theme: Theme) -> some View {
         VStack(spacing: theme.spacing.l) {
-            Text("Your Hub is empty")
+            Text("Make My Life yours")
                 .font(theme.typography.titleLarge)
                 .foregroundStyle(theme.colors.textPrimary)
                 .multilineTextAlignment(.center)
 
-            Text("Focus a domain to pin it here. Open the focus picker to choose what belongs in your Hub.")
+            Text("Choose the areas you want close at hand, then add habits, principles, lists, links, or thoughts as life unfolds.")
                 .font(theme.typography.body)
                 .foregroundStyle(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
@@ -122,7 +170,7 @@ struct HubView: View {
             NavigationLink {
                 DomainFocusPicker()
             } label: {
-                Text("Choose Domains")
+                Text("Choose Areas")
                     .font(theme.typography.headline)
                     .foregroundStyle(theme.colors.surfaceElevated)
                     .frame(maxWidth: .infinity, minHeight: 44)

@@ -45,13 +45,13 @@ struct DomainFocusPicker: View {
             }
         }
         .background(theme.colors.background)
-        .navigationTitle("Domains")
+        .navigationTitle("Areas")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     showingCreate = true
                 } label: {
-                    Label("New Domain", systemImage: "plus")
+                    Label("New Area", systemImage: "plus")
                 }
             }
         }
@@ -73,14 +73,14 @@ struct DomainFocusPicker: View {
 
     private var deleteMessage: String {
         guard let name = pendingDelete?.name else { return "" }
-        return "Delete '\(name)'? Habits filed here won't be deleted — they'll just lose this domain."
+        return "Delete '\(name)'? Habits here won't be deleted — they'll just lose this area."
     }
 
     private func list(theme: Theme) -> some View {
         List {
             if hasNewDomains {
                 Section {
-                    Text("New domains are available — focus any to add it to your Hub.")
+                    Text("New areas are available — show any to add it to My Life.")
                         .font(theme.typography.caption)
                         .foregroundStyle(theme.colors.textSecondary)
                         .listRowBackground(Color.clear)
@@ -122,7 +122,7 @@ struct DomainFocusPicker: View {
             Spacer()
 
             Toggle(
-                "Focus \(domain.name)",
+                "Show \(domain.name)",
                 isOn: Binding(
                     get: { domain.isFocused },
                     set: { newValue in
@@ -132,18 +132,18 @@ struct DomainFocusPicker: View {
                 )
             )
             .labelsHidden()
-            .accessibilityLabel("Focus \(domain.name)")
+            .accessibilityLabel("Show \(domain.name) in My Life")
         }
     }
 
     private func emptyState(theme: Theme) -> some View {
         VStack(spacing: theme.spacing.l) {
-            Text("No domains yet")
+            Text("No areas yet")
                 .font(theme.typography.titleLarge)
                 .foregroundStyle(theme.colors.textPrimary)
                 .multilineTextAlignment(.center)
 
-            Text("Create a domain to start filing your lifestyle. Tap New Domain to add one.")
+            Text("Create an area for the parts of life you want to keep close. Tap New Area to add one.")
                 .font(theme.typography.body)
                 .foregroundStyle(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)

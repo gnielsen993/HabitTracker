@@ -26,6 +26,7 @@ struct DomainDetailView: View {
     let domain: Domain
 
     @State private var creatingRule = false
+    @State private var creatingHabit = false
     @State private var creatingCollection = false
     @State private var creatingClip = false
     @State private var creatingIdea = false
@@ -54,6 +55,22 @@ struct DomainDetailView: View {
         .background(theme.colors.background.ignoresSafeArea())
         .navigationTitle(domain.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button("Habit") { creatingHabit = true }
+                    Button("Principle") { creatingRule = true }
+                    Button("List") { creatingCollection = true }
+                    Button("Saved Link") { creatingClip = true }
+                    Button("Thought") { creatingIdea = true }
+                } label: {
+                    Label("Create in \(domain.name)", systemImage: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $creatingHabit) {
+            HabitCreateSheet(source: .manual(domain))
+        }
         .sheet(isPresented: $creatingRule) {
             RuleEditorView(domain: domain)
         }
@@ -109,7 +126,7 @@ struct DomainDetailView: View {
         guard !activeRules.isEmpty else { return nil }
 
         let content = AnyView(rulesSectionContent(rules: activeRules, theme: theme))
-        return DomainSection(id: "rules", title: "Rules", content: content)
+        return DomainSection(id: "rules", title: "Principles", content: content)
     }
 
     // MARK: - Rules section content
@@ -133,7 +150,7 @@ struct DomainDetailView: View {
     /// A section header row: "Rules" title on the left + "+" add button on the right.
     private func rulesSectionHeader(theme: Theme) -> some View {
         HStack(alignment: .center) {
-            Text("Rules")
+            Text("Principles")
                 .font(theme.typography.title)
                 .foregroundStyle(theme.colors.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -148,7 +165,7 @@ struct DomainDetailView: View {
                     .foregroundStyle(theme.colors.accentPrimary)
                     .frame(minWidth: 44, minHeight: 44)
             }
-            .accessibilityLabel("Add rule to \(domain.name)")
+            .accessibilityLabel("Add principle to \(domain.name)")
         }
     }
 
@@ -161,7 +178,7 @@ struct DomainDetailView: View {
         guard !domain.collections.isEmpty else { return nil }
 
         let content = AnyView(collectionsSectionContent(collections: sorted, theme: theme))
-        return DomainSection(id: "collections", title: "Collections", content: content)
+        return DomainSection(id: "collections", title: "Lists", content: content)
     }
 
     @ViewBuilder
@@ -183,7 +200,7 @@ struct DomainDetailView: View {
     /// A section header row: "Collections" title on the left + "+" add button on the right.
     private func collectionsSectionHeader(theme: Theme) -> some View {
         HStack(alignment: .center) {
-            Text("Collections")
+            Text("Lists")
                 .font(theme.typography.title)
                 .foregroundStyle(theme.colors.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -198,7 +215,7 @@ struct DomainDetailView: View {
                     .foregroundStyle(theme.colors.accentPrimary)
                     .frame(minWidth: 44, minHeight: 44)
             }
-            .accessibilityLabel("Add collection to \(domain.name)")
+            .accessibilityLabel("Add list to \(domain.name)")
         }
     }
 
@@ -214,7 +231,7 @@ struct DomainDetailView: View {
         guard !activeClips.isEmpty else { return nil }
 
         let content = AnyView(clipsSectionContent(clips: activeClips, theme: theme))
-        return DomainSection(id: "clips", title: "Clips", content: content)
+        return DomainSection(id: "clips", title: "Saved Links", content: content)
     }
 
     @ViewBuilder
@@ -236,7 +253,7 @@ struct DomainDetailView: View {
     /// A section header row: "Clips" title on the left + "+" add button on the right.
     private func clipsSectionHeader(theme: Theme) -> some View {
         HStack(alignment: .center) {
-            Text("Clips")
+            Text("Saved Links")
                 .font(theme.typography.title)
                 .foregroundStyle(theme.colors.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -251,7 +268,7 @@ struct DomainDetailView: View {
                     .foregroundStyle(theme.colors.accentPrimary)
                     .frame(minWidth: 44, minHeight: 44)
             }
-            .accessibilityLabel("Add clip to \(domain.name)")
+            .accessibilityLabel("Add saved link to \(domain.name)")
         }
     }
 
@@ -269,7 +286,7 @@ struct DomainDetailView: View {
         guard !activeIdeas.isEmpty else { return nil }
 
         let content = AnyView(ideasSectionContent(ideas: activeIdeas, theme: theme))
-        return DomainSection(id: "ideas", title: "Ideas", content: content)
+        return DomainSection(id: "ideas", title: "Thoughts", content: content)
     }
 
     /// Renders each idea via `IdeaRow` directly — deliberately NO `NavigationLink`/
@@ -291,7 +308,7 @@ struct DomainDetailView: View {
     /// (place-first, D-09) — no domain picker.
     private func ideasSectionHeader(theme: Theme) -> some View {
         HStack(alignment: .center) {
-            Text("Ideas")
+            Text("Thoughts")
                 .font(theme.typography.title)
                 .foregroundStyle(theme.colors.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -306,7 +323,7 @@ struct DomainDetailView: View {
                     .foregroundStyle(theme.colors.accentPrimary)
                     .frame(minWidth: 44, minHeight: 44)
             }
-            .accessibilityLabel("Add idea to \(domain.name)")
+            .accessibilityLabel("Add thought to \(domain.name)")
         }
     }
 
@@ -323,7 +340,7 @@ struct DomainDetailView: View {
                 .foregroundStyle(theme.colors.textPrimary)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(domain.name), domain")
+        .accessibilityLabel("\(domain.name), area")
     }
 
     private func emptyState(theme: Theme) -> some View {
@@ -332,7 +349,7 @@ struct DomainDetailView: View {
                 .font(theme.typography.title)
                 .foregroundStyle(theme.colors.textPrimary)
 
-            Text("Rules, collections, clips and ideas you file under this domain will show up here.")
+            Text("Habits, principles, lists, saved links, and thoughts in this area will show up here.")
                 .font(theme.typography.body)
                 .foregroundStyle(theme.colors.textSecondary)
         }

@@ -48,7 +48,7 @@ struct SettingsView: View {
                 }
 
                 Section("Management") {
-                    NavigationLink("Manage Domains") {
+                    NavigationLink("Manage Areas") {
                         DomainFocusPicker()
                     }
                     NavigationLink("Manage Habits") {

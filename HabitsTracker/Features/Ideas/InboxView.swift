@@ -38,7 +38,7 @@ struct InboxView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(theme.colors.background.ignoresSafeArea())
-        .navigationTitle("Inbox")
+        .navigationTitle("Thoughts without an area")
     }
 
     // MARK: - Empty state

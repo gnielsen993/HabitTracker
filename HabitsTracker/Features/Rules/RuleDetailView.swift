@@ -88,7 +88,7 @@ struct RuleDetailView: View {
 
                 if rule.isArchived {
                     DKBadge("Archived", theme: theme)
-                        .accessibilityLabel("Archived rule")
+                        .accessibilityLabel("Archived principle")
                 }
             }
         }
@@ -97,7 +97,7 @@ struct RuleDetailView: View {
     }
 
     private var headerAccessibilityLabel: String {
-        var label = rule.title + ", rule"
+        var label = rule.title + ", principle"
         if rule.isArchived { label += ", archived" }
         return label
     }
@@ -159,14 +159,14 @@ struct RuleDetailView: View {
         Button {
             stemming = true
         } label: {
-            Text("Stem habit")
+            Text("Create Habit")
                 .font(theme.typography.headline)
                 .foregroundStyle(theme.colors.background)
                 .frame(maxWidth: .infinity, minHeight: 44)
                 .background(theme.colors.accentPrimary)
                 .cornerRadius(theme.radii.button)
         }
-        .accessibilityLabel("Stem habit from this rule")
+        .accessibilityLabel("Create a habit inspired by this principle")
     }
 
     // MARK: - Block 5: Stemmed habits (conditional)
@@ -174,14 +174,14 @@ struct RuleDetailView: View {
     private func stemmedBlock(theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.m) {
             HStack(alignment: .center) {
-                Text("Stemmed habits")
+                Text("Inspired habits")
                     .font(theme.typography.title)
                     .foregroundStyle(theme.colors.textPrimary)
                     .accessibilityAddTraits(.isHeader)
 
                 Spacer()
 
-                DKBadge("Stemmed: \(rule.stemmedHabits.count)", theme: theme)
+                DKBadge("Inspired: \(rule.stemmedHabits.count)", theme: theme)
             }
 
             ForEach(rule.stemmedHabits, id: \.id) { habit in
@@ -203,6 +203,6 @@ struct RuleDetailView: View {
                 .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(habit.name), stemmed habit")
+        .accessibilityLabel("\(habit.name), inspired habit")
     }
 }

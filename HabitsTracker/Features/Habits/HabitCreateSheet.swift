@@ -4,7 +4,7 @@ import DesignKit
 
 /// Source for HabitCreateSheet — drives prefill only; chrome is identical for all cases (D-07).
 enum HabitSource {
-    case manual
+    case manual(Domain? = nil)
     case rule(Rule)
     case idea(Idea)
 }
@@ -46,7 +46,7 @@ struct HabitCreateSheet: View {
 
     // MARK: - Init
 
-    init(source: HabitSource = .manual, onSaved: ((Habit) -> Void)? = nil) {
+    init(source: HabitSource = .manual(), onSaved: ((Habit) -> Void)? = nil) {
         self.source = source
         self.onSaved = onSaved
     }
@@ -115,7 +115,7 @@ struct HabitCreateSheet: View {
 
     private func domainSection(theme: Theme) -> some View {
         Section {
-            Picker("Domain", selection: $selectedDomain) {
+            Picker("Area", selection: $selectedDomain) {
                 Text("None").tag(Domain?.none)
                 ForEach(domains, id: \.id) { domain in
                     Text(domain.name).tag(Domain?.some(domain))
@@ -123,7 +123,7 @@ struct HabitCreateSheet: View {
             }
             .foregroundStyle(theme.colors.textPrimary)
         } header: {
-            Text("Domain")
+            Text("Area")
                 .font(theme.typography.headline)
         }
     }
@@ -132,7 +132,7 @@ struct HabitCreateSheet: View {
         Section {
             Picker("Mode", selection: $mode) {
                 ForEach(HabitMode.allCases, id: \.self) { m in
-                    Text(m.rawValue.capitalized).tag(m)
+                    Text(m == .required ? "Today" : "This Week").tag(m)
                 }
             }
             .foregroundStyle(theme.colors.textPrimary)
@@ -182,9 +182,8 @@ struct HabitCreateSheet: View {
 
     private func seedDraftFromSource() {
         switch source {
-        case .manual:
-            // No prefill for title; default to first domain if available
-            selectedDomain = domains.first
+        case .manual(let preferredDomain):
+            selectedDomain = preferredDomain ?? domains.first
         case .rule(let rule):
             // Prefill title + domain from the rule; both remain editable
             title = rule.title

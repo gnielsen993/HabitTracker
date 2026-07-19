@@ -44,6 +44,7 @@ struct RuleEditorView: View {
     // MARK: - UI state
 
     @State private var showDeleteConfirm = false
+    @State private var showsReferenceLink: Bool
 
     // MARK: - Init
 
@@ -54,6 +55,7 @@ struct RuleEditorView: View {
         _bodyText = State(initialValue: "")
         _sourceURLText = State(initialValue: "")
         _selectedDomainID = State(initialValue: domain.id)
+        _showsReferenceLink = State(initialValue: false)
     }
 
     init(rule: Rule) {
@@ -63,6 +65,7 @@ struct RuleEditorView: View {
         _bodyText = State(initialValue: rule.body)
         _sourceURLText = State(initialValue: rule.sourceURL ?? "")
         _selectedDomainID = State(initialValue: rule.domain?.id)
+        _showsReferenceLink = State(initialValue: rule.sourceURL != nil)
     }
 
     /// Promote-to-Rule entry point (IDEA-04/IDEA-05). No force-unwrap of `idea.domain` —
@@ -74,6 +77,7 @@ struct RuleEditorView: View {
         _bodyText = State(initialValue: idea.note ?? "")
         _sourceURLText = State(initialValue: idea.url ?? "")
         _selectedDomainID = State(initialValue: idea.domain?.id)
+        _showsReferenceLink = State(initialValue: idea.url != nil)
     }
 
     // MARK: - Body
@@ -121,7 +125,7 @@ struct RuleEditorView: View {
 
     private func titleSection(theme: Theme) -> some View {
         Section {
-            TextField("Rule title", text: $title)
+            TextField("Principle title", text: $title)
                 .font(theme.typography.body)
 
             if trimmedTitle.isEmpty {
@@ -148,20 +152,20 @@ struct RuleEditorView: View {
 
     private func sourceURLSection(theme: Theme) -> some View {
         Section {
-            TextField("https://example.com", text: $sourceURLText)
-                .font(theme.typography.body)
-                .keyboardType(.URL)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-        } header: {
-            Text("Source URL")
-                .font(theme.typography.headline)
+            DisclosureGroup("Add reference", isExpanded: $showsReferenceLink) {
+                TextField("Reference link (optional)", text: $sourceURLText)
+                    .font(theme.typography.body)
+                    .keyboardType(.URL)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .accessibilityLabel("Reference link, optional")
+            }
         }
     }
 
     private func domainSection(theme: Theme) -> some View {
         Section {
-            Picker("Domain", selection: $selectedDomainID) {
+            Picker("Area", selection: $selectedDomainID) {
                 Text("None").tag(UUID?.none)
                 ForEach(domains, id: \.id) { domain in
                     Text(domain.name).tag(UUID?.some(domain.id))
@@ -169,7 +173,7 @@ struct RuleEditorView: View {
             }
             .font(theme.typography.body)
         } header: {
-            Text("Domain")
+            Text("Area")
                 .font(theme.typography.headline)
         }
     }
@@ -182,11 +186,11 @@ struct RuleEditorView: View {
                 try? modelContext.save()
                 dismiss()
             } label: {
-                Text(rule.isArchived ? "Unarchive Rule" : "Archive rule")
+                Text(rule.isArchived ? "Unarchive Principle" : "Archive Principle")
                     .font(theme.typography.body)
                     .foregroundStyle(theme.colors.textPrimary)
             }
-            .accessibilityLabel(rule.isArchived ? "Unarchive Rule" : "Archive rule")
+            .accessibilityLabel(rule.isArchived ? "Unarchive Principle" : "Archive Principle")
         }
     }
 
@@ -196,7 +200,7 @@ struct RuleEditorView: View {
             Button(role: .destructive) {
                 showDeleteConfirm = true
             } label: {
-                Text("Delete Rule")
+                Text("Delete Principle")
                     .font(theme.typography.body)
                     .foregroundStyle(theme.colors.danger)
             }
@@ -226,12 +230,12 @@ struct RuleEditorView: View {
     // MARK: - Delete Dialog
 
     private var deleteDialogTitle: String {
-        "Delete this rule?"
+        "Delete this principle?"
     }
 
     @ViewBuilder
     private var deleteDialogActions: some View {
-        Button("Delete Rule", role: .destructive) {
+        Button("Delete Principle", role: .destructive) {
             if case .edit(let rule) = editorMode {
                 modelContext.delete(rule)
                 try? modelContext.save()
@@ -246,7 +250,7 @@ struct RuleEditorView: View {
         if case .edit(let rule) = editorMode {
             let stemCount = rule.stemmedHabits.count
             if stemCount > 0 {
-                Text("This rule has \(stemCount) stemmed habit\(stemCount == 1 ? "" : "s"). They'll be kept — only the rule is deleted.")
+                Text("This principle inspired \(stemCount) habit\(stemCount == 1 ? "" : "s"). They'll be kept — only the principle is deleted.")
             } else {
                 Text("This can't be undone.")
             }
@@ -261,14 +265,14 @@ struct RuleEditorView: View {
 
     private var navigationTitle: String {
         switch editorMode {
-        case .create: return "New Rule"
-        case .edit:   return "Edit Rule"
+        case .create: return "New Principle"
+        case .edit:   return "Edit Principle"
         }
     }
 
     private var saveCTATitle: String {
         switch editorMode {
-        case .create: return "Add Rule"
+        case .create: return "Add Principle"
         case .edit:   return "Save Changes"
         }
     }

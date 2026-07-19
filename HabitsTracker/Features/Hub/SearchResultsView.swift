@@ -113,7 +113,7 @@ struct SearchResultsView: View {
 
     private func rulesSection(theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.m) {
-            sectionHeader("Rules", theme: theme)
+            sectionHeader("Principles", theme: theme)
 
             ForEach(ruleMatches, id: \.id) { rule in
                 NavigationLink {
@@ -130,7 +130,7 @@ struct SearchResultsView: View {
 
     private func collectionsSection(theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.m) {
-            sectionHeader("Collections", theme: theme)
+            sectionHeader("Lists", theme: theme)
 
             ForEach(collectionMatches, id: \.id) { collection in
                 NavigationLink {
@@ -147,7 +147,7 @@ struct SearchResultsView: View {
 
     private func clipsSection(theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.m) {
-            sectionHeader("Clips", theme: theme)
+            sectionHeader("Saved Links", theme: theme)
 
             ForEach(clipMatches, id: \.id) { clip in
                 NavigationLink {
@@ -164,7 +164,7 @@ struct SearchResultsView: View {
 
     private func ideasSection(theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.m) {
-            sectionHeader("Ideas", theme: theme)
+            sectionHeader("Thoughts", theme: theme)
 
             ForEach(ideaMatches, id: \.id) { idea in
                 IdeaRow(idea: idea)

@@ -21,8 +21,8 @@ struct HabitManagerView: View {
                 TextField("Search", text: $searchText)
                 Picker("Mode", selection: $filterMode) {
                     Text("All").tag(HabitMode?.none)
-                    Text("Required").tag(HabitMode?.some(.required))
-                    Text("Optional").tag(HabitMode?.some(.optional))
+                    Text("Today").tag(HabitMode?.some(.required))
+                    Text("This Week").tag(HabitMode?.some(.optional))
                 }
                 .pickerStyle(.segmented)
             }
@@ -33,7 +33,7 @@ struct HabitManagerView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(habit.name)
                                 .foregroundStyle(theme.colors.textPrimary)
-                            Text(habit.mode == .required ? "Required" : "Optional")
+                            Text(habit.mode == .required ? "Today" : "This Week")
                                 .font(theme.typography.caption)
                                 .foregroundStyle(theme.colors.textSecondary)
                         }
@@ -57,7 +57,7 @@ struct HabitManagerView: View {
             HabitEditorView(habit: habit)
         }
         .sheet(isPresented: $creatingHabit) {
-            HabitCreateSheet(source: .manual)
+            HabitCreateSheet(source: .manual())
         }
     }
 

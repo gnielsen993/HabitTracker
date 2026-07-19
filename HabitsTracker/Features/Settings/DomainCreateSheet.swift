@@ -75,14 +75,14 @@ struct DomainCreateSheet: View {
             }
             .scrollContentBackground(.hidden)
             .background(theme.colors.background)
-            .navigationTitle("New Domain")
+            .navigationTitle("New Area")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add Domain") { save(theme: theme) }
+                    Button("Add Area") { save(theme: theme) }
                         .disabled(!isValid)
                 }
             }

@@ -12,7 +12,7 @@ final class BootstrapService {
     private let lastSeededVersionKey = "lastSeededVersion"
 
     /// The seed version this bootstrap reconciles to. Pairs with `SeedDataService.seedVersion`.
-    private let currentSeedVersion = 2
+    private let currentSeedVersion = 3
 
     /// Inject an isolated `UserDefaults` suite in tests so the `lastSeededVersion`
     /// idempotency marker never leaks into (or out of) the app's standard defaults.

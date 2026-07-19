@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 final class SeedDataService {
-    private let seedVersion = 2
+    private let seedVersion = 3
 
     func seedIfNeeded(context: ModelContext) throws {
         let existingCategories = try context.fetch(FetchDescriptor<Domain>())
@@ -25,6 +25,7 @@ final class SeedDataService {
     }
 
     func restoreMissingDefaults(context: ModelContext) throws {
+        try reconcileFriendlyAreaNames(context: context)
         let existingCategories = try context.fetch(FetchDescriptor<Domain>())
         let byName = Dictionary(uniqueKeysWithValues: existingCategories.map { ($0.name, $0) })
 
@@ -67,21 +68,20 @@ final class SeedDataService {
             // on a fresh install — they are the curated Hub the user opens to.
             Domain(name: "Productivity", iconName: "checklist", colorToken: "forest", sortIndex: 0, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Learning", iconName: "book", colorToken: "navy", sortIndex: 1, isSeeded: true, seedVersion: seedVersion, isFocused: true),
-            Domain(name: "Lifestyle", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Personal", iconName: "sun.max", colorToken: "stone", sortIndex: 2, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Health", iconName: "heart", colorToken: "forest", sortIndex: 3, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Fitness", iconName: "figure.run", colorToken: "navy", sortIndex: 4, isSeeded: true, seedVersion: seedVersion, isFocused: true),
-            Domain(name: "Social", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Relationships", iconName: "person.2", colorToken: "maroon", sortIndex: 5, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Mindfulness", iconName: "brain", colorToken: "walnut", sortIndex: 6, isSeeded: true, seedVersion: seedVersion, isFocused: true),
-            Domain(name: "House / Chores", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion, isFocused: true),
-            Domain(name: "Finance", iconName: "dollarsign.circle", colorToken: "stone", sortIndex: 8, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Home", iconName: "house", colorToken: "walnut", sortIndex: 7, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Creativity", iconName: "paintbrush", colorToken: "maroon", sortIndex: 9, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Career", iconName: "briefcase", colorToken: "navy", sortIndex: 10, isSeeded: true, seedVersion: seedVersion, isFocused: true),
-            Domain(name: "Admin / Life Ops", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion, isFocused: true),
+            Domain(name: "Life Admin", iconName: "tray.full", colorToken: "stone", sortIndex: 11, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             // New hub seed domains (D-08): seed UNFOCUSED so a fresh curated install is
             // not flooded (Pitfall 3). On an upgrade they merge-add unfocused too.
             Domain(name: "Style", iconName: "tshirt", colorToken: "maroon", sortIndex: 12, isSeeded: true, seedVersion: seedVersion, isFocused: false),
-            Domain(name: "Diet", iconName: "fork.knife", colorToken: "forest", sortIndex: 13, isSeeded: true, seedVersion: seedVersion, isFocused: false),
-            Domain(name: "Money", iconName: "banknote", colorToken: "walnut", sortIndex: 14, isSeeded: true, seedVersion: seedVersion, isFocused: false),
+            Domain(name: "Nutrition", iconName: "fork.knife", colorToken: "forest", sortIndex: 13, isSeeded: true, seedVersion: seedVersion, isFocused: false),
+            Domain(name: "Money", iconName: "banknote", colorToken: "walnut", sortIndex: 8, isSeeded: true, seedVersion: seedVersion, isFocused: true),
             Domain(name: "Media", iconName: "play.rectangle", colorToken: "navy", sortIndex: 15, isSeeded: true, seedVersion: seedVersion, isFocused: false)
         ]
     }
@@ -116,10 +116,48 @@ final class SeedDataService {
             Habit(name: "LeetCode", category: c("Learning"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 3, isSeeded: true, seedVersion: seedVersion),
             Habit(name: "Workout", category: c("Fitness"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 4, isSeeded: true, seedVersion: seedVersion),
             Habit(name: "Walk", category: c("Fitness"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 5, isSeeded: true, seedVersion: seedVersion),
-            Habit(name: "Reach Out", category: c("Social"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 2, isSeeded: true, seedVersion: seedVersion),
+            Habit(name: "Reach Out", category: c("Relationships"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 2, isSeeded: true, seedVersion: seedVersion),
             Habit(name: "Meditate", category: c("Mindfulness"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 5, isSeeded: true, seedVersion: seedVersion),
-            Habit(name: "Track Spending", category: c("Finance"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 2, isSeeded: true, seedVersion: seedVersion),
-            Habit(name: "Calendar Review", category: c("Admin / Life Ops"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 1, isSeeded: true, seedVersion: seedVersion)
+            Habit(name: "Track Spending", category: c("Money"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 2, isSeeded: true, seedVersion: seedVersion),
+            Habit(name: "Calendar Review", category: c("Life Admin"), scheduleType: .daily, mode: .optional, weeklyTargetCount: 1, isSeeded: true, seedVersion: seedVersion)
         ]
+    }
+
+    private func reconcileFriendlyAreaNames(context: ModelContext) throws {
+        let areas = try context.fetch(FetchDescriptor<Domain>())
+        let renames = [
+            "Lifestyle": "Personal",
+            "Social": "Relationships",
+            "House / Chores": "Home",
+            "Admin / Life Ops": "Life Admin",
+            "Diet": "Nutrition"
+        ]
+
+        for area in areas where area.isSeeded {
+            if let friendlyName = renames[area.name] {
+                area.name = friendlyName
+                area.seedVersion = seedVersion
+            }
+        }
+
+        let refreshed = try context.fetch(FetchDescriptor<Domain>())
+        if let money = refreshed.first(where: { $0.isSeeded && $0.name == "Money" }),
+           let finance = refreshed.first(where: { $0.isSeeded && $0.name == "Finance" }),
+           money.id != finance.id {
+            finance.habits.forEach { $0.category = money }
+            finance.rules.forEach { $0.domain = money }
+            finance.collections.forEach { $0.domain = money }
+            finance.clips.forEach { $0.domain = money }
+            finance.ideas.forEach { $0.domain = money }
+            money.isFocused = money.isFocused || finance.isFocused
+            context.delete(finance)
+        } else if let finance = refreshed.first(where: { $0.isSeeded && $0.name == "Finance" }) {
+            finance.name = "Money"
+            finance.iconName = "banknote"
+            finance.colorToken = "walnut"
+            finance.seedVersion = seedVersion
+        }
+
+        try context.save()
     }
 }

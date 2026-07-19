@@ -147,7 +147,7 @@ struct ClipEditorView: View {
 
     private func titleSection(theme: Theme) -> some View {
         Section {
-            TextField("Clip title", text: $title)
+            TextField("Saved link title", text: $title)
                 .font(theme.typography.body)
                 .focused($titleFieldIsFocused)
                 .onChange(of: title) { _, _ in
@@ -198,14 +198,14 @@ struct ClipEditorView: View {
             // — an unfiled (domain == nil) clip would be unreachable in the UI
             // (UI-SPEC open item #5, WR-03). The editor always opens pre-scoped to
             // a domain, so one is always selected.
-            Picker("Domain", selection: $selectedDomainID) {
+            Picker("Area", selection: $selectedDomainID) {
                 ForEach(domains, id: \.id) { domain in
                     Text(domain.name).tag(UUID?.some(domain.id))
                 }
             }
             .font(theme.typography.body)
         } header: {
-            Text("Domain")
+            Text("Area")
                 .font(theme.typography.headline)
         }
     }
@@ -216,7 +216,7 @@ struct ClipEditorView: View {
             Button(role: .destructive) {
                 showDeleteConfirm = true
             } label: {
-                Text("Delete Clip")
+                Text("Delete Saved Link")
                     .font(theme.typography.body)
                     .foregroundStyle(theme.colors.danger)
             }
@@ -236,12 +236,12 @@ struct ClipEditorView: View {
     // MARK: - Delete Dialog
 
     private var deleteDialogTitle: String {
-        "Delete this clip?"
+        "Delete this saved link?"
     }
 
     @ViewBuilder
     private var deleteDialogActions: some View {
-        Button("Delete Clip", role: .destructive) {
+        Button("Delete Saved Link", role: .destructive) {
             if case .edit(let clip) = editorMode {
                 modelContext.delete(clip)
                 try? modelContext.save()
@@ -267,14 +267,14 @@ struct ClipEditorView: View {
 
     private var navigationTitle: String {
         switch editorMode {
-        case .create: return "New Clip"
-        case .edit:   return "Edit Clip"
+        case .create: return "New Saved Link"
+        case .edit:   return "Edit Saved Link"
         }
     }
 
     private var saveCTATitle: String {
         switch editorMode {
-        case .create: return "Add Clip"
+        case .create: return "Add Saved Link"
         case .edit:   return "Save Changes"
         }
     }
