@@ -36,20 +36,22 @@ crashes with an uncatchable Obj-C exception.
 - Live `@Model` types (in `HabitsTracker/Models/`): `Domain` (renamed from
   `Category` via `@Attribute(originalName:)` in Phase 1), `Habit`, `DailyEntry`,
   `HabitState`, `Rule` (Phase 2), `Collection` + `CollectionItem` (Phase 3),
-  `Clip` (Phase 4). The container type list in `HabitsTrackerApp.swift` is:
+  `Clip` (Phase 4), `Idea` (Phase 5), and `HabitScheduleRevision` (experience
+  redesign). The container type list in `HabitsTrackerApp.swift` is:
   ```swift
   .modelContainer(for: [
       Domain.self, Habit.self, DailyEntry.self, HabitState.self,
-      Rule.self, Collection.self, CollectionItem.self, Clip.self
+      HabitScheduleRevision.self, Rule.self, Collection.self,
+      CollectionItem.self, Clip.self, Idea.self
   ])
   ```
 - Container is built by the `.modelContainer(for:)` modifier — **no
   `VersionedSchema` scaffolding exists yet.** Inferred migration runs directly
   against the live class shapes.
 - Export/Import backup exists (`Services/ExportImportService.swift`, currently
-  `schemaVersion = 5`) as the fallback safety net — bump + round-trip test it
+  `schemaVersion = 7`) as the fallback safety net — bump + round-trip test it
   whenever a new `@Model` type or field is added.
-- Bundle id: `lauterstar.HabitsTracker` (migrated from `lauterstar.HabitsTracker` on
+- Bundle id: `lauterstar.HabitsTracker` (migrated from `gn.HabitsTracker` on
   2026-07-06 under Gabe's company account, team `JCWX4BK8GW`; see CLAUDE.md §1).
 
 ## The recipe — adding a new field (the common case)

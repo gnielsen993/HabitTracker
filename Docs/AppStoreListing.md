@@ -44,13 +44,14 @@ WHY
 TRACK
 
 - Binary habits: done or not done, one tap.
-- Optional habits that do not count against you daily but can earn a weekly badge.
-- Your own categories to group habits the way you think about them.
+- Flexible This Week goals that do not count against you on any one day.
+- Areas for the parts of life you want to keep close, with principles, lists,
+  saved links, and an optional thought scratchpad.
 
 SEE THE PROGRESS
 
-- Streaks, rings, calendars, heatmaps, and charts that read at a glance.
-- Weekly goals and a Progress view that shows the trend, not just today.
+- A calm Today view that gets lighter as habits are completed.
+- Workload-aware history, habit detail, streaks, weekday patterns, and weekly goals.
 
 PRIVACY AND OWNERSHIP
 

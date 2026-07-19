@@ -4,7 +4,7 @@ import SwiftData
 // DTOs live in `ExportImportDTOs.swift` (§9.1 file-size split).
 
 final class ExportImportService {
-    /// Single source of truth for the export/import schema version (currently 6).
+    /// Single source of truth for the export/import schema version (currently 7).
     /// Readable so callers like `SettingsView`'s About row never carry a divergent
     /// literal (POL-04 D-13).
     static let currentSchemaVersion = 7

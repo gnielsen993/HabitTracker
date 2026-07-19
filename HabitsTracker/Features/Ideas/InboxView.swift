@@ -46,7 +46,7 @@ struct InboxView: View {
     /// Single centered line, no heading, no CTA (D-11: this minimal treatment is the
     /// accepted designed inbox empty state, verified in Phase 6/POL-02).
     private func emptyState(theme: Theme) -> some View {
-        Text("Nothing to file right now.")
+        Text("Every thought has a place for now.")
             .font(theme.typography.body)
             .foregroundStyle(theme.colors.textSecondary)
             .frame(maxWidth: .infinity, alignment: .center)

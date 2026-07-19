@@ -33,6 +33,6 @@ struct DomainTile: View {
         }
         .frame(minWidth: 44, minHeight: 44)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(name), domain")
+        .accessibilityLabel("\(name), area")
     }
 }

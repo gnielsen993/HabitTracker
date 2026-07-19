@@ -94,7 +94,7 @@ struct PromoteToCollectionPicker: View {
     }
 
     private func emptyState(theme: Theme) -> some View {
-        Text("No lists yet. Create a collection first.")
+        Text("No lists yet. Create a list in an area first.")
             .font(theme.typography.body)
             .foregroundStyle(theme.colors.textSecondary)
             .multilineTextAlignment(.center)

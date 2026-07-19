@@ -24,8 +24,8 @@ struct HabitEditorView: View {
                     ))
                 }
 
-                Section("Category") {
-                    Picker("Category", selection: Binding(
+                Section("Area") {
+                    Picker("Area", selection: Binding(
                         get: { habit.category?.id },
                         set: { id in habit.category = categories.first(where: { $0.id == id }) }
                     )) {
@@ -42,7 +42,7 @@ struct HabitEditorView: View {
                         set: { habit.mode = $0 }
                     )) {
                         ForEach(HabitMode.allCases, id: \.self) { mode in
-                            Text(mode.rawValue.capitalized).tag(mode)
+                            Text(mode == .required ? "Today" : "This Week").tag(mode)
                         }
                     }
 

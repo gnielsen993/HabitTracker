@@ -39,7 +39,7 @@ struct CollectionPresetPickerSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .accessibilityLabel("Cancel, no collection created")
+                        .accessibilityLabel("Cancel, no list created")
                 }
             }
         }

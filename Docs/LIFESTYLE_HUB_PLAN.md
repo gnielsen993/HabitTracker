@@ -1,10 +1,32 @@
-# Lifestyle Hub — Concept & Build Plan
+# My Life — Lifestyle Hub Product Direction
 
-_Status: **Phase 1 (Domain Generalization) approved to build** 2026-06-28. Later phases remain planning-only until approved. Drafted 2026-06-21._
+_Status: **Current experience implemented** 2026-07-18. The original capture-first proposal
+below is retained only where it explains internal model decisions; the current user experience
+is the calm personal daybook described here._
 
 Evolution of HabitTracker from a pure habit app into a **local-first lifestyle hub**:
 habits stay the daily driver, with low-friction offshoots into rules, lists, links, and
-ideas — all filed under user-chosen life **Domains**.
+thoughts — organized within user-chosen life **Areas**.
+
+User-facing vocabulary is intentionally human: My Life, Area, Principle, List, Saved Link,
+Thought, Today, This Week, Show First, Move to Area, Turn into, Create Habit, and Inspired by.
+The existing SwiftData names (`Domain`, `Rule`, `Collection`, `Clip`, `Idea`, and the
+required/optional raw values) remain internal to preserve local data and avoid a needless
+migration.
+
+## Current experience
+
+- **Today is action-only:** a calm greeting, one Up Next habit, a compact Today plan,
+  flexible This Week goals, completed work tucked under Done today, and a collapsible note.
+- **My Life owns creation:** Habit, Principle, List, Saved Link, and Thought can be created
+  directly from My Life or within an Area. Creating a Thought first is never mandatory.
+- **Thoughts are an optional scratchpad:** unplaced thoughts appear only when they exist and
+  can be moved, turned into a Habit or Principle, added to a List, archived, or deleted.
+- **Progress is workload-aware:** counts lead, percentages support them, Today opportunities
+  and This Week targets are assessed separately, and individual habit patterns are primary.
+- **History stays truthful:** effective-dated schedule revisions prevent current settings from
+  rewriting the meaning of old days. Today and the current week remain in progress rather than
+  being counted as failures.
 
 ---
 
@@ -156,27 +178,21 @@ Key sub-screens:
 - **CollectionView** — list entries with status toggles.
 - **Domain focus/catalog** — pick which domains to focus, add custom (name + icon + color).
 
-### Creation model (how anything gets *in*)
-Two complementary entry points; **capture-first is the spine** so offshoots stay near-zero
-friction and Idea-and-promote becomes the connective tissue, not a fifth folder.
+### Creation model (current)
 
-- **Global quick-add (capture-first).** One always-reachable quick-add that defaults to
-  **Idea** and drops into an **inbox**. This is the 11pm "saw a TikTok / had a thought"
-  path. Domain is **optional at save** — an unfiled item is valid and lives in the inbox
-  until filed/promoted.
-- **In-domain `+` (place-first).** Inside a DomainDetailView, `+` adds directly to *that*
-  domain and lets you pick the type (Rule / List / Idea / Clip / Habit). For when you
-  already know "this is a Style rule." Files immediately; no inbox hop.
+Creation is direct and place-oriented, without a mandatory staging workflow:
 
-Sub-decisions (defaults, adjustable):
-- **Inbox lives in the Hub** (unfiled ideas surface there as a "to file" affordance), **not
-  on Today** — Today stays pure (§9 IA rule).
-- **Minimum field set = title only** for every type (plus URL for Clip). Anything beyond
-  title is optional and post-save; more required fields would kill the friction goal.
-- **Global `+` placement:** a quick-add affordance reachable without leaving Today, but
-  that does **not** add clutter to the Today list itself (e.g. toolbar/center action, not an
-  inline row). Exact control TBD in Phase E UI, but the *rule* is fixed: capture must not
-  pollute Today's content.
+- **My Life `+`:** creates a Habit or Thought immediately, or creates a Principle, List,
+  or Saved Link after choosing its Area.
+- **Area `+`:** creates any of the five item types already scoped to that Area.
+- **Today:** has no creation affordance while work exists. A genuinely empty day offers
+  only a contextual **Set up a habit** route into My Life.
+- **Thoughts:** title is required; note and reference link are optional. A Thought may stay
+  a Thought forever. The internal promotion service remains an implementation detail for
+  outcome-based actions such as **Turn into Habit**.
+
+The retired global Idea inbox, Today toolbar `+`, File/Promote wording, and mandatory
+Idea → File → Promote mental model are not part of the intended experience.
 
 > The global capture feeds the inbox; the in-domain `+` files directly. Both routes converge
 > on the same item types, so there's one creation code path, two surfaces.

@@ -419,7 +419,7 @@ final class ExportImportTests: XCTestCase {
     }
 
     /// POL-03 safety net (T-06-03-T): a malformed (non-JSON) import and an import
-    /// from a newer, unsupported `schemaVersion` (7 > current 6) must both throw
+    /// from a newer, unsupported schema version must both throw
     /// AND leave the existing store untouched. `importReplace` decodes + guards
     /// `schemaVersion <= currentSchemaVersion` BEFORE `deleteAll` (service lines
     /// 157-165), so a decode/guard failure never reaches the destructive delete —
@@ -450,8 +450,8 @@ final class ExportImportTests: XCTestCase {
         XCTAssertEqual(try context.fetch(FetchDescriptor<Domain>()).count, baselineDomains, "malformed import must not touch existing domains")
         XCTAssertEqual(try context.fetch(FetchDescriptor<Habit>()).count, baselineHabits, "malformed import must not touch existing habits")
 
-        // b2: a syntactically valid bundle whose schemaVersion (7) is newer than
-        // this build's currentSchemaVersion (6) must also throw at the guard,
+        // b2: a syntactically valid bundle whose schemaVersion is newer than
+        // this build's currentSchemaVersion must also throw at the guard,
         // before any delete.
         let futureEncoder = JSONEncoder()
         futureEncoder.dateEncodingStrategy = .iso8601

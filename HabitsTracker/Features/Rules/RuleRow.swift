@@ -47,15 +47,15 @@ struct RuleRow: View {
         guard stemCount > 0 || hasLink else { return nil }
 
         var parts: [String] = []
-        if stemCount > 0 { parts.append("Stemmed: \(stemCount)") }
+        if stemCount > 0 { parts.append("Inspired: \(stemCount)") }
         if hasLink { parts.append("· has link") }
         return parts.joined(separator: " ")
     }
 
     private var accessibilityLabel: String {
-        var label = "\(rule.title), rule"
+        var label = "\(rule.title), principle"
         let stemCount = rule.stemmedHabits.count
-        if stemCount > 0 { label += ", stemmed \(stemCount) habit\(stemCount == 1 ? "" : "s")" }
+        if stemCount > 0 { label += ", inspired \(stemCount) habit\(stemCount == 1 ? "" : "s")" }
         if rule.sourceURL != nil { label += ", has link" }
         return label
     }

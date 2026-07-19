@@ -75,7 +75,7 @@ struct ClipDetailView: View {
     }
 
     private var headerAccessibilityLabel: String {
-        "\(clip.title), clip, status: \(statusLabel)\(tagAccessibilitySuffix)"
+        "\(clip.title), saved link, status: \(statusLabel)\(tagAccessibilitySuffix)"
     }
 
     // MARK: - Block 2: Status + Tag

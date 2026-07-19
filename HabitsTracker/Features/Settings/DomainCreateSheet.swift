@@ -46,7 +46,7 @@ struct DomainCreateSheet: View {
                             }
                         }
                     if !isValid {
-                        Text("Give this domain a name to continue.")
+                        Text("Give this area a name to continue.")
                             .font(theme.typography.caption)
                             .foregroundStyle(theme.colors.textSecondary)
                     }
