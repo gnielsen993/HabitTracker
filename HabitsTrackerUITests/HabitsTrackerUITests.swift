@@ -41,6 +41,18 @@ final class HabitsTrackerUITests: XCTestCase {
     }
 
     @MainActor
+    func testBrandedEntryAppearsDuringSlowStartupThenOpensToday() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-onboardingStateV1", "completed"]
+        app.launchEnvironment["UI_TEST_BOOTSTRAP_DELAY"] = "1"
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["HABITS"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Preparing your day…"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.navigationBars["Today"].waitForExistence(timeout: 5))
+    }
+
+    @MainActor
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
