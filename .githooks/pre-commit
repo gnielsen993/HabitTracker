@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# Mechanical enforcement of the CLAUDE.md rules a script can actually check.
+# Only ADDED lines in the staged diff are inspected, so pre-existing code is
+# never retroactively blocked -- the guard applies to what you write now.
+set -euo pipefail
+
+fail=0
+
+# --- 1. Finder-dupe files (CLAUDE.md §9.6) --------------------------------
+# objectVersion 77 + synchronized root groups compiles every .swift in the
+# folder, so "X 2.swift" causes "invalid redeclaration" and blocks the target.
+# Finder makes 3, 4, ... too -- match any " <n>.swift".
+dupes=$(git diff --cached --name-only --diff-filter=A | grep -E ' [0-9]+\.swift$' || true)
+if [ -n "$dupes" ]; then
+  echo "BLOCKED: Finder-dupe file(s) staged (these break the build):"
+  echo "$dupes" | sed 's/^/  /'
+  fail=1
+fi
+
+# --- 2. Per-file checks ---------------------------------------------------
+bad=""
+warn=""
+
+# NUL-delimited, piped straight in. Never route this through a shell variable:
+# bash drops NUL bytes in command substitution, `read -d ''` then hits EOF
+# immediately, and the loop body never runs -- a hook that passes everything
+# while looking like it works. Unquoted `for f in $staged` is equally wrong:
+# it word-splits on paths containing spaces, which is exactly the check-1 case.
+while IFS= read -r -d '' f; do
+  case "$f" in
+    HabitsTracker/*.swift) ;;
+    *) continue ;;
+  esac
+
+  added=$(git diff --cached -- "$f" \
+            | grep -E '^\+[^+]' \
+            | grep -vE '// *token-exempt: *\S' || true)
+
+  if [ -n "$added" ]; then
+    # Strip // comments and string literals so a doc comment mentioning
+    # print(...) or a token name is not a false positive.
+    code=$(printf '%s\n' "$added" | sed -e 's://.*::' -e 's:"[^"]*":"":g')
+
+    # §9.13 Logging -- os.Logger, never print()
+    if printf '%s\n' "$code" | grep -Eq '(^|[^A-Za-z0-9_.])(print|debugPrint)\s*\('; then
+      bad="${bad}${f}: print()/debugPrint() call -- use os.Logger (§9.13)\n"
+    fi
+
+    # §1 Design / §9.4 -- DesignKit semantic tokens only. HabitsTracker
+    # consumes ../DesignKit, so unlike ClockKit/TripTracker there is no local
+    # palette file that legitimately defines raw colors.
+    if printf '%s\n' "$code" | grep -Eq 'Color\(\s*(red:|hex:|white:)|UIColor\(\s*red:|Color\.(red|blue|green|gray|orange|yellow|pink|purple|black|white)'; then
+      bad="${bad}${f}: hardcoded Color literal -- use DesignKit semantic tokens (§1)\n"
+    fi
+    if printf '%s\n' "$code" | grep -Eq 'cornerRadius:\s*[0-9]+'; then
+      bad="${bad}${f}: numeric cornerRadius -- use theme.radii.{card,button,chip,sheet} (§9.4)\n"
+    fi
+    if printf '%s\n' "$code" | grep -Eq '\.padding\(\s*[0-9]+(\.[0-9]+)?\s*\)'; then
+      bad="${bad}${f}: numeric padding -- use theme.spacing.{xs,s,m,l,xl,xxl} (§9.4)\n"
+    fi
+  fi
+
+  # §9.1 File size cap (~400 lines). Hard-block only NEW files; warn on
+  # modified ones so existing over-cap files stay editable.
+  if [ -f "$f" ]; then
+    lines=$(wc -l < "$f" | tr -d ' ')
+    if [ "$lines" -gt 400 ]; then
+      if git diff --cached --name-only --diff-filter=A -z | tr '\0' '\n' | grep -qxF "$f"; then
+        bad="${bad}${f}: new file is ${lines} lines, over the ~400 cap (§9.1)\n"
+      else
+        warn="${warn}${f} (${lines} lines)\n"
+      fi
+    fi
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACMR -z)
+
+if [ -n "$warn" ]; then
+  echo "WARNING: modified file(s) over the ~400-line cap (not blocking, §9.1):"
+  echo -e "$warn" | sed '/^$/d;s/^/  /'
+fi
+
+if [ -n "$bad" ]; then
+  echo "BLOCKED: CLAUDE.md rule violations in staged changes:"
+  echo -e "$bad" | sed '/^$/d;s/^/  /'
+  echo
+  echo "Only newly added lines are checked. Fix the new line, or -- if this case"
+  echo "is genuinely legitimate -- append '// token-exempt: <reason>' to it."
+  echo "A bare '// token-exempt' with no reason does not suppress anything."
+  fail=1
+fi
+
+exit $fail
