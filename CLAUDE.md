@@ -12,6 +12,49 @@ Claude Code reads this at the start of every session. Follow it as the project c
 
 ---
 
+## 0.1) Project status — current facts
+
+Slow-moving facts, verified against `HabitsTracker.xcodeproj/project.pbxproj`
+and the filesystem. **Update this table in the same commit** whenever a value
+changes. If something here contradicts what you observe in the repo, trust the
+repo and fix this table.
+
+| Fact | Value | Last verified |
+|------|-------|---------------|
+| Repo / Xcode project / scheme / target name | **HabitsTracker** | 2026-07-26 |
+| Bundle ID | `lauterstar.HabitsTracker` | locked — avoid changing (§1) |
+| Deployment target | iOS 26.2 (`IPHONEOS_DEPLOYMENT_TARGET`) | 2026-07-26 |
+| Swift language version | 5.0 (`SWIFT_VERSION`) | 2026-07-26 |
+| `MARKETING_VERSION` | 1.0 | 2026-07-26 |
+| Dependencies | `../DesignKit` by **local path** only — no remote packages (§9.14) | 2026-07-26 |
+| Persistence | SwiftData (§9.12 playbook governs schema changes) | 2026-07-26 |
+| Cloud surface | **None.** Offline-only — no CloudKit, no analytics (§1) | 2026-07-26 |
+| Marketing website | None. Do not add a website step to the release flow. | 2026-07-26 |
+
+> **Note the bundle ID has no `com.` prefix** (`lauterstar.HabitsTracker`),
+> unlike the siblings (`com.lauterstar.fitnesstracker`, `com.lauterstar.gamekit`).
+> That is the shipped value — do not "fix" it. Changing a bundle ID orphans
+> user data and the App Store record.
+
+## 0.2) Where to look for live state
+
+Do not duplicate fast-moving state in this file. Read the canonical source.
+
+| Question | Source |
+|----------|--------|
+| What changed recently? | `git log --oneline -20` |
+| What phase / plan are we on? | `.planning/STATE.md` |
+| What's the milestone scope? | `.planning/ROADMAP.md` |
+| What shipped in a version? | `Docs/releases/v{version}.md` (§9.11) |
+| How do I change a `@Model`? | `Docs/SCHEMA_MIGRATION_PLAYBOOK.md` (§9.12) |
+| How do I verify an upgrade? | `Docs/UPGRADE_TEST_RUNBOOK.md` |
+| What are the locked project settings? | this file §0.1 + `project.pbxproj` |
+
+When asked "what's going on" / "status" / "where are we", read `.planning/STATE.md`
+and `git log` first, then §0.1 — do not answer from prior-session memory alone.
+
+---
+
 ## 0) What you are building
 A set of local-first SwiftUI apps that feel like one premium ecosystem, powered by a shared DesignKit Swift Package.
 
@@ -231,6 +274,26 @@ When you hit the *same* friction a 2nd time, repeat a multi-step manual sequence
 
 ### 9.18 You are the implementer — don't hand back work you can do
 If a step is doable with your own tools (editing files, `xcodebuild` / `xcrun` / git, search), **do it** — never hand Gabe a list of manual steps and call that done. Only delegate steps that genuinely require the human: interactive auth, physical-device actions, App Store Connect / web UI, or a decision that is his to make. When you delegate, say *why* it needs him and give exact steps (for shell he can run in-session, suggest the `! <command>` prefix). Don't end a turn at “you should now run/build/commit…” when you could have done it.
+
+### 9.19 Pre-commit hook — mechanical enforcement
+`.githooks/pre-commit` enforces the subset of these rules a script can check. **Hooks are per-clone** — `core.hooksPath` is local config and does not travel with `git clone` or `git pull`, so every clone on every machine runs the installer once:
+
+```bash
+bash scripts/install-hooks.sh
+```
+
+| Check | Behavior |
+|-------|----------|
+| Newly added Finder-dupe files (`X 2.swift`, `X 3.swift`, …) — §9.6 | block |
+| `print()` / `debugPrint()` in added lines — §9.13 | block |
+| Hardcoded `Color` literal in added lines — §1 | block |
+| Numeric `cornerRadius:` / `.padding(<n>)` in added lines — §9.4 | block |
+| **New** `.swift` file over 400 lines — §9.1 | block |
+| **Modified** `.swift` file over 400 lines — §9.1 | warn only |
+
+Scoped to `HabitsTracker/`. Only *added* lines are inspected, so existing code is never retroactively blocked, and the size check only warns on modified files so over-cap files stay editable.
+
+Unlike ClockKit and TripTracker — which own local palettes and therefore exempt them — HabitsTracker consumes DesignKit and has **no** file that legitimately defines raw colors, so there is no file-level color exemption here. For a genuine one-off, append `// token-exempt: <reason>` to the line; the reason is mandatory, a bare `// token-exempt` suppresses nothing. Emergency bypass is `git commit --no-verify`; if you need it because the hook is wrong, fix the hook in the same session.
 
 ---
 

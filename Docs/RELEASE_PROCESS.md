@@ -47,10 +47,17 @@ hand it to Gabe as plain text, ready to paste into App Store Connect under
 ## Step 5 — Final push
 
 ```bash
-cd ~/Desktop/HabitsTracker
+cd /Users/gabrielnielsen/Developer/HabitsTracker
 git status --short --branch
 git push
+git log origin/main -1 --oneline   # confirm the push landed; don't assume
 ```
+
+> The bare `~/Desktop/HabitsTracker` path this step used to name is **dead** —
+> the repos moved to `~/Developer/`. There is a convenience symlink under
+> `~/Desktop/Projects/<Group>/`, but never write a `~/Desktop/<Repo>` path into
+> a doc: a `cd` into a missing directory fails silently at the head of an `&&`
+> chain and the whole step no-ops while appearing to succeed.
 
 Push before wrap-up is considered done. If `../DesignKit` changed, push it too
 (separate commit in that repo — see `CLAUDE.md` §9.14).
