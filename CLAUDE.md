@@ -61,8 +61,9 @@ A set of local-first SwiftUI apps that feel like one premium ecosystem, powered 
 Projects:
 - DesignKit (shared design system package)
 - HabitsTracker (binary habits + optional weekly goals + widgets) — **this repo**
-- FitnessTracker (split logging + muscle coverage + visuals)
-- PantryPlanner (pantry forecasting + meal planner + cost awareness)
+- FitnessTracker (split logging + muscle coverage + visuals) — ships as **Stack**
+- GameKit (ad-free classic logic games) — ships as **GameDrawer**; a full DesignKit consumer, previously missing from this list
+- PantryPlanner (pantry forecasting + meal planner + cost awareness) — **dormant, not a shipping app.** Lives in the `../DietTracker` repo (remote `PantryTracker`; all three names refer to the same thing). ~28 Swift files, 2 commits, untouched since 2026-02. Treat every PantryPlanner rule below as *conditional on it being revived* — it is not a second consumer for the purposes of the DesignKit 2-app extraction bar (§4, §9.14).
 
 > **Active planning:** the in-flight evolution of this app into a local-first lifestyle hub
 > is specified in `Docs/LIFESTYLE_HUB_PLAN.md` (planning-only until approved to build).
@@ -253,7 +254,7 @@ Diagnostics go through `os.Logger` with a subsystem/category, never `print()` / 
 ### 9.14 DesignKit is a separate sibling repo (`../DesignKit`)
 DesignKit is consumed by **local path**, not a pinned remote package, and is shared by all sibling apps. Therefore:
 - Changes to DesignKit are a separate commit + push *in that repo* (pull it first, per §9.10).
-- A DesignKit change affects HabitsTracker / FitnessTracker / PantryPlanner — confirm the need is real (2+ apps, §4) before editing it.
+- A DesignKit change affects its **live** consumers — HabitsTracker, FitnessTracker, and GameKit — so confirm the need is real (2+ apps, §4) before editing it. Dormant PantryPlanner does not count toward that bar.
 - After a DesignKit change, verify HabitsTracker still builds against it (§8).
 - Never make an app-only tweak inside DesignKit.
 
