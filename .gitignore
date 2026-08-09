@@ -79,3 +79,7 @@ secrets/
 # Claude Code (local-only; shared settings.json remains tracked)
 .claude/settings.local.json
 .claude/worktrees/
+.claude/skills/
+.claude/proven-config.json
+.claude/.proven-config-version
+.claude/scheduled_tasks.lock
