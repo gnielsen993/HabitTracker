@@ -83,3 +83,4 @@ secrets/
 .claude/proven-config.json
 .claude/.proven-config-version
 .claude/scheduled_tasks.lock
+.claude-flow/
